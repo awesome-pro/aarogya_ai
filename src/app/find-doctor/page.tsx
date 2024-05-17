@@ -311,7 +311,7 @@ export default function Fleets(){
 
        </div>
        </div>
-       <div className="max-w-screen-2xl w-full">
+       <div className="w-full">
        <FAQ />
        </div>
        <Footer />

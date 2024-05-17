@@ -50,11 +50,11 @@ const FAQ = () => {
     <div className="container mx-auto px-5 py-10">
       <div className="flex flex-wrap items-center justify-between">
         {/* Image Section */}
-        <div className="w-full md:w-1/2 mb-8 md:mb-0">
+        <div className="w-full md:w-1/3 mb-8 md:mb-0">
           <img src="https://s3-alpha-sig.figma.com/img/e227/fb42/a6ada2ba341019c7efd2dc283f78b62d?Expires=1716768000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=l3OCRUFc9kL2nVxnMYyY2qWLk4eHmCxuc1A53m4DDQNtExxzDwNjC8xkg-4FlGyxkmscQgPvy-4M11cT66C7lQXRJqynsMAyBsecT~oW1CZI9lDK4T8WjkuG3CZkIW5DsGZl2sJFvjv8OFHyigogPl1dJyhxygo-gQEZ--K0nG5rzN7YA2-RGwVwiZbn5CSkuQjG4A2XojoO9DG7yMuzcmU4Yt~dWd2BaCUQqHg2xqivtatdbMt4lwR6h1WtIzZzqGZ-cDgLzkdHJXjVPT4VYEF5vhTCKz~l~B7T6cF1KDcDxK5Xt~-3g0~DCAcAY54V~oVC3CajxSVAT-IUFERIgA__" alt="FAQ Image" className="w-2/3 h-auto" />
         </div>
 
-        <div className='flex flex-col md:flex-row justify-center items-center px-10 text-xl w-1/2 font-medium'>
+        <div className='flex flex-col md:flex-row justify-center items-center px-10 text-xl w-2/3 font-medium'>
       <div className='w-full flex flex-col gap-2 md:mr-2'>
         <div className="accordion-item">
           <button
@@ -67,7 +67,7 @@ const FAQ = () => {
           </button>
           {isOpen && (
             <div className="accordion-content py-2 px-4">
-              Answer
+              Choose our medical services for your family for quality care by experienced professionals, comprehensive services, and convenient access to state-of-the-art facilities, ensuring personalized attention and continuity of care for your loved ones health and wellness needs.
             </div>
           )}
         </div>
@@ -82,7 +82,7 @@ const FAQ = () => {
           </button>
           {isOpen2 && (
             <div className="accordion-content py-2 px-4">
-              Answer
+              We stand out from others due to our commitment to patient-centric care, innovative treatment approaches, and a compassionate team dedicated to empowering individuals on their healthcare journey.
             </div>
           )}
         </div>
@@ -97,7 +97,7 @@ const FAQ = () => {
           </button>
           {isOpen3 && (
             <div className="accordion-content py-2 px-4">
-              Answer
+              Our focus on trusted and experienced senior care is driven by a deep sense of love and compassion for our elderly community members. We provide personalized support and companionship to ensure their well-being and happiness.
             </div>
           )}
         </div>
@@ -112,7 +112,7 @@ const FAQ = () => {
           </button>
           {isOpen4 && (
             <div className="accordion-content py-2 px-4">
-              Answer
+              For emergency cases, appointments can be swiftly secured by contacting our dedicated emergency hotline or visiting our medical facility directly. We prioritize urgent cases and ensure prompt medical attention to address critical situations effectively.
             </div>
           )}
         </div>

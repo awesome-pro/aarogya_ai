@@ -1,10 +1,131 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from"next/image";
 import download from "../download.jpg";
 import Header from "@/components/Header";
 import FAQ from "@/components/Faq";
 import Footer from "@/components/Footer";
 export default function Fleets(){
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Sample data for cards
+  const cardData = [
+    {
+      id: 1,
+      name: "Dr. Shantanu Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    {
+      id: 2,
+      name: "Dr. Shantanu Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    {
+      id: 3,
+      name: "Dr. Shantanu Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    {
+      id: 4,
+      name: "Dr. Shantanu Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    {
+      id: 5,
+      name: "Dr. Shantanu Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    {
+      id: 6,
+      name: "Dr. Shant Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    {
+      id: 7,
+      name: "Dr. Shant Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    {
+      id: 8,
+      name: "Dr. Shant Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    {
+      id: 9,
+      name: "Dr. Shantanu Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    {
+      id: 10,
+      name: "Dr. Shantanu Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    {
+      id: 11,
+      name: "Dr. Shantanu Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    {
+      id: 12,
+      name: "Dr. Shantanu Jambhekar",
+      specialty: "Dentist",
+      experience: 16,
+      location: "Parentheses, Mumbai",
+      clinics: ["Smilessence Center for Advanced Dentistry"],
+      availability: "Available Today",
+    },
+    // Add more card data as needed
+  ];
+
+  // Function to calculate the index of the first and last card to display
+  const indexOfLastCard = currentPage * 4;
+  const indexOfFirstCard = indexOfLastCard - 4;
+  const currentCards = cardData.slice(indexOfFirstCard, indexOfLastCard);
 
     return(
         <>
@@ -137,7 +258,7 @@ export default function Fleets(){
             <h3 className="font-semibold mb-1 text-black text-3xl mt-10">{'Doctors available in Andheri west'}</h3>
             <h2 className="text-gray-500">Book appointments with minimum wait-time & verified doctor details</h2>
 
-            <div className="grid grid-row-4 mt-10">
+            {/* <div className="grid grid-row-4 mt-10 min-h-screen py-5">
 
 
                 <div className="cardbox" >                 
@@ -277,8 +398,60 @@ export default function Fleets(){
                     </div>
                     
             </div>
-            </div>
+            </div> */}
 
+<div className="container flex items-center justify-center flex-col gap-6 mt-10">
+        {currentCards.map((card) => (
+          <div key={card.id} className="cardbox">
+            <div className="relative">
+              <Image src={download} alt="background" className="fleet--clip" />
+            </div>
+            <span className="commanbox">
+              <h1 className="drname">{card.name}</h1>
+              <p className="text-gray-400 text-small">
+                {card.specialty}
+                <br />
+                {card.experience} years experience overall
+              </p>
+              <p>
+                <h1 className="h1">{card.location}</h1>
+                {card.clinics.map((clinic, index) => (
+                  <p key={index} className="text-gray-600">
+                    {clinic}
+                  </p>
+                ))}
+              </p>
+              <b className="text-green-500">Free</b>
+              <div className="flex">
+                <p className="text-gray-500">Consultation fee at clinic</p>
+                <div className="bookingbox">
+                  <b className="text-green-500">{card.availability}</b>
+                  <button className="btn">Book FREE Clinic Visit</button>
+                </div>
+              </div>
+              <br />
+              <hr />
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="mt-6 flex justify-center pb-6">
+        {[...Array(Math.ceil(cardData.length / 4)).keys()].map((number) => (
+          <button
+            key={number}
+            className={`${
+              currentPage === number + 1 ? "bg-blue-800" : "bg-blue-600"
+            } text-white font-semibold px-4 py-2 mx-1 rounded-full`}
+            onClick={() => setCurrentPage(number + 1)}
+          >
+            {number + 1}
+          </button>
+        ))}
+      </div>
+
+       </div>
        </div>
        <div className="max-w-screen-2xl w-full">
        <FAQ />

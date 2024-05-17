@@ -144,7 +144,7 @@ export default function Home() {
                     <SearchBar value="Set Your location" />
                     </div>
                     <div className='flex justify-center items-center'>
-                    <button className='text-white bg-blue-500 bg-opacity-90 px-4 py-3 rounded-lg'>Search</button>
+                    <button className='text-white bg-blue-500 bg-opacity-90 px-4 py-3 rounded-xl'>Search</button>
                     </div>
                 </div> 
                 {/* <div className="flex flex-col items-center justify-center z-50 top-full left-1/2 absolute">

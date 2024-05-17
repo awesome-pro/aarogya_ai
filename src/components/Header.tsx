@@ -17,7 +17,7 @@ const Header = () => {
           <Link href="/hospitals">
             <button className=" hover:underline">Hospitals</button>
           </Link>
-          <Link href="/medicines">
+          {/* <Link href="/medicines">
             <button className=" hover:underline">Medicines</button>
           </Link>
           <Link href="/surgeries">
@@ -25,12 +25,12 @@ const Header = () => {
           </Link>
           <Link href="/software-provider">
             <button className=" hover:underline">Software Provider</button>
-          </Link>
+          </Link> */}
           <Link href="/facilities">
             <button className=" hover:underline">Facilities</button>
           </Link>
         </nav>
-        <button className='text-white bg-blue-500 bg-opacity-95 px-3 py-2 rounded-lg'>SignUp/Login</button>
+        <button className='text-white bg-blue-500 bg-opacity-95 px-3 py-2 rounded-xl'>SignUp/Login</button>
         </div>
     </header>
     </>

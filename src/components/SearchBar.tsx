@@ -12,7 +12,7 @@ const SearchBar = ({ value }) => {
     <div className='flex items-center flex-row relative text-xs'>
   <input
     type="text"
-    placeholder={`Search by ${value}...`}
+    placeholder={`${value}...`}
     className='w-full border-2 border-gray-800 rounded-xl px-5 py-3 text-black pl-10'
   />
   <FontAwesomeIcon icon={faSearch} className='absolute left-2 top-1/2 transform -translate-y-1/2 p-3 object-cover text-gray-500' />

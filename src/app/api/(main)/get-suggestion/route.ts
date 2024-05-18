@@ -1,53 +1,62 @@
-import OpenAI from 'openai';
-import { OpenAIStream, StreamingTextResponse } from 'ai';
-import { NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import mongoose from "mongoose";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
-export const runtime = 'edge';
-
-export async function POST(req: Request) {
-  try {
-    const prompt =
-      "Suggest me best doctor depart "
-    const response = await openai.completions.create({
-      model: 'gpt-3.5-turbo-instruct',
-      max_tokens: 400,
-      stream: true,
-      prompt,
-    });
-
-    const stream = OpenAIStream(response);
-
+export async function GET( req : Request ){
     
-    if(!stream){
-        console.log("response not found: ", response)
-        return NextResponse.json(
+    
+    try {
+        // Access your API key as an environment variable (see "Set up your API key" above)
+        const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
+    
+        if(!genAI){
+            console.log("genAi not found")
+            return Response.json(
+                {
+                "meassage": "genAI not found"
+                },
+                {
+                    status: 500
+                }
+            )
+        }
+    
+        // ...
+    
+        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+    
+        const prompt = ""
+    
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+        console.log(text);
+    
+        if(!text){
+            console.log("text not found")
+            return Response.json(
+                {
+                "meassage": "text not found"
+                },
+                {
+                    status: 500
+                }
+            )
+        }
+    
+        return Response.json(
             {
-                "message": "response not found"
+                "message": `text found successfully ${text}`
             },
             {
-                status: 500,
-                statusText: "Server Error"
+                status: 200
             }
         )
-    }
-    
-    
-    return new StreamingTextResponse(stream);
+    } catch (error) {
 
-    
-  } catch (error) {
-    if (error instanceof OpenAI.APIError) {
-      // OpenAI API error handling
-      const { name, status, headers, message } = error;
-      return NextResponse.json({ name, status, headers, message }, { status });
-    } else {
-      // General error handling
-      console.error('An unexpected error occurred:', error);
-      throw error;
+        console.log("errror: ", error)
+        
     }
-  }
+
+    // ...
 }

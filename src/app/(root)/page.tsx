@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+
+
 import FAQ from "@/components/Faq";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -10,7 +12,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-const EntityBox = ({ name, photoUrl }) => {
+const EntityBox = ({ name, photoUrl }: {
+    name: string;
+    photoUrl: string;
+    
+}) => {
   return (
     <div className="w-1/5">
     <div className=" mb-6 bg-white w-2/3">

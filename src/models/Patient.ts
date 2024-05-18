@@ -8,7 +8,7 @@ export interface Patient extends Document{
     email: string;
     password: string;
     phoneNumber?: string;
-    age: number;
+    age?: number;
     diseases?: string[];
     appointments?: Appointment[];
     history?: History[];
@@ -20,7 +20,7 @@ const PatientSchema = new Schema<Patient>({
     email: { type: String, required: true },
     password: { type: String, required: true },
     phoneNumber: { type: String, required: false },
-    age: { type: Number, required: true },
+    age: { type: Number, required: false },
     diseases: { type: [String], required: false },
     appointments: { type: [String], required: false },
     history: [

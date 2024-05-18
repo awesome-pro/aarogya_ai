@@ -1,19 +1,17 @@
 import mongoose, { Document } from "mongoose";
 
 export interface Disease extends Document{
-    id: number;
     diseaseName: string;
-    symptoms: string[];
+    symptoms?: string[];
     departments?: string[];
-    speciality?: string;
+    specialty?: string;
 }
 
 const DiseaseSchema = new mongoose.Schema<Disease>({
-    id: { type: Number, required: true },
     diseaseName: { type: String, required: true },
-    symptoms: { type: [String], required: true },
+    symptoms: { type: [String], required: false },
     departments: { type: [String], required: false },
-    speciality: { type: String, required: false }
+    specialty: { type: String, required: false }
 });
 
 const DiseaseModel = mongoose.models && mongoose.models.Disease || mongoose.model<Disease>('Disease', DiseaseSchema);

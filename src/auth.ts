@@ -67,21 +67,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async jwt({ token, user}) {
+      console.log("Token in jwt: ", token, user)
       if (user) {
         token.id = user._id?.toString()
         token.email = user.email
         token.name = user.name || ""
 
       }
+      console.log("Token in jwt after: ", token)
       return token
     },
     async session({ session, token }) {
+
+      console.log("Token in session: ", token)
       if (token) {
         session.user._id = token.id?.toString()
         session.user.email = token.email || ""
-        
+        session.user.name = token.name || ""
+        session.user.isVerified = token.isVerified || false
       }
-     
+
+     console.log("Session: ", session)
 
      return session
     }

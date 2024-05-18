@@ -1,7 +1,7 @@
 "use client";
+
 import React, { useState } from "react";
 import Image from"next/image";
-import download from "../download.jpg";
 import Header from "@/components/Header";
 import FAQ from "@/components/Faq";
 import Footer from "@/components/Footer";
@@ -262,7 +262,13 @@ export default function Fleets(){
         {currentCards.map((card) => (
           <div key={card.id} className="cardbox">
             <div className="relative">
-              <Image src={download} alt="background" className="fleet--clip" />
+              <Image 
+              src="/download.jpg" 
+              alt="background" 
+              className="fleet--clip" 
+              width={200}
+              height={200}
+              />
             </div>
             <span className="commanbox">
               <h1 className="drname">{card.name}</h1>
@@ -271,14 +277,12 @@ export default function Fleets(){
                 <br />
                 {card.experience} years experience overall
               </p>
-              <p>
                 <h1 className="h1">{card.location}</h1>
                 {card.clinics.map((clinic, index) => (
                   <p key={index} className="text-gray-600">
                     {clinic}
                   </p>
                 ))}
-              </p>
               <b className="text-green-500">Free</b>
               <div className="flex">
                 <p className="text-gray-500">Consultation fee at clinic</p>
@@ -295,7 +299,7 @@ export default function Fleets(){
       </div>
 
       {/* Pagination */}
-      <div className="mt-6 flex justify-center pb-6">
+      {/* <div className="mt-6 flex justify-center pb-6">
         {[...Array(Math.ceil(cardData.length / 4)).keys()].map((number) => (
           <button
             key={number}
@@ -307,7 +311,7 @@ export default function Fleets(){
             {number + 1}
           </button>
         ))}
-      </div>
+      </div> */}
 
        </div>
        </div>

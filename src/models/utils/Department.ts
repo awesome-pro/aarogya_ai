@@ -2,14 +2,14 @@ import mongoose, { Schema } from "mongoose";
 
 
 export interface Department {
-    departmentName: string;
-    speciality?: string[];
+    name: string;
+    specialty?: string[];
     doctors?: string[];
 }
 
 const DepartmentSchema = new Schema<Department>({
-    departmentName: { type: String, required: true },
-    speciality: { type: [String], required: false },
+    name: { type: String, required: true },
+    specialty: { type: [String], required: false },
     doctors: { type: [String], required: false }
 });
 

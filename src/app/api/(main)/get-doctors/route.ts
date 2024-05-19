@@ -8,127 +8,86 @@ import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
 
-export default async function getDoctors(req: NextRequest) {
+export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url, "http://localhost:3000");
-    const { department, disease, location, patientId } = Object.fromEntries(searchParams);
-    console.log(department, disease, location, patientId);
+    const { department, disease, location, patientId, specialty } = Object.fromEntries(searchParams);
+    console.log(department, disease, location, patientId, searchParams, specialty);
 
     await dbConnect();
 
     try {
+        
+        let doctorsQuery = [];
 
-        if (department) {
-            const doctors = await DoctorModel.find({ department: department });
-            console.log("doctors: ", doctors)
+        if(department || location){
+            doctorsQuery.push(
+                {
+                    $or: {
+                        department: department,
+                        location: location
+                    }
+                }
+            )
+        }
+        console.log("Doctors query1: ", doctorsQuery);
 
-            if (!doctors) {
-                console.log("Doctors not found")
+        // If disease is provided, find doctors based on disease specialty and departmen
+        if(disease || specialty){
+            const diseaseDetails = await DiseaseModel.findOne({ diseaseName: disease }).exec();
+            console.log("Disease details: ", diseaseDetails);
+
+            if(diseaseDetails){
+                doctorsQuery.push(
+                    {
+                        $or: [
+                            {
+                                specialty: diseaseDetails.specialty
+                            },
+                            {
+                                department: {
+                                    $in: diseaseDetails.department
+                                }
+                            }
+                        ]
+                    }
+                )
+            }
+            console.log("Doctors query2: ", doctorsQuery);
+
+            // Combine all conditions with $or operator
+            let doctors = await DoctorModel.find(
+                doctorsQuery.length ? { $or: doctorsQuery } : {} as any
+            )
+            console.log("Doctors: ", doctors);
+
+            if(doctors.length === 0 || !doctors){
+                console.log("No doctors found");
 
                 return NextResponse.json({
                     status: 404,
-                    message: "Doctors not found"
+                    message: "No doctors found"
                 },
                 {
-                    status: 404,
-                    statusText: "Doctors not found"
+                    status: 404
                 })
             }
 
-            return NextResponse.json({
-                status: 200,
-                message: "Success",
-                data: doctors
-            },
-            {
-                status: 200,
-                statusText: "Success"
-            })
-        }
-
-        if (disease) {
-            const diseaseData = await DiseaseModel.findOne({ name: disease });
-            const doctors = await DoctorModel.find({ speciality: diseaseData.speciality });
-            return NextResponse.json({
-                status: 200,
-                message: "Success",
-                data: doctors
-            },
-            {
-                status: 200,
-                statusText: "Success"
-            })
-        }
-
-        if (location) {
-            const doctors = await DoctorModel.find({ location });
-            return NextResponse.json({
-                status: 200,
-                message: "Success",
-                data: doctors
-            },
-            {
-                status: 200,
-                statusText: "Success"
-            })
-        }
-
-        if (patientId) {
-            const patient = await PatientModel.findById(patientId);
-            if (!patient) {
-                return NextResponse.json({
-                    status: 404,
-                    message: "Patient not found"
-                },
-                {
-                    status: 404,
-                    statusText: "Patient not found"
-                })
-            }
-            const appointmentIds = patient.appointmentIds;
-            const appointments = await AppointmentModel.find({ _id: { $in: appointmentIds } });
-            const doctorIds = appointments.map(appointment => appointment.doctorId);
-            const doctors = await DoctorModel.find({ _id: { $in: doctorIds } });
-            return NextResponse.json({
-                status: 200,
-                message: "Success",
-                data: doctors
-            },
-            {
-                status: 200,
-                statusText: "Success"
-            })
-        }
-
-        if (department && location) {
-
-            const doctors = await DoctorModel.find({ department, location });
 
             return NextResponse.json({
                 status: 200,
-                message: "Success",
-                data: doctors
+                message: "Doctors found",
+                doctors: doctors
             },
             {
-                status: 200,
-                statusText: "Success"
+                status: 200
             })
         }
-
-        return NextResponse.json({
-            status: 400,
-            message: "Bad request"
-        },
-        {
-            status: 400,
-            statusText: "Bad request"
-        })
-        
-        
     } catch (error) {
         console.log("Error in getDoctors: ", error);
         return NextResponse.json({
             status: 500,
-            message: "Internal server error"
+            message: "Internal server error",
+            error: error
         },
         {
             status: 500,

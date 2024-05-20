@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FAQ from '@/components/Faq';
+import Image from 'next/image';
 
 // Team Member Data
 const teamMembers = [
@@ -28,10 +29,10 @@ const teamMembers = [
   },
 ];
 
+
 const AboutUs: React.FC = () => {
   return (
     <>
-      <Header />
       <div className="min-h-screen bg-white flex flex-col items-center py-8">
         <div className="w-full bg-white p-8 rounded-lg shadow-md">
           <h1 className="text-4xl font-extrabold text-blue-900 mb-6 text-center">About Us</h1>
@@ -84,10 +85,12 @@ const AboutUs: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {teamMembers.map((member, index) => (
                 <div key={index} className="flex flex-col items-center bg-gray-100 p-4 rounded-lg">
-                  <img
+                  <Image
                     src={member.image}
                     alt={member.name}
                     className="w-40 h-40 rounded-full mb-4 object-cover"
+                    width={160}
+                    height={160}
                   />
                   <h3 className="text-xl font-semibold">{member.name}</h3>
                   <p className="text-gray-600">{member.role}</p>

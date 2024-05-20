@@ -21,38 +21,9 @@ function Navbar() {
     <div>
     <section className='navbar items-center justify-between'>
         <nav className='flex  gap-4 justify-between'>
-            <Link href="/" className=' cursor-pointer items-center gap- flex'>
-                <Image
-                    src="/icons/logo.png"
-                    alt='logo'
-                    width={34}
-                    height={34}
-                    className='size-[44px] max-xl:size-14'
-                />
-                <h1 className='navbar-logo'>
-                    Aarogya AI
-                </h1>
-            </Link>
+           
 
-            {navbarLinks.map((item) => {
-                const isActive = pathName === item.route || pathName.startsWith(`${item.route}/`)
-
-                return(
-                    <Link href={item.route} key={item.label} className={cn('navbar-link',{ 'bg-sky-500': isActive})}>
-                       <div className='relative size-6 '>
-                            <Image
-                                src={item.imgURL}
-                                alt={item.label}
-                                fill
-                                className={cn({'brightness-[3] invert-0': isActive})}
-                            />
-                       </div>
-                       <p className={cn('navbar-label', {'!text-white': isActive})}>
-                            {item.label}
-                       </p>
-                    </Link>
-                )
-            })}
+           
 
         {session ? (
             <Link href="/patient/profile">

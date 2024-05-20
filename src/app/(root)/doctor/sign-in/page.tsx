@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import FAQ from '@/components/Faq';
 import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 const DoctorSignIn: React.FC = () => {
   const router = useRouter();
@@ -29,13 +31,15 @@ const DoctorSignIn: React.FC = () => {
 
   return (
     <>
-      <Header />
+     
       <div className="min-h-screen flex">
         <div className="w-1/2 relative flex items-center justify-center bg-blue-50">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1584516150909-c43483ee7932?q=80&w=2024&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Sign In"
             className="rounded-l-lg w-2/3 bg-cover"
+            width={2024}
+            height={1518}
           />
         </div>
         <div className="w-full md:w-1/2 flex items-center justify-center bg-blue-50 p-8">
@@ -45,9 +49,9 @@ const DoctorSignIn: React.FC = () => {
               <p className="mt-2 text-center text-sm text-gray-600">
                 Or{' '}
                 <Link href="/doctor/sign-up">
-                  <button className="font-medium text-blue-600 hover:text-blue-500">
+                  <Button className="font-medium text-blue-600 hover:text-blue-500" variant="link">
                     sign up for a new account
-                  </button>
+                  </Button>
                 </Link>
               </p>
             </div>
@@ -67,7 +71,7 @@ const DoctorSignIn: React.FC = () => {
                 </div>
                 <div className="pb-4">
                   <label className="block text-sm font-medium text-gray-700">Password</label>
-                  <input
+                  <Input
                     type="password"
                     name="password"
                     value={formData.password}
@@ -80,7 +84,7 @@ const DoctorSignIn: React.FC = () => {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <input
+                  <Input
                     type="checkbox"
                     name="remember_me"
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
@@ -89,26 +93,25 @@ const DoctorSignIn: React.FC = () => {
                 </div>
                 <div className="text-sm">
                   <Link href="/forgot-password">
-                    <button className="font-medium text-blue-600 hover:text-blue-500">
+                    <Button className="font-medium text-blue-600 hover:text-blue-500" variant="link">
                       Forgot your password?
-                    </button>
+                    </Button>
                   </Link>
                 </div>
               </div>
               <div>
-                <button
+                <Button
                   type="submit"
                   className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   Sign In
-                </button>
+                </Button>
               </div>
             </form>
           </div>
         </div>
       </div>
-      <FAQ />
-      <Footer />
+      
     </>
   );
 };

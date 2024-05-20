@@ -4,6 +4,11 @@ import Header from '@/components/Header';
 import FAQ from '@/components/Faq';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import { signOut } from '@/auth';
+import { useSession } from 'next-auth/react';
+import { Doctor } from '@/models/Doctor';
 
 interface DoctorProfileProps {
   name: string;
@@ -33,6 +38,13 @@ const customDoctorData: DoctorProfileProps = {
   profileImage: 'https://via.placeholder.com/150', // Placeholder image URL
 };
 
+const fetchDoctorData = async (): Promise<DoctorProfileProps> => {
+  // Fetch doctor data from the backend API
+
+  
+  return customDoctorData;
+}
+
 const DoctorProfile: React.FC = () => {
   const {
     name,
@@ -48,23 +60,28 @@ const DoctorProfile: React.FC = () => {
     profileImage,
   } = customDoctorData;
 
+  const { data: session } = useSession();
+  const doctor = session?.user as Doctor
+
   return (
     <>
-      <Header />
+    
       <div className="min-h-screen bg-white py-4 flex items-center justify-center">
         <div className="w-full bg-white shadow-lg rounded-lg">
           <h2 className="text-3xl font-extrabold text-blue-900 mb-8 text-center">Doctor Profile</h2>
           <div className="flex flex-col md:flex-row items-start mt-8">
             <div className="md:w-1/5 flex flex-col items-center mb-8 md:mb-0">
-              <img
-                src={profileImage}
+              <Image
+                src={doctor?.image?.toString() || profileImage}
                 alt="Profile Image"
                 className="rounded-full mb-4 w-60 h-60 object-cover shadow-md"
+                width={150}
+                height={150}
               />
               <div className="text-center">
-                <h3 className="text-2xl font-semibold">{name}</h3>
-                <p className="text-gray-600 text-xl">{email}</p>
-                <p className="text-gray-600 text-xl">{phone}</p>
+                <h3 className="text-2xl font-semibold">{doctor?.name.toString() || "Your name"}</h3>
+                <p className="text-gray-600 text-xl">{doctor?.email.toString() || "Your Email"}</p>
+                <p className="text-gray-600 text-xl">{doctor?.phoneNumber?.toString() || "+91-1234567890"}</p>
               </div>
             </div>
             <div className="md:w-2/3 md:pl-8">
@@ -106,16 +123,22 @@ const DoctorProfile: React.FC = () => {
           </div>
           <div className='flex justify-center items-center gap-10 pt-10 pb-6'>
         <Link href="/doctor/profile/edit">
-        <button className='bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-3 rounded-xl'>Edit your profile</button>
+          <Button className='bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-3 rounded-xl'>Edit your profile</Button>
         </Link>
         <Link href='/doctor/patient-history'>
-        <button className='bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-3 rounded-xl'>View Patient history</button>
+          <Button className='bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-3 rounded-xl'>View Patient history</Button>
         </Link>
+        <Button className='bg-red-500 text-white rounded-xl hover:bg-red-700 px-12' variant="destructive" 
+        onClick={() => {
+          // Sign out logic here
+          signOut();
+        }}
+        >
+          Sign Out
+        </Button>
         </div>
         </div>
       </div>
-      <FAQ />
-      <Footer />
     </>
   );
 };

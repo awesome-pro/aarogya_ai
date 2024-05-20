@@ -11,6 +11,10 @@ export interface Doctor extends Document {
     hospital?: string;
     location: string;
     appointmentIds?: String[];
+    image?: string;
+    experience?: string;
+    consultationFee?: string;
+    availability?: string;
 }
 
 const DoctorSchema = new monggose.Schema<Doctor>({
@@ -26,7 +30,11 @@ const DoctorSchema = new monggose.Schema<Doctor>({
         {
             type: String,
         }
-    ]
+    ],
+    image: { type: String, required: false },
+    experience: { type: String, required: false },
+    consultationFee: { type: String, required: false },
+    availability: { type: String, required: false },
 });
 
 const DoctorModel = monggose.models && monggose.models.Doctor || monggose.model<Doctor>('Doctor', DoctorSchema);

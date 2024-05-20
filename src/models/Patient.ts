@@ -7,7 +7,7 @@ export interface Patient extends Document{
     name: string;
     email: string;
     password: string;
-    phoneNumber?: string;
+    phoneNumber?: number;
     age?: number;
     diseases?: string[];
     appointments?: Appointment[];

@@ -3,11 +3,11 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { Input } from "@/components/ui/input";
 import { Control, FieldPath } from 'react-hook-form';
 import * as z from "zod";
-import { authFormSchema } from '@/lib/utils';
+import { appointmentFormSchema } from '@/lib/utils';
 
-const formSchema = authFormSchema // Use the appropriate type
+const formSchema = appointmentFormSchema // Use the appropriate type
 
-interface CustomAuthInput {
+interface CustomAppointmentInput {
   control: Control<z.infer<typeof formSchema>>,
   name: FieldPath<z.infer<typeof formSchema>>,
   label: string,
@@ -17,7 +17,7 @@ interface CustomAuthInput {
   type: "email" | "password" | "text" | "number" | "tel" | "file" | "date",
 }
 
-function CustomAuthInput({ control, name, label, placeholder, description, disabled, type }: CustomAuthInput) {
+function CustomAppointmentInput({ control, name, label, placeholder, description, disabled, type }: CustomAppointmentInput) {
   return (
     <FormField
       control={control}
@@ -48,4 +48,4 @@ function CustomAuthInput({ control, name, label, placeholder, description, disab
   );
 }
 
-export default CustomAuthInput;
+export default CustomAppointmentInput;

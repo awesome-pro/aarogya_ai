@@ -63,3 +63,22 @@ export const patientFormSchema = z.object({
   diseases: z.array(z.string()),
 
 })
+
+export const appointmentFormSchema = z.object({
+  patientName: z.string().min(3),
+  patientEmail: z.string().email(),
+  patientPhoneNumber: z.number().min(6000000000).max(9999999999),
+  patientAddress: z.string(),
+  patientImage: z.string().optional(),
+  patientAge: z.number().min(0).optional(),
+  patientHeight: z.number().min(0).optional(),
+  patientWeight: z.number().min(0).optional(),
+  patientBloodGroup: z.string().optional(),
+  patientAllergies: z.array(z.string()).optional(),
+  patientMedications: z.array(z.string()).optional(),
+  patientBodyImage: z.string().optional(),
+  patientPrescriptionImage: z.string().optional(),
+  patientDiseases: z.array(z.string()).optional(),
+  doctorName: z.string().min(3),
+  doctorId: z.string().min(3),
+})

@@ -39,8 +39,8 @@ export async function GET( request: Request ){
 
         return Response.json({
             success: true,
-            departmentNames,
-            departmentIds
+            data: departmentNames,
+            departmentIds: departmentIds
         },
         {
             status: 200

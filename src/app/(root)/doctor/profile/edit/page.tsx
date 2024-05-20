@@ -1,9 +1,17 @@
 "use client";
+
+
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FAQ from '@/components/Faq';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import axios from 'axios';
+import { Doctor } from '@/models/Doctor';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 interface DoctorProfileProps {
   name: string;
@@ -33,8 +41,42 @@ const initialDoctorData: DoctorProfileProps = {
   profileImage: 'https://via.placeholder.com/150', // Placeholder image URL
 };
 
+
+
+
+
+
 const EditDoctorProfile: React.FC = () => {
-  const [doctorData, setDoctorData] = useState<DoctorProfileProps>(initialDoctorData);
+
+  const { data: sesssion } = useSession();
+  const doctor = sesssion?.user as Doctor
+
+  const [doctorData, setDoctorData] = useState<Doctor >(doctor);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+
+
+  const updateDoctorDetails = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      
+      const response = await axios.put(`/api/doctor/update-doctor-details?id=${doctor._id}`, doctorData);
+
+      if (response.status === 200) {
+        setSuccess(true);
+      } else {
+        setError('Failed to update doctor details');
+      }
+    } catch (error: any) {
+      setError(error.toString());
+    } finally {
+      setLoading(false);
+    }
+  }
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -54,18 +96,17 @@ const EditDoctorProfile: React.FC = () => {
   };
 
   const handleAddSpecialty = () => {
-    setDoctorData({
-      ...doctorData,
-      specialty: [...doctorData.specialty, ''],
-    });
+    setDoctorData((prevDoctorData) => ({
+      ...prevDoctorData,
+      specialty: [...(prevDoctorData?.specialty || []), ''],
+    }));
   };
 
   const handleRemoveSpecialty = (index: number) => {
-    const updatedSpecialties = doctorData.specialty.filter((_, i) => i !== index);
-    setDoctorData({
-      ...doctorData,
-      specialty: updatedSpecialties,
-    });
+    setDoctorData((prevDoctorData: Doctor) => ({
+      ...prevDoctorData,
+      specialty: prevDoctorData?.specialty?.filter((_, i) => i !== index) || [],
+    }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,17 +131,18 @@ const EditDoctorProfile: React.FC = () => {
 
   return (
     <>
-      <Header />
       <div className="min-h-screen bg-white py-4 flex items-center justify-center">
         <div className="w-full bg-white shadow-lg rounded-lg p-8">
           <h2 className="text-3xl font-extrabold text-blue-900 mb-8 text-center">Edit Doctor Profile</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex flex-col md:flex-row items-start">
               <div className="md:w-1/5 flex flex-col items-center mb-8 md:mb-0">
-                <img
-                  src={doctorData.profileImage}
+                <Image
+                  src={doctorData?.image || "/images/doctor-placeholder.jpg"}
                   alt="Profile Image"
                   className="rounded-full mb-4 w-40 h-40 object-cover shadow-md"
+                  width={150}
+                  height={150}
                 />
                 <input type="file" accept="image/*" onChange={handleImageChange} className="w-full p-2 border border-gray-300 rounded" />
               </div>
@@ -108,10 +150,10 @@ const EditDoctorProfile: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block font-bold text-xl mb-2">Name</label>
-                    <input
+                    <Input
                       type="text"
                       name="name"
-                      value={doctorData.name}
+                      value={doctorData?.name}
                       onChange={handleChange}
                       className="w-full p-2 border border-gray-300 rounded"
                     />
@@ -121,7 +163,7 @@ const EditDoctorProfile: React.FC = () => {
                     <input
                       type="email"
                       name="email"
-                      value={doctorData.email}
+                      value={doctor.email}
                       onChange={handleChange}
                       className="w-full p-2 border border-gray-300 rounded"
                     />
@@ -131,7 +173,7 @@ const EditDoctorProfile: React.FC = () => {
                     <input
                       type="text"
                       name="phone"
-                      value={doctorData.phone}
+                      value={doctor?.phoneNumber}
                       onChange={handleChange}
                       className="w-full p-2 border border-gray-300 rounded"
                     />
@@ -141,7 +183,7 @@ const EditDoctorProfile: React.FC = () => {
                     <input
                       type="text"
                       name="experience"
-                      value={doctorData.experience}
+                      value={doctorData?.experience}
                       onChange={handleChange}
                       className="w-full p-2 border border-gray-300 rounded"
                     />
@@ -151,7 +193,7 @@ const EditDoctorProfile: React.FC = () => {
                     <input
                       type="text"
                       name="clinicAddress"
-                      value={doctorData.clinicAddress}
+                      value={doctorData?.location}
                       onChange={handleChange}
                       className="w-full p-2 border border-gray-300 rounded"
                     />
@@ -161,7 +203,7 @@ const EditDoctorProfile: React.FC = () => {
                     <input
                       type="text"
                       name="consultationFee"
-                      value={doctorData.consultationFee}
+                      value={doctorData?.consultationFee}
                       onChange={handleChange}
                       className="w-full p-2 border border-gray-300 rounded"
                     />
@@ -171,7 +213,7 @@ const EditDoctorProfile: React.FC = () => {
                     <input
                       type="text"
                       name="availability"
-                      value={doctorData.availability}
+                      value={doctorData?.availability}
                       onChange={handleChange}
                       className="w-full p-2 border border-gray-300 rounded"
                     />
@@ -181,7 +223,7 @@ const EditDoctorProfile: React.FC = () => {
                     <input
                       type="text"
                       name="qualifications"
-                      value={doctorData.qualifications}
+                      value={doctorData?.experience}
                       onChange={handleChange}
                       className="w-full p-2 border border-gray-300 rounded"
                     />
@@ -190,48 +232,49 @@ const EditDoctorProfile: React.FC = () => {
                     <label className="block font-bold text-xl mb-2">Bio</label>
                     <textarea
                       name="bio"
-                      value={doctorData.bio}
+                      value={doctorData?.bio}
                       onChange={handleChange}
                       className="w-full p-2 border border-gray-300 rounded"
                     />
                   </div>
                   <div className="md:col-span-2">
                     <label className="block font-bold text-xl mb-2">Specialty</label>
-                    {doctorData.specialty.map((spec, index) => (
+                    {doctorData?.specialty && doctorData.specialty.map((spec, index) => (
                       <div key={index} className="flex items-center mb-2">
-                        <input
+                        <Input
                           type="text"
                           value={spec}
                           onChange={(e) => handleSpecialtyChange(index, e.target.value)}
                           className="w-full p-2 border border-gray-300 rounded"
                         />
-                        <button
-                          type="button"
+                        <Button
+                          variant={'destructive'}
                           onClick={() => handleRemoveSpecialty(index)}
                           className="ml-2 text-red-500 font-bold"
                         >
                           Remove
-                        </button>
+                        </Button>
                       </div>
                     ))}
-                    <button
-                      type="button"
+                    <Button
+                      variant={'outline'}
                       onClick={handleAddSpecialty}
                       className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-2 rounded"
                     >
                       Add Specialty
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
             </div>
             <div className="text-center">
-              <button
+              <Button
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-xl"
+                onClick={updateDoctorDetails}
               >
                 Save Changes
-              </button>
+              </Button>
             </div>
           </form>
         </div>

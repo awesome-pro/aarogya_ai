@@ -1,5 +1,7 @@
 "use client";
-import React from 'react';
+
+
+import React, { useCallback, useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import FAQ from '@/components/Faq';
 import Footer from '@/components/Footer';
@@ -9,6 +11,10 @@ import Image from 'next/image';
 import { signOut } from '@/auth';
 import { useSession } from 'next-auth/react';
 import { Doctor } from '@/models/Doctor';
+import axios from 'axios';
+import { set } from 'mongoose';
+import { FaExclamationTriangle } from 'react-icons/fa';
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
 
 interface DoctorProfileProps {
   name: string;
@@ -38,12 +44,6 @@ const customDoctorData: DoctorProfileProps = {
   profileImage: 'https://via.placeholder.com/150', // Placeholder image URL
 };
 
-const fetchDoctorData = async (): Promise<DoctorProfileProps> => {
-  // Fetch doctor data from the backend API
-
-  
-  return customDoctorData;
-}
 
 const DoctorProfile: React.FC = () => {
   const {
@@ -60,13 +60,74 @@ const DoctorProfile: React.FC = () => {
     profileImage,
   } = customDoctorData;
 
+  const [doctorData, setDoctorData] = useState<Doctor | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  
   const { data: session } = useSession();
   const doctor = session?.user as Doctor
 
-  return (
-    <>
+
+
+  const fetchDoctorData = useCallback(async () => {
     
-      <div className="min-h-screen bg-white py-4 flex items-center justify-center">
+      // Fetch doctor data from the backend API
+  
+      setLoading(true);
+      setError(null);
+      try {
+  
+        const response = await axios.get(`/api/doctor/get-doctor-details?id=${doctor?._id}`);
+  
+        if (response.status !== 200) {
+          throw new Error('Failed to fetch doctor data');
+        }
+  
+        const doctorData = response.data.doctor as Doctor;
+        
+        setDoctorData(doctorData);
+  
+        return doctorData;
+        
+      } catch (error) {
+  
+         setError(error?.toString() || 'Failed to fetch doctor data');
+      }finally{
+        setLoading(false);
+      }
+  
+      return doctor;
+    
+  }, [doctor])
+
+
+useEffect(() => {
+
+    fetchDoctorData();
+
+  }, [fetchDoctorData]);
+
+  return (
+    
+    <>
+
+    {
+      loading && (
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-2xl font-semibold text-blue-900">Loading...</p>
+        </div>
+      )
+    }
+
+    {
+      error ? (
+        <div className="flex items-center justify-center bg-red-300 p-10 rounded-lg w-full">
+          <ExclamationTriangleIcon className="w-15 h-15 text-red-600 " />
+          <p className="text-2xl font-semibold text-red-600">{error}</p>
+        </div>
+      ) : (
+        <>
+         <div className="min-h-screen bg-white py-4 flex items-center justify-center">
         <div className="w-full bg-white shadow-lg rounded-lg">
           <h2 className="text-3xl font-extrabold text-blue-900 mb-8 text-center">Doctor Profile</h2>
           <div className="flex flex-col md:flex-row items-start mt-8">
@@ -89,34 +150,34 @@ const DoctorProfile: React.FC = () => {
                 <div>
                   <h4 className="font-bold text-xl">Specialty</h4>
                   <ul className="list-disc list-inside ml-4 text-gray-800 text-lg font-medium">
-                    {specialty.map((spec, index) => (
+                    {doctorData?.speciality?.map((spec, index) => (
                       <li key={index}>{spec}</li>
                     ))}
                   </ul>
                 </div>
                 <div>
                   <h4 className="font-bold text-xl">Experience</h4>
-                  <p className="text-gray-800 text-lg font-medium">{experience}</p>
+                  <p className="text-gray-800 text-lg font-medium">{doctorData?.experience || ""}</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-xl">Clinic Address</h4>
-                  <p className="text-gray-800 text-lg font-medium">{clinicAddress}</p>
+                  <p className="text-gray-800 text-lg font-medium">{doctorData?.location || ""}</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-xl">Consultation Fee</h4>
-                  <p className="text-gray-800 text-lg font-medium">{consultationFee}</p>
+                  <p className="text-gray-800 text-lg font-medium">{doctorData?.consultationFee || ""}</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-xl">Availability</h4>
-                  <p className="text-gray-800 text-lg font-medium">{availability}</p>
+                  <p className="text-gray-800 text-lg font-medium">{doctorData?.availability}</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-xl">Qualifications</h4>
-                  <p className="text-gray-800 text-lg font-medium">{qualifications}</p>
+                  <p className="text-gray-800 text-lg font-medium">{doctorData?.experience}</p>
                 </div>
                 <div className="md:col-span-2">
                   <h4 className="font-bold text-xl">Bio</h4>
-                  <p className="text-gray-800 text-lg font-medium">{bio}</p>
+                  <p className="text-gray-800 text-lg font-medium">{doctorData?.bio}</p>
                 </div>
               </div>
             </div>
@@ -139,6 +200,11 @@ const DoctorProfile: React.FC = () => {
         </div>
         </div>
       </div>
+        </>
+      )
+    }
+    
+     
     </>
   );
 };

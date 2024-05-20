@@ -7,13 +7,13 @@ import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import FAQ from '@/components/Faq';
+import { Button } from '@/components/ui/button';
 
 const Confirmation: React.FC = () => {
   const router = useRouter();
 
   return (
     <div>
-      <Header />
       <div className="min-h-screen bg-blue-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="p-6 rounded-lg text-center">
@@ -26,11 +26,16 @@ const Confirmation: React.FC = () => {
             >
               Go to Homepage
             </button>
+            <br />
+            <Button
+              className='bg-sky-500 text-white font-bold px-3 py-5 rounded-xl mt-4 w-full hover:bg-sky-400 hover:text-white'
+              onClick={() => router.back() }
+            >
+              Book More Appointment
+            </Button>
           </div>
         </div>
       </div>
-      <FAQ />
-      <Footer />
     </div>
   );
 };

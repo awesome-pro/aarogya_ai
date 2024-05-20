@@ -63,10 +63,7 @@ const Book: React.FC = () => {
 
   return (
     <div>
-      <Head>
-        <title>Book a Free Clinic Visit</title>
-      </Head>
-      <Header />
+    
       <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl w-full bg-white p-8 rounded-lg shadow-xl transition duration-500 ease-in-out transform hover:scale-105">
           <div className="text-center">

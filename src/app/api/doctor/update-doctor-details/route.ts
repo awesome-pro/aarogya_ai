@@ -10,6 +10,7 @@ export async function PUT(req: NextRequest) {
     const { searchParams } = new URL(req.url)
 
     const id = searchParams.get('id');
+    
 
     await dbConnect();
 

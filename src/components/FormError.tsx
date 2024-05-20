@@ -1,5 +1,4 @@
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
 
 
 interface FormErrorProps {
@@ -12,9 +11,9 @@ export const FormError = ({
     if(!message) return null
 
     return (
-        <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive">
-            
-            <p>{message}</p>
+        <div className="bg-red-200 p-3 rounded-md flex items-center justify-center gap-x-2 text-sm text-red-600">
+            <ExclamationTriangleIcon className="h-10 w-10"/>
+            <p className="font-bold text-xl">{message}</p>
         </div>
     )
 }

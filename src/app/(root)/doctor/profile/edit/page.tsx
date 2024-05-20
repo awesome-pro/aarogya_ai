@@ -1,84 +1,171 @@
 "use client";
 
 
-import React, { useState } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import FAQ from '@/components/Faq';
+import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import axios from 'axios';
 import { Doctor } from '@/models/Doctor';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-
-interface DoctorProfileProps {
-  name: string;
-  email: string;
-  phone: string;
-  specialty: string[];
-  experience: string;
-  clinicAddress: string;
-  consultationFee: string;
-  availability: string;
-  qualifications: string;
-  bio: string;
-  profileImage: string; // URL or base64 string
-}
-
-const initialDoctorData: DoctorProfileProps = {
-  name: 'Dr. John Doe',
-  email: 'johndoe@example.com',
-  phone: '+1234567890',
-  specialty: ['Cardiology', 'General Medicine'],
-  experience: '15 years',
-  clinicAddress: '123 Main St, Springfield, IL',
-  consultationFee: '$200',
-  availability: 'Mon-Fri, 9am-5pm',
-  qualifications: 'MD, PhD in Cardiology',
-  bio: 'Dr. John Doe is a highly experienced cardiologist with over 15 years of practice. He specializes in treating heart conditions and providing general medical care.',
-  profileImage: 'https://via.placeholder.com/150', // Placeholder image URL
-};
-
-
-
-
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Divide, Loader2 } from 'lucide-react'
+import { sign } from 'crypto'
+import { useRouter } from 'next/navigation'
+import { doctorFormSchema } from '@/lib/utils'
+import CustomDoctorInput from '@/components/CustomDoctorInput'
+import { set } from 'mongoose'
+import { FormError } from '@/components/FormError'
+import { FormSuccess } from '@/components/FormSuccess'
+import { useToast } from '@/components/ui/use-toast';
+import * as z from 'zod';
 
 
 const EditDoctorProfile: React.FC = () => {
 
-  const { data: sesssion } = useSession();
-  const doctor = sesssion?.user as Doctor
+  const { data: session } = useSession();
+  const doctor = session?.user as Doctor
 
   const [doctorData, setDoctorData] = useState<Doctor >(doctor);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(true);
+  const { toast } = useToast();
+
+  const router = useRouter()
 
 
-  const updateDoctorDetails = async () => {
+  const formSchema = doctorFormSchema;
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: doctor?.name || '',
+      email: doctor?.email || '',
+      department: '',
+      description: '',
+      phoneNumber:  doctor?.phoneNumber || 0,
+      location: '',
+      image: doctor?.image || '',
+      experience: '',
+      consultationFee: 0,
+      availability: '',
+      bio: '',
+      specialty: [],
+    }
+  });
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
     setError(null);
+    setSuccess(false);
+    setDisabled(true);
 
     try {
-      
-      const response = await axios.put(`/api/doctor/update-doctor-details?id=${doctor._id}`, doctorData);
+      const response = await axios.put(`/api/doctor/update-doctor-details?id=${doctor._id}`, data);
 
       if (response.status === 200) {
         setSuccess(true);
+        toast({
+          title: 'Doctor details updated successfully',
+          variant: 'success',
+          description: 'Your doctor profile has been updated successfully',
+        });
       } else {
         setError('Failed to update doctor details');
+        toast({
+          title: 'Failed to update doctor details',
+          variant: 'destructive',
+          description: 'An error occurred while updating your doctor profile. Please try again later.',
+        });
       }
     } catch (error: any) {
       setError(error.toString());
+      toast({
+        title: 'Failed to update doctor details',
+        variant: 'destructive',
+        description: 'An error occurred while updating your doctor profile. Please try again later.',
+      });
     } finally {
       setLoading(false);
+      setDisabled(false);
     }
+  };
+
+
+  const handleSignOut = () => {
+
+    if(session && session.user){
+      console.log('Signing out user:', session.user);
+      signOut();
+    } 
+
+    toast({
+      title: 'Signed out successfully',
+      variant: 'success',
+      description: 'You have been signed out successfully',
+    });
+
+    router.push('/');
   }
 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+
+  const fetchDoctorData = useCallback(async () => {
+    
+    // Fetch doctor data from the backend API
+
+    setLoading(true);
+    setError('');
+    try {
+
+      const response = await axios.get(`/api/doctor/get-doctor-details?id=${doctor?._id}`);
+
+      if (response.status !== 200) {
+        throw new Error('Failed to fetch doctor data');
+      }
+
+      const doctorData = response.data.doctor as Doctor;
+      
+      setDoctorData(doctorData);
+
+      return doctorData;
+      
+    } catch (error) {
+
+       setError(error?.toString() || 'Failed to fetch doctor data');
+    }finally{
+      setLoading(false);
+    }
+
+    return doctor;
+  
+}, [doctor])
+
+
+useEffect(() => {
+  if (!session || !session.user) return;
+
+    fetchDoctorData();
+
+}, [session, fetchDoctorData]);
+
+
+
+
+ /* const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setDoctorData({
       ...doctorData,
@@ -129,158 +216,197 @@ const EditDoctorProfile: React.FC = () => {
     console.log('Updated doctor data:', doctorData);
   };
 
+  */
+
   return (
     <>
       <div className="min-h-screen bg-white py-4 flex items-center justify-center">
         <div className="w-full bg-white shadow-lg rounded-lg p-8">
           <h2 className="text-3xl font-extrabold text-blue-900 mb-8 text-center">Edit Doctor Profile</h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="flex flex-col md:flex-row items-start">
-              <div className="md:w-1/5 flex flex-col items-center mb-8 md:mb-0">
-                <Image
-                  src={doctorData?.image || "/images/doctor-placeholder.jpg"}
-                  alt="Profile Image"
-                  className="rounded-full mb-4 w-40 h-40 object-cover shadow-md"
-                  width={150}
-                  height={150}
-                />
-                <input type="file" accept="image/*" onChange={handleImageChange} className="w-full p-2 border border-gray-300 rounded" />
-              </div>
-              <div className="md:w-4/5 md:pl-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block font-bold text-xl mb-2">Name</label>
-                    <Input
-                      type="text"
-                      name="name"
-                      value={doctorData?.name}
-                      onChange={handleChange}
-                      className="w-full p-2 border border-gray-300 rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-xl mb-2">Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={doctor.email}
-                      onChange={handleChange}
-                      className="w-full p-2 border border-gray-300 rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-xl mb-2">Phone</label>
-                    <input
-                      type="text"
-                      name="phone"
-                      value={doctor?.phoneNumber}
-                      onChange={handleChange}
-                      className="w-full p-2 border border-gray-300 rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-xl mb-2">Experience</label>
-                    <input
-                      type="text"
-                      name="experience"
-                      value={doctorData?.experience}
-                      onChange={handleChange}
-                      className="w-full p-2 border border-gray-300 rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-xl mb-2">Clinic Address</label>
-                    <input
-                      type="text"
-                      name="clinicAddress"
-                      value={doctorData?.location}
-                      onChange={handleChange}
-                      className="w-full p-2 border border-gray-300 rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-xl mb-2">Consultation Fee</label>
-                    <input
-                      type="text"
-                      name="consultationFee"
-                      value={doctorData?.consultationFee}
-                      onChange={handleChange}
-                      className="w-full p-2 border border-gray-300 rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-xl mb-2">Availability</label>
-                    <input
-                      type="text"
-                      name="availability"
-                      value={doctorData?.availability}
-                      onChange={handleChange}
-                      className="w-full p-2 border border-gray-300 rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold text-xl mb-2">Qualifications</label>
-                    <input
-                      type="text"
-                      name="qualifications"
-                      value={doctorData?.experience}
-                      onChange={handleChange}
-                      className="w-full p-2 border border-gray-300 rounded"
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="block font-bold text-xl mb-2">Bio</label>
-                    <textarea
-                      name="bio"
-                      value={doctorData?.bio}
-                      onChange={handleChange}
-                      className="w-full p-2 border border-gray-300 rounded"
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="block font-bold text-xl mb-2">Specialty</label>
-                    {doctorData?.specialty && doctorData.specialty.map((spec, index) => (
-                      <div key={index} className="flex items-center mb-2">
-                        <Input
-                          type="text"
-                          value={spec}
-                          onChange={(e) => handleSpecialtyChange(index, e.target.value)}
-                          className="w-full p-2 border border-gray-300 rounded"
-                        />
-                        <Button
-                          variant={'destructive'}
-                          onClick={() => handleRemoveSpecialty(index)}
-                          className="ml-2 text-red-500 font-bold"
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    ))}
-                    <Button
-                      variant={'outline'}
-                      onClick={handleAddSpecialty}
-                      className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-2 rounded"
-                    >
-                      Add Specialty
-                    </Button>
-                  </div>
+
+          { error && (
+           <FormError message={error} />
+            )
+          }
+
+          {success && (
+            <FormSuccess message="Doctor details updated successfully" />
+          )}
+
+          <Form {...form} >
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+              <div className='flex flex-col md:flex-row items-start'>
+
+                <div className="md:w-1/5 flex flex-col items-center mb-8 md:mb-0">
+                  <Image
+                    src={doctorData?.image || "/icons/doctor-placeholder.png"}
+                    alt="Profile Image"
+                    className="rounded-full mb-4 w-40 h-40 object-cover shadow-md"
+                    width={150}
+                    height={150}
+                  />
+                  <CustomDoctorInput
+                    control={form.control}
+                    name='image'
+                    label='Image'
+                    placeholder='Update your image'
+                    description='Update your image'
+                    type='file'
+                    disabled={disabled}
+                  />
                 </div>
               </div>
-            </div>
-            <div className="text-center">
-              <Button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-xl"
-                onClick={updateDoctorDetails}
+
+              <div className="md:w-4/5 md:pl-8">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='name'
+                      label='Name'
+                      placeholder='Enter your name'
+                      description='Enter your full name'
+                      type='text'
+                      disabled={disabled}
+                    />
+
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='email'
+                      label='Email'
+                      placeholder='Enter your email'
+                      description='Enter your email address'
+                      type='email'
+                      disabled={disabled}
+                    />
+
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='department'
+                      label='Department'
+                      placeholder='Enter your department'
+                      description='Enter your department'
+                      type='text'
+                      disabled={disabled}
+                    />
+
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='description'
+                      label='Description'
+                      placeholder='Enter your description'
+                      description='Enter your description'
+                      type='text'
+                      disabled={disabled}
+                    />
+
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='phoneNumber'
+                      label='Phone Number'
+                      placeholder='Enter your phone number'
+                      description='Enter your phone number'
+                      type='number'
+                      disabled={disabled}
+                    />
+
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='location'
+                      label='Location'
+                      placeholder='Enter your address'
+                      description='Enter your address'
+                      type='text'
+                      disabled={disabled}
+                    />
+
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='image'
+                      label='Image'
+                      placeholder='Enter your image'
+                      description='Enter your image'
+                      type='file'
+                      disabled={disabled}
+                    />
+
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='experience'
+                      label='Experience'
+                      placeholder='Enter your experience'
+                      description='Enter your experience'
+                      type='text'
+                      disabled={disabled}
+                    />
+
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='consultationFee'
+                      label='Consultation Fee'
+                      placeholder='Enter your consultation fee'
+                      description='Enter your consultation fee'
+                      type='number'
+                      disabled={disabled}
+                    />
+
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='availability'
+                      label='Availability'
+                      placeholder='Enter your availability'
+                      description='Enter your availability'
+                      type='text'
+                      disabled={disabled}
+
+                    />
+
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='bio'
+                      label='Bio'
+                      placeholder='Enter your bio'
+                      description='Enter your bio'
+                      type='text'
+                      disabled={disabled}
+
+                    />
+
+                    <CustomDoctorInput
+                      control={form.control}
+                      name='specialty'
+                      label='Specialty'
+                      placeholder='Enter your specialty'
+                      description='Enter your specialty'
+                      type='text'
+                      disabled={disabled}
+                    />
+              
+                 </div>
+              </div>
+
+              <Button 
+                type='submit'
+                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full my-4 w-32'
+                disabled={loading}
+                variant={'secondary'}
               >
-                Save Changes
+                Submit
               </Button>
-            </div>
-          </form>
+            </form>
+          </Form>
+
+
+          <Button 
+            className='bg-red-500 hover:bg-red-700 text-white font-inter py-2 px-4 rounded-full my-4 w-32'
+            onClick={handleSignOut}
+            variant={'secondary'}
+          >
+            Sign Out
+          </Button>
+          
         </div>
       </div>
-      <FAQ />
-      <Footer />
+    
     </>
   );
 };

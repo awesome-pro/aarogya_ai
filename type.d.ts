@@ -12,6 +12,7 @@ declare module "next-auth" {
         _id?: string
         name?: string
         email: string
+        phoneNumber?: number
     }
     /**
      * The shape of the account object returned in the OAuth providers' `account` callback,
@@ -27,7 +28,7 @@ declare module "next-auth" {
             _id?: string
             name?: string
             email: string
-            isVerified?: boolean
+            phoneNumber?: number
         } & DefaultSession['user']
         
     }
@@ -42,7 +43,7 @@ declare module "next-auth" {
       /** OpenID ID Token */
       idToken?: string
       _id?: string
-      isVerified?: boolean
+      email: string
       name?: string
     }
   }

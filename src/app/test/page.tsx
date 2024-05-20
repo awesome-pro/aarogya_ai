@@ -2,12 +2,16 @@ import Navbar from '@/components/Navbar'
 import React from 'react'
 
 function Test() {
-  return (
-    <div>
-        <h1>Test</h1>
 
-        <Navbar/>
-    </div>
+  const patient = {
+    name: 'John Doe',
+    age: 25,
+    email: 'abhi@gmail.com'
+  }
+  return (
+    
+        <div>Test</div>
+  
   )
 }
 

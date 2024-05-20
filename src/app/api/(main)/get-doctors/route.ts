@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import DoctorModel from "@/models/Doctor";
+import DoctorModel, { Doctor } from "@/models/Doctor";
 import PatientModel from "@/models/Patient";
 import DepartmentModel from "@/models/utils/Department";
 import DiseaseModel from "@/models/Disease";
@@ -10,89 +10,110 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url, "http://localhost:3000");
-    const { department, disease, location, patientId, specialty } = Object.fromEntries(searchParams);
-    console.log(department, disease, location, patientId, searchParams, specialty);
+    const { department, disease, location, specialty } = Object.fromEntries(searchParams);
+    console.log(department, disease, location, searchParams, specialty);
 
     await dbConnect();
+    console.log("Connected to DB")
 
     try {
-        
-        let doctorsQuery = [];
+        const departmentList = <String[]>[];
+        departmentList.push(department);
+        console.log("departmentList: ", departmentList)
 
-        if(department || location){
-            doctorsQuery.push(
+        let doctors = new Set<Doctor>();
+
+        console.log("doctors: ", doctors)
+
+        if(disease != undefined || disease != null){
+            const diseaseData = await DiseaseModel.find(
                 {
-                    $or: {
-                        department: department,
-                        location: location
-                    }
+                    name: disease
                 }
             )
-        }
-        console.log("Doctors query1: ", doctorsQuery);
 
-        // If disease is provided, find doctors based on disease specialty and departmen
-        if(disease || specialty){
-            const diseaseDetails = await DiseaseModel.findOne({ diseaseName: disease }).exec();
-            console.log("Disease details: ", diseaseDetails);
+           // console.log("diseaseData: ", diseaseData)
 
-            if(diseaseDetails){
-                doctorsQuery.push(
+            if(diseaseData != undefined && diseaseData != null && diseaseData.length > 0){
+
+                const departmentsByDisease = diseaseData[0].departments;
+                console.log("departmentsByDisease: ", departmentsByDisease)
+
+                const doctorsByDisease = await DoctorModel.find(
                     {
-                        $or: [
-                            {
-                                specialty: diseaseDetails.specialty
-                            },
-                            {
-                                department: {
-                                    $in: diseaseDetails.department
-                                }
-                            }
-                        ]
+                        department: { $in: departmentsByDisease }
                     }
                 )
+
+                console.log("doctorsByDisease: ", doctorsByDisease)
+
+                if(doctorsByDisease) {
+                    doctorsByDisease.forEach(doctor => {
+                        doctors.add(doctor)
+                    })
+                }
+
             }
-            console.log("Doctors query2: ", doctorsQuery);
+            
+            console.log("departmentByDisease Not Found :(")
 
-            // Combine all conditions with $or operator
-            let doctors = await DoctorModel.find(
-                doctorsQuery.length ? { $or: doctorsQuery } : {} as any
-            )
-            console.log("Doctors: ", doctors);
+        }
 
-            if(doctors.length === 0 || !doctors){
-                console.log("No doctors found");
+       
 
-                return NextResponse.json({
-                    status: 404,
-                    message: "No doctors found"
-                },
+        if(department || location || specialty) {
+            const doctorsByParams = await DoctorModel.find(
                 {
-                    status: 404
+                    $or: [
+                        { department: department },
+                        { speciality: specialty },
+                        { location: location }
+                    ]
+                }
+            )
+
+            console.log("doctorsByParams: ", doctorsByParams)
+
+            if(doctorsByParams) {
+                doctorsByParams.forEach(doctor => {
+                    doctors.add(doctor)
                 })
             }
 
-
-            return NextResponse.json({
-                status: 200,
-                message: "Doctors found",
-                doctors: doctors
-            },
-            {
-                status: 200
-            })
         }
-    } catch (error) {
-        console.log("Error in getDoctors: ", error);
+        
+
+        if(doctors.size === 0 && !doctors) {
+            return NextResponse.json({
+                status: "error",
+                message: "No doctors found"
+            
+            }, 
+            { status: 504 });
+        }
+
+        console.log("final doctors: ", Array.from(doctors))
+
         return NextResponse.json({
-            status: 500,
-            message: "Internal server error",
+            status: "success",
+            doctors: Array.from(doctors)
+        },
+        { status: 200 }
+        );
+
+        
+        
+    } catch (error) {
+        console.log("Error in get-doctors route: ", error);
+        return NextResponse.json({
+            status: "error",
+            message: "Error in get-doctors route",
             error: error
         },
-        {
-            status: 500,
-            statusText: "Internal server error"
-        })
+        { status: 500 }
+        );
     }
+
+    
   
 }

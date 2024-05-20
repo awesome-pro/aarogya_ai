@@ -5,6 +5,11 @@ import Image from"next/image";
 import Header from "@/components/Header";
 import FAQ from "@/components/Faq";
 import Footer from "@/components/Footer";
+
+import { faSearch, faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Dropdown from "@/components/Dropdown";
+
 export default function Fleets(){
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -127,6 +132,22 @@ export default function Fleets(){
   const indexOfFirstCard = indexOfLastCard - 4;
   const currentCards = cardData.slice(indexOfFirstCard, indexOfLastCard);
 
+  const [isDropDown , setIsDropDown ] = useState(false);
+
+  const [query, setQuery] = useState('');
+  const [location, setLocation] = useState('');
+  const [doctorHospital, setDoctorHospital] = useState('');
+
+  const handleVoiceSearch = () => {
+    const recognition = new (window as any).webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setQuery(transcript);
+    };
+    recognition.start();
+  };
+
     return(
         <>
         <Header />
@@ -248,14 +269,14 @@ export default function Fleets(){
        <div className="upper absolute top-32 left-52">
         <div className="flex">
         <input className="location" placeholder="Set your location"></input>
-        <input className="docterhospital" placeholder="Ex.Docter,Hospital"></input>
+        <input className="docterhospital" placeholder="Ex.Docter,Hospital"></input> 
       <button className="searchbtn">Search</button>
         </div>
        </div>
        <br></br>
 
         <div className="container">
-            <h3 className="font-semibold mb-1 text-black text-3xl mt-10">{'Doctors available in Andheri west'}</h3>
+            <h3 className="font-semibold mb-1 text-black text-3xl mt-10">Doctors available in <span className="text-red-600">Andheri west</span></h3>
             <h2 className="text-gray-500">Book appointments with minimum wait-time & verified doctor details</h2>
 
 <div className="container flex items-center justify-center flex-col gap-6 mt-10">
@@ -287,12 +308,15 @@ export default function Fleets(){
               <div className="flex">
                 <p className="text-gray-500">Consultation fee at clinic</p>
                 <div className="bookingbox">
-                  <b className="text-green-500">{card.availability}</b>
-                  <button className="btn">Book FREE Clinic Visit</button>
+                  <b className="text-green-500 pb-4">{card.availability}</b>
+                  <button className="btn" onClick={() => setIsDropDown(!isDropDown)}>Book FREE Clinic Visit</button>
                 </div>
               </div>
               <br />
               <hr />
+              {isDropDown ?
+              <Dropdown />  : " "
+              }
             </span>
           </div>
         ))}

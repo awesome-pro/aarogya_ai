@@ -8,16 +8,18 @@ export async function POST( request: NextRequest ){
 
     await dbConnect();
     console.log("Request: ", request.body)
-    const { diseaseName, symptoms, departments, specialty } =  await request.json();
-    console.log("Disease Name: ", diseaseName)
+    const { name, symptoms, departments, specialty } =  await request.json();
+    console.log("Disease Name: ", name)
     console.log("Symptoms: ", symptoms)
     console.log("Departments: ", departments)
     console.log("Specialty: ", specialty)
 
     try {
+
+      
        
         const existingDisease = await DiseaseModel.findOne({
-            diseaseName: diseaseName
+            name: name
         }); 
 
         if(existingDisease){
@@ -31,7 +33,7 @@ export async function POST( request: NextRequest ){
         }
 
         const disease = new DiseaseModel({
-            diseaseName: diseaseName,
+            name: name,
             symptoms: symptoms,
             departments: departments,
             specialty: specialty

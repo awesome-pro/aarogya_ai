@@ -5,12 +5,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 
-export async function GET(request: NextRequest){
+export async function GET(request: Request){
 
     await dbConnect();
 
     try {
-        const diseases = await DiseaseModel.find({}, { diseaseName: 1, _id: 0 });
+        const diseases = await DiseaseModel.find({});
     
         console.log("Diseases: ", diseases);
     
@@ -26,14 +26,13 @@ export async function GET(request: NextRequest){
             });
         }
 
-        const diseaseNames = diseases.map(disease => disease.diseaseName);
+        const diseaseNames = diseases.map(disease => disease.name);
         console.log("Disease Names: ", diseaseNames)
         return NextResponse.json({
             success: true,
             message: "Diseases fetched successfully",
-            data: diseaseNames,
-            count: diseaseNames.length,
-            data2: diseases
+            data: diseases,
+            diseaseNames: diseaseNames
         });
 
     } catch (error) {

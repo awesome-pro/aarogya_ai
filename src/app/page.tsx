@@ -8,6 +8,7 @@ import { FormSuccess } from "@/components/FormSuccess";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
 import { Disease } from "@/models/Disease";
+import { Doctor } from "@/models/Doctor";
 import { Department } from "@/models/utils/Department";
 import { faArrowLeft, faArrowRight, faCheckCircle, faHandHolding, faHandHoldingHeart, faHospital, faUserDoctor, faVialVirus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -34,20 +35,35 @@ const EntityBox = ({ name, photoUrl }: {
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndex2, setCurrentIndex2] = useState(0);
-  const [departmentData, setDepartmentData] = useState<Department[]>([]);
-  const [loading, setLoading] = useState(true);
+  
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  
+  const [search, setSearch] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const [departmentData, setDepartmentData] = useState<Department[]>([]);
   const [diseaseData, setDiseaseData] = useState<Disease[]>([]);
+  const [doctorData, setDoctorData] = useState<Doctor[]>([]);
+  const [locationData, setLocationData] = useState<String[]>([]);
 
 
 
+  
   const fetchDepartments = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch("/api/get-all-departments");
-      const data = await response.json();
+      const data = await response.json()
       setDepartmentData(data.departments);
+
+      if(data.departments.length === 0){
+        setErrorMessage("No departments found");
+      }
+
+      setSuccessMessage("Departments fetched successfully");
       
     } catch (error) {
       setError(true);
@@ -61,9 +77,9 @@ export default function Home() {
   const fetchDiseases = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/get-all-diseases");
+      const response = await fetch("/api/get-all-disease")
       const data = await response.json();
-      setDiseaseData(data.data2);
+      setDiseaseData(data.data);
       
     } catch (error) {
       setError(true);
@@ -74,6 +90,21 @@ export default function Home() {
   }
   , [setDiseaseData]);
 
+
+  const fetchLocations = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/get-all-locations")
+      const data = await response.json();
+      setLocationData(data.data);
+      
+    } catch (error) {
+      setError(true);
+      console.error(error);
+    } finally{
+      setLoading(false);
+    }
+  }, [setLocationData]);
 
 
   useEffect(() => {
@@ -151,6 +182,16 @@ export default function Home() {
     <>
 
    {/* <FormError message={departmentData.length === 0 ? "No departments found" : ""} /> */}
+
+   {
+    errorMessage &&
+    <FormError message={errorMessage} />
+   }
+
+   {
+    successMessage &&
+    <FormSuccess message={successMessage} />
+   }
     <div className="bg-blue-100">
     <div className='pt-20 max-w-screen-xl flex relative flex-col justify-center items-center bg-blue-100 ml-40'>
 

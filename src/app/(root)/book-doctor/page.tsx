@@ -134,6 +134,7 @@ function BookAppointment() {
                 }
                 <Form {...form} >
                     <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
+                        
                             <CustomAppointmentInput
                                 control={form.control}
                                 name='patientName'

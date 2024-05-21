@@ -3,7 +3,7 @@ import DoctorModel from "@/models/Doctor";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET( request: NextRequest ){
+export async function GET( request: Request ){
 
     await dbConnect();
 

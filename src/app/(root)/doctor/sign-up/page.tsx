@@ -95,8 +95,10 @@ const DoctorSignup: React.FC = () => {
     try {
       const response = await fetch('/api/doctor/signup', {
         method: 'POST',
-        body: formDataObj,
+        body: JSON.stringify({formDataObj}),
       });
+
+      console.log(formDataObj);
 
       if (response.ok) {
         router.push('/doctor/profile');

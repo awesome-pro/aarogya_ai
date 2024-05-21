@@ -23,7 +23,7 @@ const Dropdown = () => {
         }
     ]
     return (
-      <div className="relative flex flex-col items-center w-[600px] rounded-xl">
+      <div className="relative flex flex-col items-center min-w-fit rounded-xl">
           <button 
           onClick={()=>setIsOpen((prev) => !prev)}
           className="bg-blue-500 text-white p-4 w-full flex item-center justify-between font-bold text-lg rounded-lg tracking-wider border-4 border-transparent active:border-white duration-300 active:text-white">

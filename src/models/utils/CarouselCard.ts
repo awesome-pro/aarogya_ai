@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-export interface Card {
+export interface CarouselCard {
     title: string;
     description?: string[];
     image?: string;
@@ -9,7 +9,7 @@ export interface Card {
     categories? : string[];
 }
 
-export const CardSchema = new mongoose.Schema<Card>({
+export const CarouselCardSchema = new mongoose.Schema<CarouselCard>({
     title: {
         type: String,
         required: true
@@ -32,5 +32,5 @@ export const CardSchema = new mongoose.Schema<Card>({
     }
 })
 
-const CardModel = mongoose.models && mongoose.models.Card || mongoose.model<Card>('Card', CardSchema);
-export default CardModel;
+const CarouselCardModel = mongoose.models && mongoose.models.Card || mongoose.model<CarouselCard>('Card', CarouselCardSchema);
+export default CarouselCardModel;

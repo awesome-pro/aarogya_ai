@@ -1,4 +1,4 @@
-import CardModel from "@/models/utils/Card";
+import CarouselCardModel from "@/models/utils/CarouselCard";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
             searchConditions.push({ categories: { $in: [new RegExp(category, 'i')] } });
         }
 
-        const cards = await CardModel.find(
+        const cards = await CarouselCardModel.find(
             searchConditions.length > 0 ? { $or: searchConditions } : {}
         );
 

@@ -1,5 +1,7 @@
 
-import { CarouselPlugin } from '@/components/Carousel'
+
+
+import CustomCarousel from '@/components/Carousel1'
 import { DropdownMenuRadioGroupDemo } from '@/components/CustomDropDown'
 import DoctorCard from '@/components/DoctorCard'
 import FAQ from '@/components/Faq'
@@ -8,8 +10,8 @@ import React from 'react'
 function Test() {
   return (
     <div>
-      <DropdownMenuRadioGroupDemo />
-      {/* <CarouselPlugin /> */}
+      {/* <DropdownMenuRadioGroupDemo /> */}
+      <CustomCarousel category="Carousel1" />
       {/* <FAQ /> */}
       
     </div>

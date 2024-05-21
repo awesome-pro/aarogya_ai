@@ -1,5 +1,5 @@
-import CardModel from "@/models/utils/Card";
 import dbConnect from "@/lib/dbConnect";
+import CarouselCardModel from "@/models/utils/CarouselCard";
 
 
 
@@ -21,7 +21,7 @@ export async function POST(req: Request){
         }
     }
 
-    const existingCard = await CardModel.findOne(
+    const existingCard = await CarouselCardModel.findOne(
         {
             title: title,
         }
@@ -38,7 +38,7 @@ export async function POST(req: Request){
     }
 
     try {
-        const card = await CardModel.create({
+        const card = await CarouselCardModel.create({
             title: title,
             description: description ? description : [],
             image: image ? image : "",

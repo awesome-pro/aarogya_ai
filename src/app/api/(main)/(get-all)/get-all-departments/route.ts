@@ -40,7 +40,8 @@ export async function GET( request: Request ){
         return Response.json({
             success: true,
             data: departments,
-            departmentIds: departmentIds
+            departmentIds: departmentIds,
+            departmentNames: departmentNames,
         },
         {
             status: 200

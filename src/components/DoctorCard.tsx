@@ -4,7 +4,7 @@ import React from 'react'
 
 
 interface DoctorCardProps {
-    _id: string;
+    _id?: string;
     name: string;
     location: string;
     specialty: string[];

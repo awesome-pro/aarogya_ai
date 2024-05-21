@@ -8,6 +8,9 @@ import FAQ from '@/components/Faq';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import Select from 'react-select';
+import { set } from 'mongoose';
+import { FormError } from '@/components/FormError';
+import { FormSuccess } from '@/components/FormSuccess';
 
 interface DoctorSignupFormData {
   name: string;
@@ -61,6 +64,11 @@ const DoctorSignup: React.FC = () => {
     { value: 'Internal Medicine', label: 'Internal Medicine' },
     { value: 'Nephrology', label: 'Nephrology'}, 
   ]
+
+
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState('');
   
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -92,8 +100,15 @@ const DoctorSignup: React.FC = () => {
       }
     }
 
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+
+    console.log('formDataObj:', formDataObj);
+
     try {
-      const response = await fetch('/api/doctor/signup', {
+      const response = await fetch('/api/doctor/sign-up', {
         method: 'POST',
         body: JSON.stringify(formDataToSend),
       });
@@ -101,17 +116,46 @@ const DoctorSignup: React.FC = () => {
       console.log(formDataObj);
 
       if (response.ok) {
-        router.push('/doctor/profile');
+        //router.push('/doctor/profile');
+        setSuccess('Doctor signed up successfully');
+
       } else {
-        console.error('Failed to sign up');
+        //console.error('Failed to sign up');
+        setError('Failed to sign up');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error);
+      setError('Failed to sign up: ' + error.toString());
+    } finally {
+      setLoading(false);
     }
+
   };
 
   return (
     <>
+
+
+    {
+      error && 
+      <FormError message={error} />
+    }
+
+    {
+      success && 
+      <FormSuccess message={success} />
+    }
+
+    {
+      loading && 
+      <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="bg-white p-4 rounded shadow-lg">
+          <p className="text-center">Loading...</p>
+        </div>
+      </div>
+    }
+
+
       <div className="min-h-screen bg-blue-100 flex">
         <div className="hidden md:block md:w-1/2 bg-cover" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")' }}></div>
         <div className="flex flex-col justify-center md:w-1/2 p-8 bg-white">

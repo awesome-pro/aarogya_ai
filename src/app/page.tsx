@@ -36,8 +36,7 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndex2, setCurrentIndex2] = useState(0);
   
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
+
   
   const [search, setSearch] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -57,16 +56,16 @@ export default function Home() {
     try {
       const response = await fetch("/api/get-all-departments");
       const data = await response.json()
-      setDepartmentData(data.departments);
+      setDepartmentData(data.data);
 
-      if(data.departments.length === 0){
+      if(data.data.length === 0){
         setErrorMessage("No departments found");
       }
 
       setSuccessMessage("Departments fetched successfully");
       
-    } catch (error) {
-      setError(true);
+    } catch (error: any) {
+      setErrorMessage("Error fetching departments: " + error.toString());
       console.error(error);
     } finally{
       setLoading(false);
@@ -81,8 +80,14 @@ export default function Home() {
       const data = await response.json();
       setDiseaseData(data.data);
       
-    } catch (error) {
-      setError(true);
+      if(data.data.length === 0 || data.data === undefined){
+        setErrorMessage("No diseases found");
+      }
+
+      setSuccessMessage("Diseases fetched successfully");
+
+    } catch (error: any) {
+      setErrorMessage("Error fetching diseases: " + error.toString());
       console.error(error);
     } finally{
       setLoading(false);
@@ -104,21 +109,44 @@ export default function Home() {
 
       setSuccessMessage("Locations fetched successfully");
       
-    } catch (error) {
-      setError(true);
+    } catch (error: any) {
+      setErrorMessage("Error fetching locations: " + error.toString());
+      setErrorMessage("Error fetching locations");
       console.error(error);
     } finally{
       setLoading(false);
     }
   }, [setLocationData]);
 
+  const fetchDoctors = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/get-all-doctors")
+      const data = await response.json();
+      setDoctorData(data.data);
+
+      if(data.data.length === 0 || data.data === undefined){
+        setErrorMessage("No doctors found");
+      }
+
+      setSuccessMessage("Doctors fetched successfully");
+    } catch (error: any) {
+     setErrorMessage("Error fetching doctors: " + error.toString());
+      console.error(error);
+    } finally{
+      setLoading(false);
+    }
+  }
+  , [setDoctorData, setErrorMessage, setSuccessMessage]);
+
 
   useEffect(() => {
 
     fetchDepartments();
     fetchDiseases();
+    fetchLocations();
   
-  }, [fetchDepartments, fetchDiseases])
+  }, [fetchDepartments, fetchDiseases, fetchLocations, fetchDoctors])
 
 
 
@@ -198,6 +226,8 @@ export default function Home() {
     successMessage &&
     <FormSuccess message={successMessage} />
    }
+
+   
     <div className="bg-blue-100">
     <div className='pt-20 max-w-screen-xl flex relative flex-col justify-center items-center bg-blue-100 ml-40'>
 

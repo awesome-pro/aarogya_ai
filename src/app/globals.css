@@ -43,7 +43,7 @@
   background: #7878a3;
 }
 
-@layer utilities {
+@layer components {
   .input-class {
     @apply text-16 placeholder:text-16 rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500;
   }
@@ -378,5 +378,73 @@
 
   .navbar-label {
     @apply text-16 font-semibold text-black max-xl:hidden;
+  }
+
+  .upper {
+    @apply bg-whitesmoke h-[75px] max-w-[1200px] px-8 mx-auto rounded-[20px];
+  }
+
+  .location {
+    @apply mt-[22px] bg-white h-[30px] w-[300px] ml-[20px] p-[14px] rounded-[5px];
+  }
+
+  .location:hover {
+    @apply shadow-[1px_3px_3px_2px_rgb(180,179,179)];
+  }
+
+  .docterhospital {
+    @apply mt-[22px] bg-white h-[30px] w-[600px] ml-[20px] p-[14px] rounded-[5px];
+  }
+
+  .docterhospital:hover {
+    @apply shadow-[1px_3px_3px_2px_rgb(180,179,179)];
+  }
+
+  .searchbtn {
+    @apply h-[35px] w-[130px] bg-[#29B3F3] ml-[20px] text-white mt-[22px] rounded-[4px];
+  }
+
+  .searchbtn:hover {
+    @apply h-[36px] w-[134px];
+  }
+
+  .container {
+    @apply max-w-[900px] px-8 mx-auto;
+  }
+
+  .cardbox {
+    @apply bg-whitesmoke flex rounded-[20px] mt-[25px] shadow-[10px_rgb(155,88,88)];
+  }
+
+  .cardbox:hover {
+    @apply shadow-[4px_4px_5px_5px_rgb(177,185,191)];
+  }
+
+  .fleet--clip {
+    @apply mt-[10px] ml-[10px] rounded-[60%] h-[150px] w-[150px] border-[4px_solid_rgb(65,185,240)];
+  }
+
+  .drname {
+    @apply text-[25px] text-[#41B9F0] mt-[12px];
+  }
+
+  .drname:hover {
+    @apply text-[#199AD5];
+  }
+
+  .commanbox {
+    @apply ml-[24px];
+  }
+
+  .h1 {
+    @apply text-[20px] mt-[8px];
+  }
+
+  .btn {
+    @apply text-white bg-[#29B3F3] h-[30px] w-[240px] ml-[-45px] rounded-[5px] mt-[5px];
+  }
+
+  .bookingbox {
+    @apply ml-[170px];
   }
 }

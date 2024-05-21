@@ -1,14 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from"next/image";
 import Header from "@/components/Header";
-import FAQ from "@/components/Faq";
-import Footer from "@/components/Footer";
-
-import { faSearch, faMicrophone } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Dropdown from "@/components/Dropdown";
+import { Doctor } from "@/models/Doctor";
 
 export default function Fleets(){
 
@@ -136,7 +132,35 @@ export default function Fleets(){
 
   const [query, setQuery] = useState('');
   const [location, setLocation] = useState('');
-  const [doctorHospital, setDoctorHospital] = useState('');
+  const [department, setDepartment] = useState('');
+  const [disease, setDisease] = useState('');
+  const [hospital, setHospital] = useState('');
+  const [specialty, setSpecialty] = useState('');
+  const [doctorData, setDoctorData] = useState<Doctor[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+
+
+  const fetchDoctors = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/get-doctors?query=${query}&location=${location}&department=${department}&disease=${disease}&hospital=${hospital}&specialty=${specialty}`)
+      const data = await response.json();
+      setDoctorData(data);
+      setLoading(false);
+    } catch (error) {
+      setError('An error occurred. Please try again.');
+      setLoading(false);
+    }
+  }, [query, location, department, disease, hospital]);
+
+
+  useEffect(() => {
+    fetchDoctors();
+  }, [fetchDoctors]);
+
 
   const handleVoiceSearch = () => {
     const recognition = new (window as any).webkitSpeechRecognition();
@@ -150,7 +174,7 @@ export default function Fleets(){
 
     return(
         <>
-        <Header />
+        
        <div className="bg-blue-100">
         <style>{`
         .upper {
@@ -340,9 +364,9 @@ export default function Fleets(){
        </div>
        </div>
        <div className="w-full">
-       <FAQ />
+      
        </div>
-       <Footer />
+      
        </>
     )
 }

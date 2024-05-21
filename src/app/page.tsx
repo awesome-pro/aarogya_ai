@@ -175,9 +175,11 @@ export default function Home() {
             </div>
                 <br />
                 <div className='flex flex-col md:flex-row gap-5'>
-                    <button className='border-2 rounded-lg p-2 bg-blue-500 hover:bg-blue-600 text-white min-w-44'>
-                      Consult Now
+                  <Link href='/consult'>
+                    <button className='border-2 rounded-xl px-2 py-2 bg-blue-500 hover:bg-blue-600 text-white min-w-44'>
+                      Consult Now With AI
                     </button>
+                    </Link>
                 </div>
 
 

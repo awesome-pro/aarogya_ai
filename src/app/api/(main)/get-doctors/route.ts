@@ -6,6 +6,7 @@ import DiseaseModel from "@/models/Disease";
 import AppointmentModel from "@/models/utils/Appointment";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
+import { error } from "console";
 
 
 export async function GET(req: NextRequest) {
@@ -87,8 +88,8 @@ export async function GET(req: NextRequest) {
         if(doctors.size === 0 && !doctors) {
             return NextResponse.json({
                 status: "error",
-                message: "No doctors found"
-            
+                message: "No doctors found",
+                error: "No doctors found"
             }, 
             { status: 504 });
         }
@@ -97,9 +98,12 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json({
             status: "success",
-            doctors: Array.from(doctors)
+            doctors: Array.from(doctors),
+            message: "Doctors fetched successfully"
         },
-        { status: 200 }
+        { 
+            status: 200 
+        }
         );
 
         

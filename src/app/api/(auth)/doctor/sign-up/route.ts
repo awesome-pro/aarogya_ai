@@ -6,15 +6,38 @@ import bcryptjs from "bcryptjs";
 import DepartmentModel from "@/models/utils/Department";
 
 
-export async function POST(request: NextRequest){
+export async function POST(request: Request){
 
-    const { email, password, department, name, phoneNumber, speciality, location, hospital } = await request.json()
+    console.log("request: ", request)
+
+    const { email,
+         password, 
+         department, 
+         name, 
+         phoneNumber, 
+         speciality, 
+         clinicAddress, 
+         hospital,
+         consultationFee,
+         availability,
+         experience,
+         bio,
+         profileImage
+        } = await request.json()
+
     console.log("email: ", email)
     console.log("password: ", password)
     console.log("department: ", department)
     console.log("name: ", name)
     console.log("phoneNumber: ", phoneNumber)
     console.log("speciality: ", speciality)
+   // console.log("location: ", location)
+    console.log("hospital: ", hospital)
+    console.log("consultationFee: ", consultationFee)
+    console.log("availability: ", availability)
+    console.log("experience: ", experience)
+    console.log("bio: ", bio)
+    console.log("profileImage: ", profileImage)
 
 
     dbConnect();
@@ -22,7 +45,14 @@ export async function POST(request: NextRequest){
     try {
 
         const existingDoctor = await DoctorModel.findOne({
-            email: email
+            $or: [
+                {
+                    email: email
+                },
+                {
+                    phoneNumber: phoneNumber
+                }
+            ]
         })
         console.log("existingDoctor: ", existingDoctor)
 
@@ -41,12 +71,18 @@ export async function POST(request: NextRequest){
         const newDoctor = new DoctorModel({
             email: email,
             password: hashedPassword,
-            department: department,
-            name: name,
-            phoneNumber: phoneNumber,
-            speciality: speciality,
-            location: location,
-            hospital: hospital
+            department: department || "General",
+            name: name || "",
+            phoneNumber: phoneNumber || "",
+            speciality: speciality || [],
+            location: clinicAddress || "",
+            hospital: hospital || "",
+            appointments: [],
+            consultationFee: 0,
+            availability: availability || "",
+            experience: experience || "",
+            bio: bio || "",
+            profileImage: profileImage || ""
         })
 
         const response = await newDoctor.save()

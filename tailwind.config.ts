@@ -22,6 +22,7 @@ const config = {
         'custom': '4px 4px 5px 5px rgb(177, 185, 191)',
       },
       colors: {
+        whitesmoke: '#F5F5F5',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

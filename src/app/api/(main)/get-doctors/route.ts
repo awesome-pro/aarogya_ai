@@ -10,8 +10,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url, "http://localhost:3000");
-    const { department, disease, location, specialty } = Object.fromEntries(searchParams);
-    console.log(department, disease, location, searchParams, specialty);
+    const { query, department, disease, location, specialty, hospital } = Object.fromEntries(searchParams);
+    console.log(query, department, disease, location, searchParams, specialty, hospital);
 
     await dbConnect();
     console.log("Connected to DB")
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
                 }
             )
 
-           // console.log("diseaseData: ", diseaseData)
+            console.log("diseaseData: ", diseaseData)
 
             if(diseaseData != undefined && diseaseData != null && diseaseData.length > 0){
 
@@ -67,7 +67,8 @@ export async function GET(req: NextRequest) {
                     $or: [
                         { department: department },
                         { speciality: specialty },
-                        { location: location }
+                        { location: location },
+                        { hospital: hospital }
                     ]
                 }
             )

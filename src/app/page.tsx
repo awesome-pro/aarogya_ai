@@ -95,8 +95,14 @@ export default function Home() {
     setLoading(true);
     try {
       const response = await fetch("/api/get-all-locations")
-      const data = await response.json();
-      setLocationData(data.data);
+      const jsonData = await response.json();
+      setLocationData(jsonData.data);
+
+      if(jsonData.data.length === 0 || jsonData.data === undefined){
+        setErrorMessage("No locations found");
+      }
+
+      setSuccessMessage("Locations fetched successfully");
       
     } catch (error) {
       setError(true);

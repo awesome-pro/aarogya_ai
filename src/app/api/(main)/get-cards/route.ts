@@ -1,92 +1,94 @@
-import CardModel from "@/models/utils/Card";
+import CarouselCardModel from "@/models/utils/CarouselCard";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 
+export async function GET(request: NextRequest) {
 
-export async function GET(req: Request){
+    console.log('request body', request.body);
 
-    console.log("Request body: ", req)
+    const { searchParams } = new URL(request.url, "http://localhost:3000");
+    const { title, description, image, footer, category } = Object.fromEntries(searchParams);
 
-    const { title, category, description, image, footer } = await req.json()
-
-    if(!title && !category && !description && !image && !footer){
+    console.log('title', title);
+    console.log('description', description);
+    console.log('image', image);
+    console.log('footer', footer);
+    console.log('category', category);
+    
+    if(!title && !description && !image && !footer && !category) {
         return NextResponse.json(
             {
-                success: false,
-                message: "Please provide at least one search parameter"
+                status: 400,
+                message: 'title, description, image, footer, category are required'
             },
             {
                 status: 400
             }
-        )
+        );
     }
-
-    console.log("Request body: ", req.body)
 
     await dbConnect();
 
     try {
+        const searchConditions = [];
 
-        const cards = await CardModel.find(
-            {
-                $or: [
-                    {
-                        title: title
-                    },
-                    {
-                        category: category
-                    },
-                    {
-                        description: description
-                    },
-                    {
-                        image: image
-                    },
-                    {
-                        footer: footer
-                    }
-                ]
-            }
-        )
+        if (title) {
+            searchConditions.push({ title: { $regex: title, $options: 'i' } });
+        }
+        if (description) {
+            searchConditions.push({ description: { $regex: description, $options: 'i' } });
+        }
+        if (image) {
+            searchConditions.push({ image: { $regex: image, $options: 'i' } });
+        }
+        if (footer) {
+            searchConditions.push({ footer: { $regex: footer, $options: 'i' } });
+        }
+        if (category) {
+            searchConditions.push({ categories: { $in: [new RegExp(category, 'i')] } });
+        }
 
-        if(!cards || cards.length === 0){
+        const cards = await CarouselCardModel.find(
+            searchConditions.length > 0 ? { $or: searchConditions } : {}
+        );
+
+        if (cards.length === 0 || !cards) {
             return NextResponse.json(
                 {
-                    success: false,
-                    message: "No cards found"
+                    status: 404,
+                    message: 'No cards found'
                 },
                 {
                     status: 404
                 }
-            )
+            );
         }
 
-        console.log("Cards: ", cards)
+        console.log('cards: ', cards);
 
         return NextResponse.json(
             {
-                success: true,
-                message: "Cards fetched successfully",
+                status: 200,
+                message: 'cards found',
                 data: cards
             },
             {
                 status: 200
             }
-        )
+        );
         
     } catch (error) {
-        console.log("Error fetching card: ", error)
+        console.log("error in get-card route", error);
 
         return NextResponse.json(
             {
-                success: false,
-                message: "Error fetching card",
+                status: 500,
+                message: 'error in get-card route',
                 error: error
             },
             {
                 status: 500
             }
-        )
+        );
     }
-
 }

@@ -11,6 +11,9 @@ const nextConfig = {
             },
             {
                 hostname: 'via.placeholder.com',
+            },
+            {
+                hostname: 'www.google.com'
             }
         ]
     }

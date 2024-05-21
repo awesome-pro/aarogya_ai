@@ -52,10 +52,10 @@ export default function Home() {
         <div className="mb-4" style={{ height: "400px", overflow: "auto" }}>
           {chatHistory.map((message, index) => (
             <div key={index} className={`${message.role === 'user' ? 'text-left' : 'text-right'} mb-2`}>
-              <div className={`rounded-full p-2 max-w-md mx-4 inline-block ${message.role === 'user' ? 'bg-blue-300 text-blue-800' : 'bg-gray-100 text-black'}`}>
+              <div className={`rounded-xl p-2 max-w-md mx-4 inline-block ${message.role === 'user' ? ' text-black' : ' text-black'}`}>
                 {message.role === 'user' ? 'You' : 'Bot'}
               </div>
-              <div className={`max-w-md mx-3 my-2 inline-block ${message.role === 'user' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-black'} p-2 rounded-md`}>
+              <div className={`max-w-md mx-3 rounded-xl my-2 inline-block ${message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-green-500 text-white'} p-2 rounded-md`}>
                 {message.content}
               </div>
             </div>

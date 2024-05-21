@@ -41,19 +41,6 @@ const DoctorSignup: React.FC = () => {
     password: ''
   });
 
-  const [name, setName ] = useState('');
-  const [email, setEmail ] = useState('');
-  const [phone, setPhone ] = useState('');
-  const [speciality, setSpeciality ] = useState([]);
-  const [experience, setExperience ] = useState('');
-  const [clinicAddress, setClincAddress ] = useState('');
-  const [consultationFee, setConsultationFee ] = useState('');
-  const [availability, setAvailability ] = useState('');
-  const [qualifications, setQualifications ] = useState('');
-  const [bio, setBio ] = useState('');
-  const [profileImage, setProfileImage ] = useState('');
-  const [password, setPassword ] = useState('');
-
   const specializations = [
     { value: 'Cardiology', label: 'Cardiology' },
     { value: 'Dermatology', label: 'Dermatology' },
@@ -136,8 +123,8 @@ const DoctorSignup: React.FC = () => {
                 <input
                   type="text"
                   name="name"
-                  value={name}
-                  onChange={setName(name)}
+                  value={formData.name}
+                  onChange={handleChange}
                   required
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
                   placeholder="Full Name"
@@ -148,8 +135,8 @@ const DoctorSignup: React.FC = () => {
                 <input
                   type="email"
                   name="email"
-                  value={email}
-                  onChange={setEmail(email)}
+                  value={formData.email}
+                  onChange={handleChange}
                   required
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
                   placeholder="Email Address"

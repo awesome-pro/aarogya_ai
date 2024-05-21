@@ -11,7 +11,7 @@ import { error } from "console";
 
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url, "http://localhost:3000");
-    const { query, department, disease, location, specialty, hospital } = Object.fromEntries(searchParams);
+    const { query, department, disease, location, specialty, hospital, rating } = Object.fromEntries(searchParams);
     console.log(query, department, disease, location, searchParams, specialty, hospital);
 
     await dbConnect();

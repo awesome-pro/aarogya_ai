@@ -1,19 +1,21 @@
 import CardModel from "@/models/utils/Card";
 import dbConnect from "@/lib/dbConnect";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";    
 
-export async function GET(request: NextRequest) {
 
-    console.log('request body', request.body);
+
+export async function GET(request: Request) {
+
+    console.log('requset body', request.body)
 
     const { searchParams } = new URL(request.url, "http://localhost:3000");
     const { title, description, image, footer, category } = Object.fromEntries(searchParams);
 
-    console.log('title', title);
-    console.log('description', description);
-    console.log('image', image);
-    console.log('footer', footer);
-    console.log('category', category);
+    console.log('title', title)
+    console.log('description', description)
+    console.log('image', image)
+    console.log('footer', footer)
+    console.log('category', category)
     
     if(!title && !description && !image && !footer && !category) {
         return NextResponse.json(
@@ -24,35 +26,28 @@ export async function GET(request: NextRequest) {
             {
                 status: 400
             }
-        );
+        )
     }
+        
 
     await dbConnect();
 
-    try {
-        const searchConditions = [];
 
-        if (title) {
-            searchConditions.push({ title: { $regex: title, $options: 'i' } });
-        }
-        if (description) {
-            searchConditions.push({ description: { $regex: description, $options: 'i' } });
-        }
-        if (image) {
-            searchConditions.push({ image: { $regex: image, $options: 'i' } });
-        }
-        if (footer) {
-            searchConditions.push({ footer: { $regex: footer, $options: 'i' } });
-        }
-        if (category) {
-            searchConditions.push({ categories: { $in: [new RegExp(category, 'i')] } });
-        }
+    try {
 
         const cards = await CardModel.find(
-            searchConditions.length > 0 ? { $or: searchConditions } : {}
-        );
+            {
+                $or: [
+                    { title: { $regex: title, $options: 'i' } },
+                    { description: { $regex: description, $options: 'i' } },
+                    { image: { $regex: image, $options: 'i' } },
+                    { footer: { $regex: footer, $options: 'i' } },
+                    { categories: { $regex: category, $options: 'i' } }
+                ]
+            }
+        )
 
-        if (cards.length === 0 || !cards) {
+        if(cards.length === 0 || !cards) {
             return NextResponse.json(
                 {
                     status: 404,
@@ -61,10 +56,10 @@ export async function GET(request: NextRequest) {
                 {
                     status: 404
                 }
-            );
+            )
         }
 
-        console.log('cards: ', cards);
+        console.log('cards: ', cards)
 
         return NextResponse.json(
             {
@@ -75,10 +70,10 @@ export async function GET(request: NextRequest) {
             {
                 status: 200
             }
-        );
+        )
         
     } catch (error) {
-        console.log("error in get-card route", error);
+        console.log("error in get-card route", error)
 
         return NextResponse.json(
             {
@@ -89,6 +84,6 @@ export async function GET(request: NextRequest) {
             {
                 status: 500
             }
-        );
+        )
     }
 }

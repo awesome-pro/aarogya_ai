@@ -6,7 +6,7 @@ export interface Card {
     description?: string[];
     image?: string;
     footer?: string;
-    category? : string[];
+    categories? : string[];
 }
 
 export const CardSchema = new mongoose.Schema<Card>({
@@ -26,7 +26,7 @@ export const CardSchema = new mongoose.Schema<Card>({
         type: String,
         required: false
     },
-    category: {
+    categories: {
         type: [String],
         required: false
     }

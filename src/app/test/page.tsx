@@ -8,9 +8,9 @@ import React from 'react'
 function Test() {
   return (
     <div>
-      {/* <DropdownMenuRadioGroupDemo /> */}
+      <DropdownMenuRadioGroupDemo />
       {/* <CarouselPlugin /> */}
-      <FAQ />
+      {/* <FAQ /> */}
       
     </div>
   )

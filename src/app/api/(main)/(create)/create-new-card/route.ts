@@ -7,23 +7,23 @@ export async function POST(req: Request){
 
     await dbConnect();
 
-    const { title, description, image, footer, category } = await req.json();
+    const { title, description, image, footer, categories } = await req.json();
 
     console.log("Request body: ", req.body)
     
-    if(!title){
+    if(!title || !categories){
         return {
             status: 400,
             json: {
                 success: false,
-                message: "Please fill all the fields"
+                message: "Please fill in the required fields"
             }
         }
     }
 
     const existingCard = await CardModel.findOne(
         {
-            title: title
+            title: title,
         }
     )
 
@@ -43,7 +43,7 @@ export async function POST(req: Request){
             description: description ? description : [],
             image: image ? image : "",
             footer: footer ? footer : "",
-            category: category ? category : []
+            categories: categories ? categories : []
         });
 
         if(!card){

@@ -7,7 +7,7 @@ export interface Doctor extends Document {
     password: string;
     phoneNumber?: number;
     department: string;
-    specialty?: string[];
+    speciality?: string[];
     hospital?: string;
     location: string;
     appointmentIds?: String[];
@@ -24,7 +24,7 @@ const DoctorSchema = new monggose.Schema<Doctor>({
     password: { type: String, required: true },
     phoneNumber: { type: Number, required: false },
     department: { type: String, required: true },
-    specialty: [{ type: String, required: false }],
+    speciality: [{ type: String, required: false }],
     hospital: { type: String, required: false },
     location: { type: String, required: true },
     appointmentIds: [

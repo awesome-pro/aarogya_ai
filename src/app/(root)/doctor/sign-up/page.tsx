@@ -1,14 +1,8 @@
 "use client";
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
-import Header from '@/components/Header';
-import FAQ from '@/components/Faq';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
 import Select from 'react-select';
-import { set } from 'mongoose';
+import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/FormError';
 import { FormSuccess } from '@/components/FormSuccess';
 
@@ -16,14 +10,13 @@ interface DoctorSignupFormData {
   name: string;
   email: string;
   phone: string;
-  specialty: string[];
+  speciality: string[];
   experience: string;
   clinicAddress: string;
   consultationFee: string;
   availability: string;
   qualifications: string;
   bio: string;
-  profileImage: File | null;
   password: string;
 }
 
@@ -33,14 +26,13 @@ const DoctorSignup: React.FC = () => {
     name: '',
     email: '',
     phone: '',
-    specialty: [],
+    speciality: [],
     experience: '',
     clinicAddress: '',
     consultationFee: '',
     availability: '',
     qualifications: '',
     bio: '',
-    profileImage: null,
     password: ''
   });
 
@@ -62,14 +54,12 @@ const DoctorSignup: React.FC = () => {
     { value: 'Hematology', label: 'Hematology' },
     { value: 'Infectious Disease', label: 'Infectious Disease' },
     { value: 'Internal Medicine', label: 'Internal Medicine' },
-    { value: 'Nephrology', label: 'Nephrology'}, 
-  ]
-
+    { value: 'Nephrology', label: 'Nephrology' }
+  ];
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
-  
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -77,84 +67,65 @@ const DoctorSignup: React.FC = () => {
   };
 
   const handleSpecialtyChange = (selectedOptions: any) => {
-    setFormData({ ...formData, specialty: selectedOptions.map((option: any) => option.value) });
+    setFormData({ ...formData, speciality: selectedOptions.map((option: any) => option.value) });
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (files && files.length > 0) {
-      setFormData({ ...formData, [name]: files[0] });
-    }
-  };
+  // const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { files } = e.target;
+  //   if (files && files.length > 0) {
+  //     const file = files[0];
+  //     const imageData = new FormData();
+  //     imageData.append('file', file);
+  //     imageData.append('upload_preset', 'your_upload_preset'); // Use your own upload preset
+  //     const response = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/image/upload', {
+  //       method: 'POST',
+  //       body: imageData
+  //     });
+  //     const data = await response.json();
+  //     setFormData({ ...formData, profileImage: data.secure_url });
+  //   }
+  // };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    const formDataToSend = { ...formData };
-    const formDataObj = new FormData();
-    for (const key in formDataToSend) {
-      if (key === "profileImage" && formDataToSend.profileImage) {
-        formDataObj.append(key, formDataToSend.profileImage);
-      } else {
-        formDataObj.append(key, JSON.stringify(formDataToSend[key as keyof typeof formDataToSend]));
-      }
-    }
-
     setLoading(true);
     setError('');
     setSuccess('');
 
-
-    console.log('formDataObj:', formDataObj);
-
     try {
       const response = await fetch('/api/doctor/sign-up', {
         method: 'POST',
-        body: JSON.stringify(formDataToSend),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
       });
 
-      console.log(formDataObj);
+      console.log(formData);
 
       if (response.ok) {
-        //router.push('/doctor/profile');
         setSuccess('Doctor signed up successfully');
-
       } else {
-        //console.error('Failed to sign up');
         setError('Failed to sign up');
       }
     } catch (error: any) {
-      console.error('Error:', error);
       setError('Failed to sign up: ' + error.toString());
     } finally {
       setLoading(false);
     }
-
   };
 
   return (
     <>
-
-
-    {
-      error && 
-      <FormError message={error} />
-    }
-
-    {
-      success && 
-      <FormSuccess message={success} />
-    }
-
-    {
-      loading && 
-      <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center">
-        <div className="bg-white p-4 rounded shadow-lg">
-          <p className="text-center">Loading...</p>
+      {error && <FormError message={error} />}
+      {success && <FormSuccess message={success} />}
+      {loading && (
+        <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-4 rounded shadow-lg">
+            <p className="text-center">Loading...</p>
+          </div>
         </div>
-      </div>
-    }
-
+      )}
 
       <div className="min-h-screen bg-blue-100 flex">
         <div className="hidden md:block md:w-1/2 bg-cover" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")' }}></div>
@@ -205,12 +176,12 @@ const DoctorSignup: React.FC = () => {
                   Specialization
                 </label>
                 <Select
-                  id="specialty"
-                  name="specialty"
+                  id="speciality"
+                  name="speciality"
                   isMulti
                   options={specializations}
                   placeholder="Specialization"
-                  value={specializations.filter(specialty => formData.specialty.includes(specialty.value))}
+                  value={specializations.filter(specialty => formData.speciality.includes(specialty.value))}
                   onChange={handleSpecialtyChange}
                   className="mt-1"
                 />
@@ -293,7 +264,7 @@ const DoctorSignup: React.FC = () => {
                 />
               </div>
             </div>
-            <div className="w-full">
+            {/* <div className="w-full">
               <label className="block text-sm font-medium text-gray-700">Profile Image</label>
               <input
                 type="file"
@@ -302,7 +273,7 @@ const DoctorSignup: React.FC = () => {
                 onChange={handleFileChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
               />
-            </div>
+            </div> */}
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700">Password</label>
               <input
@@ -331,3 +302,4 @@ const DoctorSignup: React.FC = () => {
 };
 
 export default DoctorSignup;
+

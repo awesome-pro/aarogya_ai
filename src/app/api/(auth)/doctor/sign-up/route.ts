@@ -14,7 +14,7 @@ export async function POST(request: Request){
          password, 
          department, 
          name, 
-         phoneNumber, 
+         phone, 
          speciality, 
          clinicAddress, 
          hospital,
@@ -29,10 +29,10 @@ export async function POST(request: Request){
     console.log("password: ", password)
     console.log("department: ", department)
     console.log("name: ", name)
-    console.log("phoneNumber: ", phoneNumber)
+    console.log("phoneNumber: ", phone)
     console.log("speciality: ", speciality)
    // console.log("location: ", location)
-    console.log("hospital: ", hospital)
+    // console.log("hospital: ", hospital)
     console.log("consultationFee: ", consultationFee)
     console.log("availability: ", availability)
     console.log("experience: ", experience)
@@ -50,7 +50,7 @@ export async function POST(request: Request){
                     email: email
                 },
                 {
-                    phoneNumber: phoneNumber
+                    phoneNumber: phone
                 }
             ]
         })
@@ -73,7 +73,7 @@ export async function POST(request: Request){
             password: hashedPassword,
             department: department || "General",
             name: name || "",
-            phoneNumber: phoneNumber || "",
+            phoneNumber: phone || "",
             speciality: speciality || [],
             location: clinicAddress || "",
             hospital: hospital || "",
@@ -82,7 +82,7 @@ export async function POST(request: Request){
             availability: availability || "",
             experience: experience || "",
             bio: bio || "",
-            profileImage: profileImage || ""
+            // profileImage: profileImage || ""
         })
 
         const response = await newDoctor.save()

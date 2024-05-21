@@ -33,10 +33,14 @@ export default function Home() {
         messages: updatedChatHistory,
       });
 
+      console.log(chatCompletion);
+
       const newAssistantMessage = {
         role: 'assistant',
         content: chatCompletion.choices[0].message.content,
       };
+
+      console.log(newAssistantMessage);
 
       setChatHistory((prevChat) => [...prevChat, newAssistantMessage]);
     } catch (error) {
@@ -95,4 +99,3 @@ export default function Home() {
     </div>
   );
 }
-

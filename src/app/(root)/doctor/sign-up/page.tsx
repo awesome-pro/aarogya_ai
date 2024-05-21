@@ -113,6 +113,8 @@ const DoctorSignup: React.FC = () => {
         body: JSON.stringify(formDataToSend),
       });
 
+      console.log(formDataObj);
+
       if (response.ok) {
         //router.push('/doctor/profile');
         setSuccess('Doctor signed up successfully');

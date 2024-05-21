@@ -123,8 +123,14 @@ function SignUp() {
     }
 
   return (
-    <div className='size-full min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-700  '>
-    
+    // bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-700 
+    <div className='size-full min-h-screen flex items-center justify-center bg-white'>
+
+      <div className='max-w-screen-xl'>
+        <img src='https://media.istockphoto.com/id/1302674103/photo/doctor-and-patient-are-discussing-at-clinic-and-writting-prescription-medicine-stock-photo.webp?b=1&s=170667a&w=0&k=20&c=NU-ZpijsWJd4dY416GASkeQbRkNcsWr8jCraA6XxSCc=' alt='/' className='w-screen' />
+      </div>
+      
+    <div className='object-cover'>
     <CardWrapper 
         headerLabel="Sign Up"
         backButtonLabel="Already Registered?"
@@ -200,6 +206,8 @@ function SignUp() {
             </Form>
             
        </CardWrapper>
+
+       </div>
     
     </div>
   )

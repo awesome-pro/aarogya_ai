@@ -59,9 +59,11 @@ const Header = () => {
               </div>
             </Link>
           ) : (
+            <Link href="/sign-up">
             <Button className="text-white bg-blue-500 bg-opacity-95 px-3 py-2 rounded-xl">
               SignUp/Login
             </Button>
+            </Link>
           )
         }
         

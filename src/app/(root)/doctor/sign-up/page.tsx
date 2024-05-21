@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import FAQ from '@/components/Faq';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import Select from 'react-select';
 
 interface DoctorSignupFormData {
   name: string;
@@ -41,27 +42,34 @@ const DoctorSignup: React.FC = () => {
   });
 
   const specializations = [
-    'Cardiology',
-    'Dermatology',
-    'Neurology',
-    'Orthopedics',
-    'Pediatrics',
-    'Psychiatry',
-    'Surgery',
-    'General Medicine',
-  ];
+    { value: 'Cardiology', label: 'Cardiology' },
+    { value: 'Dermatology', label: 'Dermatology' },
+    { value: 'Neurology', label: 'Neurology' },
+    { value: 'Orthopedics', label: 'Orthopedics' },
+    { value: 'Pediatrics', label: 'Pediatrics' },
+    { value: 'Psychiatry', label: 'Psychiatry' },
+    { value: 'Surgery', label: 'Surgery' },
+    { value: 'General Medicine', label: 'General Medicine' },
+    { value: 'Allergy and Immunology', label: 'Allergy and Immunology' },
+    { value: 'Anesthesiology', label: 'Anesthesiology' },
+    { value: 'Emergency Medicine', label: 'Emergency Medicine' },
+    { value: 'Endocrinology', label: 'Endocrinology' },
+    { value: 'Gastroenterology', label: 'Gastroenterology' },
+    { value: 'Geriatrics', label: 'Geriatrics' },
+    { value: 'Hematology', label: 'Hematology' },
+    { value: 'Infectious Disease', label: 'Infectious Disease' },
+    { value: 'Internal Medicine', label: 'Internal Medicine' },
+    { value: 'Nephrology', label: 'Nephrology'}, 
+  ]
+  
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    if (name === 'speciality') {
-      const options = (e.target as HTMLSelectElement).options;
-      const selectedSpecializations = Array.from(options)
-        .filter(option => option.selected)
-        .map(option => option.value);
-      setFormData({ ...formData, [name]: selectedSpecializations });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSpecialtyChange = (selectedOptions: any) => {
+    setFormData({ ...formData, specialty: selectedOptions.map((option: any) => option.value) });
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,12 +79,33 @@ const DoctorSignup: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // Process form submission (e.g., send data to backend)
-    console.log(formData);
-    // Redirect to the doctor's dashboard after successful sign-up
-    router.push('/profile');
+
+    const formDataToSend = { ...formData };
+    const formDataObj = new FormData();
+    for (const key in formDataToSend) {
+      if (key === "profileImage" && formDataToSend.profileImage) {
+        formDataObj.append(key, formDataToSend.profileImage);
+      } else {
+        formDataObj.append(key, JSON.stringify(formDataToSend[key as keyof typeof formDataToSend]));
+      }
+    }
+
+    try {
+      const response = await fetch('/api/doctor/signup', {
+        method: 'POST',
+        body: formDataObj,
+      });
+
+      if (response.ok) {
+        router.push('/doctor/profile');
+      } else {
+        console.error('Failed to sign up');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -126,21 +155,20 @@ const DoctorSignup: React.FC = () => {
                 />
               </div>
               <div className='w-full'>
-              <label htmlFor="speciality" className="block text-sm font-medium text-gray-700">
-                Specialization
-              </label>
-              <select
-                id="speciality"
-                value={formData.specialty}
-                onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
-              >
-                <option value="">Specialization...</option>
-                {specializations.map((title) => (
-                  <option key={title} value={title}>{title}</option>
-                ))}
-              </select>
-            </div>
+                <label htmlFor="specialty" className="block text-sm font-medium text-gray-700">
+                  Specialization
+                </label>
+                <Select
+                  id="specialty"
+                  name="specialty"
+                  isMulti
+                  options={specializations}
+                  placeholder="Specialization"
+                  value={specializations.filter(specialty => formData.specialty.includes(specialty.value))}
+                  onChange={handleSpecialtyChange}
+                  className="mt-1"
+                />
+              </div>
             </div>
             <div className="flex flex-col md:flex-row md:space-x-4">
               <div className="w-full">
@@ -229,7 +257,7 @@ const DoctorSignup: React.FC = () => {
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
               />
             </div>
-          <div className="w-full">
+            <div className="w-full">
               <label className="block text-sm font-medium text-gray-700">Password</label>
               <input
                 type="password"
@@ -238,21 +266,20 @@ const DoctorSignup: React.FC = () => {
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
-                placeholder="password"
+                placeholder="Password"
               />
             </div>
-          <div className="text-center">
-            <Button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Signup
-            </Button>
-          </div>
-        </form>
+            <div className="text-center">
+              <Button
+                type="submit"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Signup
+              </Button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-    
     </>
   );
 };

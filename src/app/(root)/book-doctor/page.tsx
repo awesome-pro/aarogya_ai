@@ -1,41 +1,50 @@
 "use client";
 
-
 import React, { useCallback, useEffect, useState, } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { appointmentFormSchema } from '@/lib/utils'
 import CustomAppointmentInput from '@/components/CustomAppointmentInput'
 import { Button } from '@/components/ui/button'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMicrophone } from '@fortawesome/free-solid-svg-icons'
 import { Form, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import * as z from 'zod'
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { Patient } from '@/models/Patient';
-import { toast } from '@/components/ui/use-toast';
+import { toast, useToast } from '@/components/ui/use-toast';
 import { FormError } from '@/components/FormError';
 import { FormSuccess } from '@/components/FormSuccess';
+import { set } from 'mongoose';
 
 function BookAppointment() {
 
     const [error, setError] = useState<string | null>(null)
-    const [success, setSuccess] = useState<boolean>(false)
+    const [success, setSuccess] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false)
     const [voiceInput, setVoiceInput] = useState<string>('')
     const [patientData, setPatientData] = useState<Patient>()
 
     const router = useRouter()
 
+    const { toast } = useToast()
+
+    const searchParams = useSearchParams()
+    const doctorId = searchParams.get('doctorId')
+
     const { data: session } = useSession()
-    const patient = session?.user as Patient
+    const patient = session?.user 
 
 
 
     const fetchPatientDetails = useCallback(async () => {
+
+        setLoading(true)
+
+        setError(null)
+        setSuccess('')
+
         if (!patient || !session) {
             toast(
                 {
@@ -45,30 +54,46 @@ function BookAppointment() {
                 }
             )
 
-            router.push('/sign-in')
+           // router.push('/sign-in')
 
-            return
+           // return
         }
 
-        const response = await axios.get(`/api/patient/${patient._id}`)
+        try {
 
-        if(response.status !== 200) {
+        const response = await axios.get(`/api/get-patient?id=${patient?._id}`)
+
+        if(response.status !== 200 || response.data.error) {
             setError('An error occurred while fetching patient data: ' + response.data.error)
             return
         }
+
         const patientData = response.data
+
         console.log(patientData)
         setPatientData(patientData)
-        
-    }, [session, patient])
+            
+        } catch (error) {
+            setError('An error occurred while fetching patient data: ' + error)
+            toast({
+                title: 'Error',
+                description: 'An error ' + error,
+                variant: 'destructive'
+            })
+            return
+        } finally {
+            setLoading(false)
+        }
+    }, [session, patient, setPatientData])
 
 
     useEffect(() => {
 
-        fetchPatientDetails()
+        // fetchPatientDetails()
 
     }
     , [fetchPatientDetails, session, patient])
+
 
     const formSchema = appointmentFormSchema
     const form = useForm<z.infer<typeof formSchema>>({
@@ -79,6 +104,13 @@ function BookAppointment() {
             patientPhoneNumber: patientData?.phoneNumber,
             patientAge: patientData?.age,
             patientMedications: patientData?.medications,
+            patientAllergies: patientData?.allergies,
+            patientBloodGroup: patientData?.bloodGroup,
+            patientDiseases: patientData?.diseases,
+            patientAddress: patientData?.address,
+            patientImage: patientData?.image,
+            patientBodyImage: "",
+            patientPrescriptionImage: ""
         }
     })
 
@@ -96,14 +128,14 @@ function BookAppointment() {
         console.log(data)
         try {
             setLoading(true)
-            const response = await axios.post(`/api/create-new-appointment?id=${patient.id}`, data)
+            const response = await axios.post(`/api/create-new-appointment?id=${patient?.id}`, data)
             console.log(response.data)
 
             if(response.status !== 200) {
                 setError('An error occurred while booking the appointment: ' + response.data.error)
                 return
             }
-            setSuccess(true)
+            setSuccess('Appointment booked successfully')
 
             router.push('/patient/dashboard')
 
@@ -129,11 +161,11 @@ function BookAppointment() {
                 }
                 {
                     success && (
-                        <FormSuccess message='Appointment booked successfully' />
+                        <FormSuccess message={success} />
                     )
                 }
                 <Form {...form} >
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
+                    <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8 grid-cols-2'>
                         
                             <CustomAppointmentInput
                                 control={form.control}
@@ -151,7 +183,6 @@ function BookAppointment() {
                                 placeholder='Enter your email'
                                 description='Please enter your email'
                                 type='email'
-
                             />
 
                             <CustomAppointmentInput

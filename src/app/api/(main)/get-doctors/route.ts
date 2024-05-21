@@ -11,8 +11,8 @@ import { error } from "console";
 
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url, "http://localhost:3000");
-    const { query, department, disease, location, specialty, hospital, rating } = Object.fromEntries(searchParams);
-    console.log(query, department, disease, location, searchParams, specialty, hospital);
+    const { id, query, department, disease, location, specialty, hospital, rating } = Object.fromEntries(searchParams);
+    console.log(id, query, department, disease, location, searchParams, specialty, hospital);
 
     await dbConnect();
     console.log("Connected to DB")
@@ -59,8 +59,6 @@ export async function GET(req: NextRequest) {
             console.log("departmentByDisease Not Found :(")
 
         }
-
-       
 
         if(department || location || specialty) {
             const doctorsByParams = await DoctorModel.find(

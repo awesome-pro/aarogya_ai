@@ -18,6 +18,8 @@ export interface Patient extends Document{
     allergies?: string[];
     medications?: string[];
     address?: string;
+    image? : string;
+    
 }
 
 
@@ -39,6 +41,7 @@ const PatientSchema = new Schema<Patient>(
         allergies: { type: [String], required: false },
         medications: { type: [String], required: false },
         address: { type: String, required: false },
+        image: { type: String, required: false }
     },
     { 
         timestamps: true

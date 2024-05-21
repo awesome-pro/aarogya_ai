@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -15,13 +14,10 @@ import {
 import { Department } from "@/models/utils/Department"
 import { Disease } from "@/models/Disease"
 import { Doctor } from "@/models/Doctor"
-import { set } from "mongoose"
 import { Input } from "./ui/input"
 import DoctorCard from "./DoctorCard"
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-export function DropdownMenuRadioGroupDemo() {
+export default function FindDoctor() {
   
     const [selectedDepartment, setSelectedDepartment] = React.useState<string>("cardiology")
     const [departmentData, setDepartmentData] = React.useState<Department[]>([])
@@ -107,11 +103,11 @@ export function DropdownMenuRadioGroupDemo() {
 
     try {
 
-      const response = await fetch(`/api/get-doctors?query=${setQuery}?department=${selectedDepartment}&location=${selectedLocation}&disease=${selectedDisease}`)
+      const response = await fetch(`/api/get-doctor?department=${selectedDepartment}&location=${selectedLocation}&disease=${selectedDisease}`)
         const data = await response.json();
-        setDoctorData(data.doctors);
+        setDoctorData(data.data);
 
-      if(data.doctors.length === 0 || data.doctors === undefined){
+      if(data.data.length === 0 || data.data === undefined){
         setErrorMessage("No doctors found");
       }
 
@@ -240,18 +236,6 @@ export function DropdownMenuRadioGroupDemo() {
         <h1>Doctors</h1>
 
         {doctorData &&  doctorData.map((doctor) => (
-            // <div key={doctor.name} className="bg-sky-300 p-10 gap-4 ">
-            // <p>{doctor.name}</p>
-            // <p>{doctor.location}</p>
-            // <p>{doctor.specialty}</p>
-            // <p>{doctor.experience}</p>
-            // <p>{doctor.availability}</p>
-            // <p>{doctor.consultationFee}</p>
-            // <p>{doctor.hospital}</p>
-            // <p>{doctor.bio}</p>
-            // <img src={doctor.image} alt="doctor" />
-            // </div>
-
             <div key={doctor.name} className="flex flex-col gap-4 items-center justify-center w-full">
                 <DoctorCard
                     name={doctor.name}
@@ -263,6 +247,7 @@ export function DropdownMenuRadioGroupDemo() {
                     hospital={doctor.hospital || "Data not available"}
                     bio={doctor.bio || "Data not available"}
                     image={doctor.image || "/icons/doctor-placeholder.png"}
+                    _id={doctor?._id?.toString() || ""}
                 />
             </div>
         ))}

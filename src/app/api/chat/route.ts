@@ -14,29 +14,13 @@ const generationConfig = {
 const model = genAI.getGenerativeModel({ model: "gemini-pro", generationConfig});
 
 export async function POST(request: NextRequest) {
-	const {messages} = await request.json();
-	const prompt = messages[messages.length - 1].content;
-	
+  const {messages} = await request.json();
+  const prompt = messages[messages.length - 1].content;
   
+  const result = await model.generateContent(prompt);
+  
+  console.log("result: ", result.response.text());
 
-  try {
-
-    const result = await model.generateContent(prompt);
-    console.log("Chat completion result:", result.response.text());
-    return NextResponse.json(result.response.text() , { status: 200 });
-
-  } catch (error) {
-    console.log("Error fetching chat completion:", error);
-
-    NextResponse.json(
-        {
-            role: 'assistant',
-            content: "Sorry, something went wrong. Please try again.",
-        },
-        {
-            status: 500,
-        }
-    )
-  }
-	
+  // Wrap the response text in an object and push it into an array
+  return NextResponse.json([{ role: 'assistant', content: result.response.text() }], { status: 200 });
 }

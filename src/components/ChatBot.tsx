@@ -22,14 +22,13 @@ export function Chatbot() {
 
             <div className="flex gap-4 items-start">
                 <p className="whitespace-pre-line" key={index}>
-                    {m.role === "user" ? "You: " : "Assistant: "}
+                    {m.role === "user" ? "You: " : "Assistant:" }
                 </p>
-                <p className="whitespace-pre-line text-blck bg-sky-400 p-5 rounded-xl" key={index}>
+                <p className="whitespace-pre-line text-blck bg-sky-200 p-1 rounded-xl" key={index}>
                     {m.content}
                 </p>
             </div>
               
-                
             ))}
 
         </div>
@@ -38,10 +37,10 @@ export function Chatbot() {
         <div className=" flex items-center p-2">
           <form className="flex-1" onSubmit={handleSubmit}>
             <Input placeholder="Type your message here..." value={input} onChange={handleInputChange}  />
+            <Button className="ml-2" type="submit" >
+                Send
+            </Button>
           </form>
-          <Button className="ml-2" type="submit" >
-            Send
-          </Button>
         </div>
       </div>
     </div>

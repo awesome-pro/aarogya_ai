@@ -20,9 +20,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
     Credentials({
       name: "Credentials",
+      id: "credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" }
+        name: { label: "Name", type: "text" },
+        password: { label: "Password", type: "password" },
+        email: { label: "Email", type: "email"},
+        phoneNumber: { label: "Phone Number", type: "tel" }
       },
       authorize: async (credentials: any) => {
 
@@ -66,7 +69,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signOut: "sign-out",
     error: "/auth-error",
     verifyRequest: "/auth/verify-request",
-    newUser: "/auth/new-user"
+    newUser: "/sign-up"
   },
   secret: process.env.AUTH_SECRET,
   session: {
@@ -77,7 +80,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       //console.log("Token in jwt: ", token, user)
       if (user) {
         token.id = user._id?.toString()
-        token.email = user.email
+        token.email = user.email || ""
         token.name = user.name || ""
 
       }
@@ -91,7 +94,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user._id = token.id?.toString()
         session.user.email = token.email || ""
         session.user.name = token.name || ""
-        session.user.isVerified = token.isVerified || false
+       
       }
 
      //console.log("Session: ", session)

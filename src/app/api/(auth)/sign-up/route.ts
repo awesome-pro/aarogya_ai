@@ -2,9 +2,11 @@ import mongoose from "mongoose";
 import PatientModel from "@/models/Patient";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
+import { NextRequest } from "next/server";
+import { error } from "console";
 
 
-export async function POST(request: Request){
+export async function POST(request: NextRequest){
 
     await dbConnect();
 
@@ -21,7 +23,8 @@ export async function POST(request: Request){
             return Response.json(
                 {
                     success: false,
-                    message: "Email already exists"
+                    message: "Email already exists",
+                    error: "Email already exists"
                 },
                 {
                     status: 400
@@ -63,7 +66,8 @@ export async function POST(request: Request){
                 message: "User registered successfully"
             },
             {
-                status: 200
+                status: 200,
+                statusText: "OK"
             }
         );
         

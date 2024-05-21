@@ -1,16 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-
 import FAQ from "@/components/Faq";
 import Footer from "@/components/Footer";
+import { FormError } from "@/components/FormError";
+import { FormSuccess } from "@/components/FormSuccess";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
+import { Disease } from "@/models/Disease";
+import { Department } from "@/models/utils/Department";
 import { faArrowLeft, faArrowRight, faCheckCircle, faHandHolding, faHandHoldingHeart, faHospital, faUserDoctor, faVialVirus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { set } from "mongoose";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const EntityBox = ({ name, photoUrl }: {
     name: string;
@@ -30,6 +34,56 @@ const EntityBox = ({ name, photoUrl }: {
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndex2, setCurrentIndex2] = useState(0);
+  const [departmentData, setDepartmentData] = useState<Department[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [diseaseData, setDiseaseData] = useState<Disease[]>([]);
+
+
+
+  const fetchDepartments = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/get-all-departments");
+      const data = await response.json();
+      setDepartmentData(data.departments);
+      
+    } catch (error) {
+      setError(true);
+      console.error(error);
+    } finally{
+      setLoading(false);
+    }
+  }
+  , [setDepartmentData]);
+
+  const fetchDiseases = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/get-all-diseases");
+      const data = await response.json();
+      setDiseaseData(data.data2);
+      
+    } catch (error) {
+      setError(true);
+      console.error(error);
+    } finally{
+      setLoading(false);
+    }
+  }
+  , [setDiseaseData]);
+
+
+
+  useEffect(() => {
+
+    fetchDepartments();
+    fetchDiseases();
+  
+  }, [fetchDepartments, fetchDiseases])
+
+
 
   const dummySkills = [
     {
@@ -95,8 +149,8 @@ export default function Home() {
   ];
   return (
     <>
-    <Header />
 
+   {/* <FormError message={departmentData.length === 0 ? "No departments found" : ""} /> */}
     <div className="bg-blue-100">
     <div className='pt-20 max-w-screen-xl flex relative flex-col justify-center items-center bg-blue-100 ml-40'>
 
@@ -189,9 +243,31 @@ export default function Home() {
       <h2 className="text-3xl font-bold mb-7 mt-10 text-blue-900">Find My Specialisation</h2>
       </div>
       <div className="flex flex-wrap gap-7 justify-center items-center max-w-screen-2xl my-2">
-        {entities.map((entity, index) => (
+
+
+        { departmentData &&
+          departmentData.map((department, index) => {
+            return (
+              <div key={index} className="flex flex-col items-center justify-center w-1/5">
+                <div className="bg-white rounded-lg p-4">
+                  <Image
+                    src={department.image || "/hospitals.jpg"}
+                    alt="Department"
+                    width={100}
+                    height={100}
+                  ></Image>
+                  <h2 className="text-gray-600">{department.name}</h2>
+                </div>
+              </div>
+            
+            )
+          })
+        }
+
+      
+        {/* {entities.map((entity, index) => (
           <EntityBox key={index} name={entity.name} photoUrl={entity.photoUrl} />
-        ))}
+        ))} */}
       </div>
       <div className="flex items-center justify-center m-5">
       <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">View All</button>

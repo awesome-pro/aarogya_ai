@@ -9,12 +9,12 @@ export function cn(...inputs: ClassValue[]) {
 
 export const authFormSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/ , 'Password must contain at least one uppercase letter, one lowercase letter, and one number'),
+  password: z.string().min(6),
   confirmPassword: z.string().min(6).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/ , 'Password must contain at least one uppercase letter, one lowercase letter, and one number').optional(),
-  phoneNumber: z.number().min(6000000000).max(9999999999).optional(),
+  phoneNumber: z.string(),
   age: z.number().min(0).optional(),
   address: z.string().optional(),
-  name: z.string().min(3).optional(),
+  name: z.string().min(3),
   image: z.string().optional(),
   bloodGroup: z.string().optional(),
   height: z.number().min(0).optional(),

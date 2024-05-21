@@ -9,7 +9,6 @@ import { useDebounceValue} from "usehooks-ts"
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
 import axios, { AxiosError } from 'axios'
-import { ApiResponse } from '@/types/ApiResponse'
 import { CardWrapper } from '@/components/CardWrapper'
 
 import {
@@ -29,6 +28,7 @@ import { Loader2 } from 'lucide-react';
 import { signInSchema } from '@/schemas/signInSchema';
 import { signIn } from 'next-auth/react';
 import { clear } from 'console';
+import { authFormSchema } from '@/lib/utils';
 
 
 
@@ -42,7 +42,7 @@ function SignIn() {
   const [success, setSuccess ] = useState<string | undefined>("")
 
   // zod implementation
-  const form = useForm<z.infer<typeof signInSchema>>({
+  const form = useForm<z.infer<typeof authFormSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: '',
@@ -51,7 +51,7 @@ function SignIn() {
     })
 
 
-  const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+  const onSubmit = async (data: z.infer<typeof authFormSchema>) => {
     setError('')
     setIsSubmitting(true)
 
@@ -59,7 +59,6 @@ function SignIn() {
     console.log("Sign In initiated...")
     
     const result = await signIn(
-    
       'credentials',
       {
         email: data.email,
@@ -102,20 +101,20 @@ function SignIn() {
 
     if(result?.url){
       console.log('Redirecting to: ', result.url)
+      router.push('/')
       window.location.href = '/'
     }
 
   }
 
   return (
-    <div className='h-full flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-700  '>
+    <div className='size-full min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-700  '>
     
     <CardWrapper 
         headerLabel="Sign In"
         backButtonLabel="Don't have an account?"
-        backButtonHref="/register"
+        backButtonHref="/sign-up"
         showSocial={true}
-        
        >
             <Form {...form}>
                 <form 
@@ -168,9 +167,9 @@ function SignIn() {
                     <FormError  message={error}/>
                     <FormSuccess message={success}/>
                     <Button
-                    className="w-full bg-blue-600"
-                    type="submit"
-                    disabled={isSubmitting}
+                      className="w-full bg-sky-500 hover:bg-sky-600 text-white rounded-lg"
+                      type="submit"
+                      disabled={isSubmitting}
                     >
                         {
                           isSubmitting ? (
@@ -182,6 +181,8 @@ function SignIn() {
                     </Button>
                 </form>
             </Form>
+            <FormError message={error}/>
+            <FormSuccess message={success}/>
        </CardWrapper>
     
     </div>

@@ -1,16 +1,45 @@
 import mongoose from "mongoose";
-import DepartmentModel from "@/models/utils/Department";
+import DepartmentModel, { Department } from "@/models/utils/Department";
 import dbConnect from "@/lib/dbConnect";
-import { NextApiRequest, NextApiResponse } from "next";
+
 
 
 export async function GET( request: Request ){
 
+    const { searchParams } = new URL(request.url);
+
+    const { name, specialty, doctor } = Object.fromEntries(searchParams);
+
     await dbConnect();
 
     try {
+
+        const searchConditions = [];
+        let departments = <Department[]>([]);
+
+        if (name) {
+            searchConditions.push({ name: { $regex: name, $options: "i" } });
+        }
+        if(specialty) {
+            searchConditions.push({ 
+                specialty: { $in: [new RegExp(specialty, "i")] }
+            });
+        }
+        if(doctor) {
+            searchConditions.push({
+                doctors: { $in: [new RegExp(doctor, "i")] }
+            });
+        }
+
         
-        const departments = await DepartmentModel.find({});
+        if(searchConditions.length === 0) {
+            departments = await DepartmentModel.find({});
+        } else {
+            departments = await DepartmentModel.find(
+                searchConditions.length > 0 ? { $or: searchConditions } : {}
+            );
+        }
+
         console.log("Departments: ", departments);
 
         if (!departments) {
@@ -34,17 +63,18 @@ export async function GET( request: Request ){
         const departmentDoctors = departments.map(department => department.doctors);
         console.log("Department Doctors: ", departmentDoctors.toString())
         
-        const departmentIds = departments.map(department => department._id);
-        console.log("Department Ids: ", departmentIds.toString())
+        // const departmentIds = departments.map(department => department._id);
+        // console.log("Department Ids: ", departmentIds.toString())
 
         return Response.json({
             success: true,
             data: departments,
-            departmentIds: departmentIds,
             departmentNames: departmentNames,
+            message: "Departments found successfully"
         },
         {
-            status: 200
+            status: 200,
+            statusText: "Departments Found"
         });
 
     } catch (error) {

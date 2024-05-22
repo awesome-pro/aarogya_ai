@@ -53,7 +53,7 @@ function DoctorCard(
                   <Button 
                   className="btn hover:z-10 hover:bg-sky-400 bg-sky-300"
                   onClick={() => {
-                    router.push(`/book-appointment?doctorId=${_id}`)
+                    router.push(`/book-doctor?doctorId=${_id}`)
                   }} 
                   >
                     Book Appointment

@@ -1,6 +1,6 @@
 "use client";
 
-import AppointmentCard from '@/components/AppointMentCard';
+import AppointmentCard from '@/components/AppointmentCard';
 import DoctorSkeleton from '@/components/DocorSkeleton';
 import { FormError } from '@/components/FormError';
 import { FormSuccess } from '@/components/FormSuccess';

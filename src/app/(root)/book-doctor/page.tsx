@@ -44,24 +44,30 @@ function BookAppointment() {
     const fetchPatientDetails = useCallback(async () => {
 
         setLoading(true)
-
         setError(null)
         setSuccess('')
 
-
         try {
 
+            if(!patient?._id) {
+                setError('An error occurred while fetching patient data: Patient not found')
+                setLoading(false)
+                return
+            }
+
             const response = await axios.get(`/api/get-patient-by-id?id=${patient?._id}`)
+
+            const responseJson = response.data
 
             if(response.status !== 200 || response.data.error) {
                 setError('An error occurred while fetching patient data: ' + response.data.error)
                 return
             }
 
-            const patientData = response.data
+            const patientData = responseJson.data
 
             console.log(patientData)
-            setSuccess('Patient data fetched successfully: ' + patientData?.name)
+            setSuccess('Patient data fetched successfully: ' + patientData.name)
             setPatientData(patientData)
                 
         } catch (error) {
@@ -84,22 +90,20 @@ function BookAppointment() {
             setSuccess('')
 
             try {
-    
-            const response = await fetch(`/api/get-doctor-by-id?id=${doctorId}`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                }
-            )
 
-            const responseJson = await response.json()
+            if(!doctorId) {
+                setError('An error occurred while fetching doctor data: Doctor not found')
+                setLoading(false)
+                return
+            }
+    
+            const response = await axios.get(`/api/get-doctor-by-id?id=${doctorId}`)
+
+            const responseJson = response.data
 
     
-            if(responseJson.status !== 200 || responseJson.data.error) {
-                setError('An error occurred while fetching doctor data: ' + responseJson.data.error)
+            if(response.status !== 200 ) {
+                setError('An error occurred while fetching doctor data: ' + responseJson.message)
                 return
             }
     
@@ -120,25 +124,30 @@ function BookAppointment() {
             } finally {
                 setLoading(false)
             }
-        }, [session, patient, setPatientData, setDoctorData])
+        }, [session, patient?._id, setPatientData, setDoctorData, doctorId])
 
 
 
     useEffect(() => {
 
-        fetchPatientDetails()
-        fetchDoctorDetails()
+        if(patient?._id) {
+            fetchPatientDetails()
+        }
+
+        if(doctorId) {
+            fetchDoctorDetails()
+        } 
 
     }
-    , [fetchPatientDetails, fetchDoctorDetails, session, patient])
+    , [fetchPatientDetails, fetchDoctorDetails, session, patient?._id, doctorId])
 
 
     const formSchema = appointmentFormSchema
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            patientName: patientData?.name,
-            patientEmail: patientData?.email,
+            patientName: patient?.name || "",
+            patientEmail: patient?.email || "",
             patientPhoneNumber: patientData?.phoneNumber,
             patientAge: patientData?.age,
             patientMedications: patientData?.medications,
@@ -212,6 +221,7 @@ function BookAppointment() {
                                             placeholder='Enter your name'
                                             description='Please enter your name'
                                             type='text'
+                                            value={patient?.name || ""}
                                         />
 
                                         <CustomAppointmentInput
@@ -221,6 +231,8 @@ function BookAppointment() {
                                             placeholder='Enter your email'
                                             description='Please enter your email'
                                             type='email'
+                                            value={patient?.email || ""}
+                                            disabled={true}
                                         />
 
                                         <CustomAppointmentInput
@@ -230,6 +242,7 @@ function BookAppointment() {
                                             placeholder='Enter your phone number'
                                             description='Please enter your phone number'
                                             type='tel'
+                                            value={patientData?.phoneNumber || ""}
                                         />
 
                                         <CustomAppointmentInput
@@ -239,6 +252,7 @@ function BookAppointment() {
                                             placeholder='Enter your address'
                                             description='Please enter your address'
                                             type='text'
+                                            value={patientData?.address || ""}
                                         />
 
                                         <CustomAppointmentInput
@@ -248,6 +262,7 @@ function BookAppointment() {
                                             placeholder='Enter your age'
                                             description='Please enter your age'
                                             type='number'
+                                            value={patientData?.age || 0}
                                         />
 
                                         {/* <CustomAppointmentInput
@@ -266,7 +281,7 @@ function BookAppointment() {
                                             placeholder='Enter your medications'
                                             description='Please enter your medications'
                                             type='text'
-
+                                            value={patientData?.medications || ""}
                                         />
 
                                         <CustomAppointmentInput
@@ -276,6 +291,7 @@ function BookAppointment() {
                                             placeholder='Enter your allergies'
                                             description='Please enter your allergies'
                                             type='text'
+                                            value={patientData?.allergies || ""}
                                         />
 
                                         <CustomAppointmentInput
@@ -285,7 +301,7 @@ function BookAppointment() {
                                             placeholder='Enter your blood group'
                                             description='Please enter your blood group'
                                             type='text'
-
+                                            value={patientData?.bloodGroup || ""}
                                         />
 
                                         <CustomAppointmentInput
@@ -295,6 +311,7 @@ function BookAppointment() {
                                             placeholder='Enter your diseases'
                                             description='Please enter your diseases'
                                             type='text'
+                                            value={patientData?.diseases || ""}
                                         />
 
                                         {/* <CustomAppointmentInput
@@ -341,7 +358,8 @@ function BookAppointment() {
                                             placeholder=''
                                             disabled={true}
                                             description='This is the Doctor Name'
-                                            type='text'                        
+                                            type='text'
+                                            value={doctorData?.name || ""}                        
                                         />
 
                                         <CustomAppointmentInput
@@ -351,20 +369,17 @@ function BookAppointment() {
                                             placeholder=''
                                             disabled={true}
                                             description='This is the Location of Appointment'
-                                            type='text'                        
-                                        />
-
-
-                                         
-
+                                            type='text'  
+                                            value={doctorData?.location || ""}                      
+                                        />                                         
                                     </div>
                                         
                                             <Button
-                                                type='submit'
-                                                className='px-4 py-2 bg-blue-500 rounded-3xl hover:bg-blue-600 text-white mb-10 my-8 w-48'
-                                                disabled={loading}
+                                            type='submit'
+                                            className='px-4 py-2 bg-blue-500 rounded-3xl hover:bg-blue-600 text-white mb-10 my-8 w-48'
+                                            disabled={loading}
                                             >
-                                                Book Appointment
+                                            Book Appointment
                                             </Button>
                                 </form>
                             </Form>
@@ -384,9 +399,6 @@ function BookAppointment() {
                 </div>
             )
         }
-
-
-        
     </div>
   )
 }

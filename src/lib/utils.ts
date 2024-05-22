@@ -83,3 +83,12 @@ export const appointmentFormSchema = z.object({
   doctorId: z.string().min(3),
   location: z.string().min(2).optional()
 })
+
+
+export const formatDate = (date: Date) => {
+  return `${date.getDate}-${date.getMonth}-${date.getFullYear}`
+}
+
+export const formatTime = (date: Date) => {
+  return `${date.getHours()}:${date.getMinutes()}`
+}

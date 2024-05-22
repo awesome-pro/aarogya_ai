@@ -22,11 +22,11 @@ const teamMembers = [
     role: 'Frontend Developer',
     image: 'https://res.cloudinary.com/dkddnw4le/image/upload/v1716118057/WhatsApp_Image_2024-05-19_at_3.59.30_PM_o26fhy.jpg',
   },
-  {
-    name: 'Daisy Lee',
-    role: 'Project Manager',
-    image: 'https://via.placeholder.com/150',
-  },
+  // {
+  //   name: 'Daisy Lee',
+  //   role: 'Project Manager',
+  //   image: 'https://via.placeholder.com/150',
+  // },
 ];
 
 

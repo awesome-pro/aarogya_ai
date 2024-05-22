@@ -100,7 +100,7 @@ const PatientProfilePage: React.FC = () => {
       {
         success && <FormSuccess message={success} />
       }
-    
+   
 
       <div className="py-20 bg-white">
         <div className="rounded-lg p-6 flex flex-col">
@@ -114,45 +114,47 @@ const PatientProfilePage: React.FC = () => {
             </div>
           </section>
 
-          <section className="mt-10">
-            <div className="flex justify-center items-center my-5">
+          <div className="flex justify-center items-center my-5">
               <h1 className="text-4xl text-blue-500 font-extrabold">Medical Details</h1>
             </div>
 
+          <section className="mt-10 grid grid-cols-2 m-4 gap-5">
+
             <div className="mb-4 border border-black p-5">
-              <h3 className="text-2xl font-bold mb-2 text-blue-700">Height</h3>
-              <p className="text-xl">{patientData?.height}</p>
+              <h3 className="text-xl font-bold mb-2 text-blue-700">Height</h3>
+              <p className="text-lg">{patientData?.height}</p>
             </div>
 
             <div className="mb-4 border border-black p-5">
-              <h3 className="text-2xl font-bold mb-2 text-blue-700">Weight</h3>
-              <p className="text-xl">{patientData?.weight}</p>
+              <h3 className="text-xl font-bold mb-2 text-blue-700">Weight</h3>
+              <p className="text-lg">{patientData?.weight}</p>
             </div>
 
             <div className="mb-4 border border-black p-5">
-              <h3 className="text-2xl font-bold mb-2 text-blue-700">Blood Group</h3>
-              <p className="text-xl">{patientData?.bloodGroup}</p>
+              <h3 className="text-xl font-bold mb-2 text-blue-700">Blood Group</h3>
+              <p className="text-lg">{patientData?.bloodGroup}</p>
             </div>
 
             <div className="mb-4 border border-black p-5">
-              <h3 className="text-2xl font-bold mb-2 text-blue-700">Allergies</h3>
-              <p className="text-xl">{patientData?.allergies}</p>
+              <h3 className="text-xl font-bold mb-2 text-blue-700">Allergies</h3>
+              <p className="text-lg">{patientData?.allergies}</p>
             </div>
 
             <div className="mb-4 border border-black p-5">
+
               <h3 className="text-2xl font-bold mb-2 text-blue-700">Chronic Conditions</h3>
               <p className="text-xl">{patientData?.diseases}</p>
             </div>
 
             <div className="mb-4 border border-black p-5">
-              <h3 className="text-2xl font-bold mb-2 text-blue-700">Medications Currently Taking</h3>
-              <p className="text-xl">{patientData?.medications}</p>
+              <h3 className="text-xl font-bold mb-2 text-blue-700">Medications Currently Taking</h3>
+              <p className="text-lg">{patientData?.medications}</p>
             </div>
 
-            <div className="mb-4 border border-black p-5">
-              <h3 className="text-2xl font-bold mb-2 text-blue-700">Medical History</h3>
+            {/* <div className="mb-4 border border-black p-5">
+              <h3 className="text-xl font-bold mb-2 text-blue-700">Medical History</h3>
               <Link href="/" className="hover:text-red-600 text-xl">Click here</Link>
-            </div>
+            </div> */}
           </section>
         </div>
 

@@ -70,7 +70,7 @@ const EditProfile: React.FC = () => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <h1 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">Edit Patient Profile</h1>

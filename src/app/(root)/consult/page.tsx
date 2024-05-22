@@ -35,7 +35,7 @@ export default function Home() {
       }, {
         headers: {
           'content-type': 'application/json',
-          'X-RapidAPI-Key': process.env.RAPID_API_KEY,
+          'X-RapidAPI-Key': "a74f98ca07msh13a3e05599ca2aep1dbfd2jsnd0b1eab05732",
           'X-RapidAPI-Host': 'chatgpt-best-price.p.rapidapi.com'
         }
       });

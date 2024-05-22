@@ -143,6 +143,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface Patient {
+  data(data: any): unknown;
   name: string;
   email: string;
   gender: string;

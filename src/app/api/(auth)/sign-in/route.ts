@@ -51,7 +51,8 @@ export async function POST(request: Request){
         return Response.json(
             {
                 success: true,
-                message: "Sign In Successful"
+                message: "Sign In Successful",
+                data: existingPatientbyEmail
             },
             {
                 status: 200

@@ -1,33 +1,57 @@
 "use client";
-// use client
+
 import React, { useState } from 'react';
 import Navbar from '@/components/Header';
 import Footer from '@/components/Footer';
 import FAQ from '@/components/Faq';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
-const EditProfile: React.FC = () => {
-  // Example data, in a real app this could come from an API or context
-  const [patientData, setPatientData] = useState({
-    profileImage: "",
-    name: 'John Doe',
-    age: 30,
-    email: 'johndoe@example.com',
-    contact: '+1234567890',
-    address: '123 Main St, Anytown, USA',
-    gender: 'Male',
-    dateOfBirth: '1993-01-01',
-    bloodGroup: 'O+',
-    height: '180 cm',
-    weight: '75 kg',
-    allergies: 'None',
-    medicalHistory: 'No significant medical history',
-    currentMedications: 'None',
+interface PatientData {
+  name: string;
+  age: number;
+  email: string;
+  contact: string;
+  address: string;
+  gender: string;
+  bloodGroup: string;
+  height: string;
+  weight: string;
+  allergies: string;
+  currentMedications: string;
+  emergencyContact: {
+    name: string;
+    relation: string;
+    phone: string;
+  };
+}
+
+interface EditProfileProps {
+  patientData: PatientData;
+}
+
+const EditProfile: React.FC<EditProfileProps> = ({ patientData: initialData }) => {
+  const [patientData, setPatientData] = useState<PatientData>({
+    name: initialData?.name || '',
+    age: initialData?.age || 0,
+    email: initialData?.email || '',
+    contact: initialData?.contact || '',
+    address: initialData?.address || '',
+    gender: initialData?.gender || '',
+    bloodGroup: initialData?.bloodGroup || '',
+    height: initialData?.height || '',
+    weight: initialData?.weight || '',
+    allergies: initialData?.allergies || '',
+    currentMedications: initialData?.currentMedications || '',
     emergencyContact: {
-      name: 'Jane Doe',
-      relation: 'Spouse',
-      phone: '+0987654321',
+      name: initialData?.emergencyContact?.name || '',
+      relation: initialData?.emergencyContact?.relation || '',
+      phone: initialData?.emergencyContact?.phone || '',
     },
   });
+
+  const router = useRouter();
+  // const { id } = router.query;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -48,29 +72,19 @@ const EditProfile: React.FC = () => {
     });
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPatientData({
-          ...patientData,
-          profileImage: reader.result as string,
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission, for example, send the updated data to an API
-    console.log('Updated patient data:', patientData);
+    try {
+      await axios.put(`/api/patient`, patientData);
+      console.log('Patient data updated successfully');
+      // Optionally, you can redirect the user or show a success message
+    } catch (error) {
+      console.error('Error updating patient data:', error);
+    }
   };
 
   return (
     <div>
-      {/* <Navbar /> */}
       <div className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <h1 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">Edit Patient Profile</h1>
@@ -78,147 +92,151 @@ const EditProfile: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">Basic Details</h2>
-                <div className="flex items-center">
-                  <img src={patientData.profileImage} alt="" className="bg-black w-40 h-40 rounded-full" />
+                <div>
+                  <label className="block text-gray-700">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={patientData.name}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
                 </div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-                <input
-                  type="text"
-                  name="name"
-                  value={patientData.name}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Name"
-                />
-                <input
-                  type="number"
-                  name="age"
-                  value={patientData.age}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Age"
-                />
-                <input
-                  type="email"
-                  name="email"
-                  value={patientData.email}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Email"
-                />
-                <input
-                  type="text"
-                  name="contact"
-                  value={patientData.contact}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Contact"
-                />
-                <input
-                  type="text"
-                  name="address"
-                  value={patientData.address}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Address"
-                />
-                <input
-                  type="text"
-                  name="gender"
-                  value={patientData.gender}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Gender"
-                />
-                <input
-                  type="date"
-                  name="dateOfBirth"
-                  value={patientData.dateOfBirth}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Date of Birth"
-                />
+                <div>
+                  <label className="block text-gray-700">Age</label>
+                  <input
+                    type="number"
+                    name="age"
+                    value={patientData.age}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={patientData.email}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700">Contact</label>
+                  <input
+                    type="text"
+                    name="contact"
+                    value={patientData.contact}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700">Address</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={patientData.address}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700">Gender</label>
+                  <input
+                    type="text"
+                    name="gender"
+                    value={patientData.gender}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
               </div>
               <div className="space-y-4">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">Medical Details</h2>
-                <input
-                  type="text"
-                  name="bloodGroup"
-                  value={patientData.bloodGroup}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Blood Group"
-                />
-                <input
-                  type="text"
-                  name="height"
-                  value={patientData.height}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Height"
-                />
-                <input
-                  type="text"
-                  name="weight"
-                  value={patientData.weight}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Weight"
-                />
-                <textarea
-                  name="allergies"
-                  value={patientData.allergies}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Allergies"
-                ></textarea>
-                <textarea
-                  name="medicalHistory"
-                  value={patientData.medicalHistory}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Medical History"
-                ></textarea>
-                <textarea
-                  name="currentMedications"
-                  value={patientData.currentMedications}
-                  onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Current Medications"
-                ></textarea>
+                <div>
+                  <label className="block text-gray-700">Blood Group</label>
+                  <input
+                    type="text"
+                    name="bloodGroup"
+                    value={patientData.bloodGroup}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700">Height</label>
+                  <input
+                    type="text"
+                    name="height"
+                    value={patientData.height}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700">Weight</label>
+                  <input
+                    type="text"
+                    name="weight"
+                    value={patientData.weight}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700">Allergies</label>
+                  <textarea
+                    name="allergies"
+                    value={patientData.allergies}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  ></textarea>
+                </div>
+                <div>
+                  <label className="block text-gray-700">Current Medications</label>
+                  <textarea
+                    name="currentMedications"
+                    value={patientData.currentMedications}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  ></textarea>
+                </div>
               </div>
             </div>
             <div>
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">Emergency Contact</h2>
-              <input
-                type="text"
-                name="name"
-                value={patientData.emergencyContact.name}
-                onChange={handleEmergencyContactChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                placeholder="Name"
-              />
-              <input
-                type="text"
-                name="relation"
-                value={patientData.emergencyContact.relation}
-                onChange={handleEmergencyContactChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                placeholder="Relation"
-              />
-              <input
-                type="text"
-                name="phone"
-                value={patientData.emergencyContact.phone}
-                onChange={handleEmergencyContactChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                placeholder="Phone"
-              />
+              <div>
+                <label className="block text-gray-700">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={patientData.emergencyContact.name}
+                  onChange={handleEmergencyContactChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Relation</label>
+                <input
+                  type="text"
+                  name="relation"
+                  value={patientData.emergencyContact.relation}
+                  onChange={handleEmergencyContactChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Phone</label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={patientData.emergencyContact.phone}
+                  onChange={handleEmergencyContactChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
             </div>
             <div className="text-center">
               <button

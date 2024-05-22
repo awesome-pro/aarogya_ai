@@ -1,10 +1,11 @@
-import { Doctor } from '@/models/Doctor'
 import Image from 'next/image'
 import React from 'react'
+import { Button } from './ui/button';
+import { redirect, useRouter } from 'next/navigation';
 
 
 interface DoctorCardProps {
-    _id?: string;
+    _id: string;
     name: string;
     location: string;
     specialty: string[];
@@ -19,11 +20,15 @@ interface DoctorCardProps {
 function DoctorCard(
     {  _id, name, location, specialty, experience, availability, consultationFee, hospital, bio, image } : DoctorCardProps
 ) {
+
+  const router = useRouter();
+
+  
   return (
     <div className='p-1 w-1/2'>
         
         <div key={name} className="cardbox ">
-            <div className="relative">
+            <div className="relative w-[200px] ">
               <Image 
               src={image || '/icons/doctor_placeholder.png'} 
               alt="background" 
@@ -45,14 +50,18 @@ function DoctorCard(
                 <p className="text-gray-500">Consultation fee at clinic</p>
                 <div className="bookingbox">
                   <b className="text-green-500 pb-4">{availability}</b>
-                  <button className="btn hover:z-10 hover:bg-sky-500" >Book Appointment</button>
+                  <Button 
+                  className="btn hover:z-10 hover:bg-sky-400 bg-sky-300"
+                  onClick={() => {
+                    router.push(`/book-appointment?doctorId=${_id}`)
+                  }} 
+                  >
+                    Book Appointment
+                  </Button>
                 </div>
               </div>
               <br />
               <hr />
-              {/* {isDropDown ?
-              <Dropdown />  : " "
-              } */}
             </span>
           </div>
     </div>

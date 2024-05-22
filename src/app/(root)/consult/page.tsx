@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, MouseEvent } from "react";
 import OpenAI from "openai";
 import axios from 'axios';
 

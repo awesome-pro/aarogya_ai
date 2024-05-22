@@ -13,8 +13,8 @@ import Image from "next/image"
         <Image
         src={"/images/faq.svg"}
         alt="FAQ"
-        width={600}
-        height={400}
+        width={500}
+        height={500}
         />
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">

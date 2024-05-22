@@ -7,7 +7,7 @@ export interface Doctor extends Document {
     password: string;
     phoneNumber?: number;
     department: string;
-    speciality?: string[];
+    specialty?: string[];
     hospital?: string;
     location: string;
     appointmentIds?: String[];
@@ -16,6 +16,7 @@ export interface Doctor extends Document {
     consultationFee?: number;
     availability?: string;
     bio?: string;
+    rating?: number;
 }
 
 const DoctorSchema = new monggose.Schema<Doctor>({
@@ -24,7 +25,7 @@ const DoctorSchema = new monggose.Schema<Doctor>({
     password: { type: String, required: true },
     phoneNumber: { type: Number, required: false },
     department: { type: String, required: true },
-    speciality: [{ type: String, required: false }],
+    specialty: [{ type: String, required: false }],
     hospital: { type: String, required: false },
     location: { type: String, required: true },
     appointmentIds: [
@@ -37,6 +38,7 @@ const DoctorSchema = new monggose.Schema<Doctor>({
     consultationFee: { type: Number, required: false },
     availability: { type: String, required: false },
     bio: { type: String, required: false },
+    rating: { type: Number, required: false }
 });
 
 const DoctorModel = monggose.models && monggose.models.Doctor || monggose.model<Doctor>('Doctor', DoctorSchema);

@@ -1,16 +1,24 @@
 
-import { CarouselPlugin } from '@/components/Carousel'
-import { DropdownMenuRadioGroupDemo } from '@/components/CustomDropDown'
+
+
+import CustomCarousel from '@/components/Carousel1'
+import { Chatbot } from '@/components/ChatBot'
 import DoctorCard from '@/components/DoctorCard'
 import FAQ from '@/components/Faq'
+import FindDoctor from '@/components/FindDoctor'
 import React from 'react'
 
 function Test() {
   return (
     <div>
-      {/* <DropdownMenuRadioGroupDemo /> */}
-      {/* <CarouselPlugin /> */}
-      <FAQ />
+     
+      {/* <CustomCarousel category="Carousel1" /> */}
+      {/* <FAQ /> */}
+
+      {/* <Chatbot/> */}
+      <FindDoctor />
+     
+     
       
     </div>
   )

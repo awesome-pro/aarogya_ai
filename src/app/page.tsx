@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import CustomCarousel from "@/components/Carousel1";
 import FAQ from "@/components/Faq";
 import Footer from "@/components/Footer";
 import { FormError } from "@/components/FormError";
@@ -17,27 +18,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
-const EntityBox = ({ name, photoUrl }: {
-    name: string;
-    photoUrl: string;
-    
-}) => {
-  return (
-    <div className="w-1/5">
-    <div className=" mb-6 bg-white w-2/3">
-      <img src={photoUrl} alt={name} className="w-full h-20 object-cover rounded-lg mb-2" />
-      <div className="text-center text-gray-400">{name}</div>
-    </div>
-    </div>
-  );
-};
 
 export default function Home() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentIndex2, setCurrentIndex2] = useState(0);
-  
 
-  
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [search, setSearch] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -139,6 +123,8 @@ export default function Home() {
   }
   , [setDoctorData, setErrorMessage, setSuccessMessage]);
 
+  
+
 
   useEffect(() => {
 
@@ -174,17 +160,8 @@ export default function Home() {
     // Add more dummy data as needed
   ];
 
-  let displayedSkills = dummySkills.slice(currentIndex2, currentIndex2 + 3);
 
   let displayedDoctors = dummySkills.slice(currentIndex, currentIndex + 3);
-
-  const handleArrow = (direction: string) => {
-    if (direction === "left") {
-      setCurrentIndex2((prevIndex) => (prevIndex === 0 ? dummySkills.length - 1 : prevIndex - 1));
-    } else {
-      setCurrentIndex2((prevIndex) => (prevIndex === dummySkills.length - 1 ? 0 : prevIndex + 1));
-    }
-  };
 
   const handlArrowClick = (direction : string) => {
     if (direction === "left") {
@@ -303,32 +280,25 @@ export default function Home() {
       <div className="max-w-screen-lg p-4 bg-white">
       <div className="flex justify-center items-center p-5">
       </div>
-      <div className="flex items-center justify-center gap-5 pb-4">
-      <FontAwesomeIcon icon={faArrowLeft} onClick={() => handleArrow("left")} className="text-gray-600 p-3 text-lg hover:text-black rounded-full bg-white" />
-      <FontAwesomeIcon icon={faArrowRight} onClick={() => handleArrow("right")} className="text-gray-600 p-3 text-lg hover:text-black rounded-full bg-white" />
-      </div>
-     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ">
-     {displayedSkills.map((skill) => (
-        <div key={skill.id} className="border h-52 w-80 border-gray-300 p-4 rounded-3xl bg-white flex flex-col justify-center items-center">
-          <img src={skill.image} alt='/' className='h-full w-full' />
-        </div>
-      ))}
-      </div>
+
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ">
+              <CustomCarousel category="Carousel1" />
+          </div>
       </div>
       </div>
 
       <div className="specialization-box flex flex-col bg-blue-50">
         <div className="flex items-center justify-center">
-      <h2 className="text-3xl font-bold mb-7 mt-10 text-blue-900">Find My Specialisation</h2>
+      <h2 className="text-3xl font-bold mb-7 mt-10 text-blue-900">Find By Specialisation</h2>
       </div>
       <div className="flex flex-wrap gap-7 justify-center items-center max-w-screen-2xl my-2">
-
 
         { departmentData &&
           departmentData.map((department, index) => {
             return (
               <div key={index} className="flex flex-col items-center justify-center w-1/5">
-                <div className="bg-white rounded-lg p-4">
+                <div className="bg-white rounded-xl p-4">
                   <Image
                     src={department.image || "/hospitals.jpg"}
                     alt="Department"
@@ -343,13 +313,9 @@ export default function Home() {
           })
         }
 
-      
-        {/* {entities.map((entity, index) => (
-          <EntityBox key={index} name={entity.name} photoUrl={entity.photoUrl} />
-        ))} */}
       </div>
       <div className="flex items-center justify-center m-5">
-      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">View All</button>
+        <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">View All</button>
       </div>
     </div> 
 

@@ -105,6 +105,7 @@ const PatientProfilePage: React.FC = () => {
               <p className="text-black text-xl"><span className="font-bold text-blue-700">Contact Number: </span>{patientData?.phoneNumber}</p>
               <p className="text-black text-xl"><span className="font-bold text-blue-700">Age: </span>{patientData?.age}</p>
               <p className="text-black text-xl"><span className="font-bold text-blue-700">Address: </span>{patientData?.address}</p>
+              <p className="text-black text-xl"><span className="font-bold text-blue-700">Gender: </span>{patientData?.gender}</p>
             </div>
           </section>
 
@@ -134,11 +135,11 @@ const PatientProfilePage: React.FC = () => {
               <p className="text-lg">{patientData?.allergies}</p>
             </div>
 
-            <div className="mb-4 border border-black p-5">
+            {/* <div className="mb-4 border border-black p-5">
 
               <h3 className="text-2xl font-bold mb-2 text-blue-700">Chronic Conditions</h3>
               <p className="text-xl">{patientData?.diseases}</p>
-            </div>
+            </div> */}
 
             <div className="mb-4 border border-black p-5">
               <h3 className="text-xl font-bold mb-2 text-blue-700">Medications Currently Taking</h3>

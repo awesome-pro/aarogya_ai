@@ -15,9 +15,11 @@ interface CustomAppointmentInput {
   description: string,
   disabled?: boolean,
   type: "email" | "password" | "text" | "number" | "tel" | "file" | "date",
+  value?: string | number | readonly string[] | undefined | null,
+  readonly?: boolean,
 }
 
-function CustomAppointmentInput({ control, name, label, placeholder, description, disabled, type }: CustomAppointmentInput) {
+function CustomAppointmentInput({ control, name, label, placeholder, description, disabled, type, value, readonly }: CustomAppointmentInput) {
   return (
     <FormField
       control={control}
@@ -35,7 +37,10 @@ function CustomAppointmentInput({ control, name, label, placeholder, description
                 className='input-class'
                 {...field}
                 type={type}
-                value={field.value}
+                value={
+                  value ? value : field.value
+                }
+                readOnly={readonly}
               />
             </FormControl>
             <FormDescription className='mt-2'>

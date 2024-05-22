@@ -14,6 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { FormError } from '@/components/FormError';
 import { FormSuccess } from '@/components/FormSuccess';
 import { Button } from '@/components/ui/button';
+import ProfileSkeleton from '@/components/ProfileSkeleton';
 
 
 const PatientProfilePage: React.FC = () => {
@@ -77,14 +78,7 @@ const PatientProfilePage: React.FC = () => {
     return (
     <div className='flex items-center  gap-4 mb-11'>
 
-      <Skeleton className="size-60 rounded-full" />
-      <div className='flex flex-col items-center justify-center'>
-        <Skeleton className="h-6 w-1/3" />
-        <Skeleton className="h-10 w-1/3" />
-        <Skeleton className="h-8 w-1/3" />
-      </div>
-      
-
+      <ProfileSkeleton />
     </div>)
   }
 
@@ -150,11 +144,6 @@ const PatientProfilePage: React.FC = () => {
               <h3 className="text-xl font-bold mb-2 text-blue-700">Medications Currently Taking</h3>
               <p className="text-lg">{patientData?.medications}</p>
             </div>
-
-            {/* <div className="mb-4 border border-black p-5">
-              <h3 className="text-xl font-bold mb-2 text-blue-700">Medical History</h3>
-              <Link href="/" className="hover:text-red-600 text-xl">Click here</Link>
-            </div> */}
           </section>
         </div>
 

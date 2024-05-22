@@ -6,6 +6,7 @@ import { Chatbot } from '@/components/ChatBot'
 import DoctorCard from '@/components/DoctorCard'
 import FAQ from '@/components/Faq'
 import FindDoctor from '@/components/FindDoctor'
+import ProfileSkeleton from '@/components/ProfileSkeleton'
 import React from 'react'
 
 function Test() {
@@ -16,7 +17,7 @@ function Test() {
       {/* <FAQ /> */}
 
       {/* <Chatbot/> */}
-      <FindDoctor />
+    <ProfileSkeleton/>
      
      
       

@@ -246,7 +246,7 @@ export default function FindDoctor() {
                 Consult AI
               </Button>
               </Link>
-          </div>
+      </div>
        
 
         <div  className="mt-10">
@@ -281,7 +281,7 @@ export default function FindDoctor() {
             <DoctorSkeleton />
           </div>
         ) : (
-          <div>
+          <div className="bg-whitesmoke">
               {doctorData &&  doctorData.map((doctor) => (
                   <div key={doctor.name} className="flex flex-col gap-4 items-center justify-center w-full">
                       <DoctorCard

@@ -35,6 +35,7 @@ function CustomAppointmentInput({ control, name, label, placeholder, description
                 className='input-class'
                 {...field}
                 type={type}
+                value={field.value}
               />
             </FormControl>
             <FormDescription className='mt-2'>

@@ -9,14 +9,15 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET( request: NextRequest ){
 
     const { searchParams } = new URL(request.url, "http://localhost:3000");
-    const { patientId } = Object.fromEntries(searchParams);
+    const { patientId, doctorId } = Object.fromEntries(searchParams);
 
     console.log("id: ", patientId)
+    console.log("doctorId: ", doctorId)
 
-    if(!patientId){
+    if(!patientId && !doctorId){
         return NextResponse.json({
             status: 400,
-            message: "Bad Request"
+            message: "Invalid request. Please provide patientId or doctorId"
         },
         {
             status: 400
@@ -27,7 +28,15 @@ export async function GET( request: NextRequest ){
 
     try {
 
-        const appointments = await AppointmentModel.find({ patientId: patientId }).exec();
+        const appointments = await AppointmentModel.find(
+            { 
+                $or: [
+                    { doctorId: doctorId },
+                    { patientId: patientId }
+                ]
+            }
+        ).exec();
+
         console.log("Appointments: ", appointments);
 
         if(appointments.length === 0 || !appointments){
@@ -60,5 +69,5 @@ export async function GET( request: NextRequest ){
         {
             status: 500
         })
-        }
+    }
 }

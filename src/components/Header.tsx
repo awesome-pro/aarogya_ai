@@ -2,10 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "./ui/button"
-import { navbarLinks } from "@/constants"
 import Image from "next/image"
-import { cn } from "@/lib/utils"
-import { usePathname } from "next/navigation"
 import { useSession } from "next-auth/react"
 
 
@@ -37,7 +34,7 @@ const Header = () => {
           <Link href="/find-doctor">
             <Button className=" hover:underline">Find Doctor</Button>
           </Link>
-          <Link href="/hospitals">
+          <Link href="/my-appointments">
             <Button className=" hover:underline">Appointments</Button>
           </Link>
           <Link href="/facilities">

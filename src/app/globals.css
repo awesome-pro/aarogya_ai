@@ -413,7 +413,7 @@
   }
 
   .cardbox {
-    @apply bg-whitesmoke flex rounded-[20px] mt-[25px] shadow-[10px_rgb(155,88,88)];
+    @apply bg-white flex rounded-[20px] mt-[25px] shadow-[10px_rgb(155,88,88)];
   }
 
   .cardbox:hover {

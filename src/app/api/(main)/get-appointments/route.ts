@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-import PatientModel from "@/models/Patient";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import AppointmentModel from "@/models/utils/Appointment";
@@ -8,14 +6,15 @@ import AppointmentModel from "@/models/utils/Appointment";
 export async function GET( request: NextRequest ){
 
     const { searchParams } = new URL(request.url, "http://localhost:3000");
-    const { patientId } = Object.fromEntries(searchParams);
+    const { patientId, doctorId } = Object.fromEntries(searchParams);
 
-    console.log("id: ", patientId)
+    console.log("patiendId: ", patientId)
+    console.log("doctorId: ", doctorId)
 
-    if(!patientId){
+    if(!patientId && !doctorId){
         return NextResponse.json({
             status: 400,
-            message: "Bad Request"
+            message: "Invalid request. Please provide patientId or doctorId"
         },
         {
             status: 400
@@ -26,7 +25,15 @@ export async function GET( request: NextRequest ){
 
     try {
 
-        const appointments = await AppointmentModel.find({ endTimestamp: { $gte: new Date() }, patientId: patientId }).exec();
+        const appointments = await AppointmentModel.find(
+            { 
+                endTimestamp: { $gte: new Date() },
+                $or: [
+                    { doctorId: doctorId },
+                    { patientId: patientId }
+                ]
+             }).exec();
+
         console.log("Appointments: ", appointments);
 
         if(appointments.length === 0 || !appointments){
@@ -57,7 +64,8 @@ export async function GET( request: NextRequest ){
             message: "Internal Server Error"
         },
         {
-            status: 500
+            status: 500,
+            statusText: "Internal Server Error"
         })
     }
 }

@@ -27,7 +27,7 @@ function DoctorCard(
   return (
     <div className='p-1 w-1/2'>
         
-        <div key={name} className="cardbox ">
+        <div key={name} className="cardbox">
             <div className="relative w-[200px] ">
               <Image 
               src={image || '/icons/doctor_placeholder.png'} 
@@ -51,7 +51,7 @@ function DoctorCard(
                 <div className="bookingbox">
                   <b className="text-green-500 pb-4">{availability}</b>
                   <Button 
-                  className="btn hover:z-10 hover:bg-sky-400 bg-sky-300"
+                  className="btn hover:z-10 hover:bg-sky-600 bg-sky-400 rounded-3xl text-white px-4 py-2 mt-2"
                   onClick={() => {
                     router.push(`/book-doctor?doctorId=${_id}`)
                   }} 

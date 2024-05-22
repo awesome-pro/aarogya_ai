@@ -17,6 +17,10 @@ import { Doctor } from "@/models/Doctor"
 import { Input } from "./ui/input"
 import DoctorCard from "./DoctorCard"
 import DoctorSkeleton from "./DocorSkeleton"
+import { FormError } from "./FormError"
+import { FormSuccess } from "./FormSuccess"
+import Link from "next/link"
+import Image from "next/image"
 
 export default function FindDoctor() {
   
@@ -141,9 +145,8 @@ export default function FindDoctor() {
   return (
     <div className="">
       {loading && <p>Loading...</p>}
-      {errorMessage && <p className="w-full bg-red-200 text-red-600 p-4 ">{errorMessage}</p>}
-      {successMessage && <p className="bg-teal-200 text-teal-600 p-3 w-full">{successMessage}</p>}
-
+      {errorMessage && <FormError message={errorMessage}/>}
+      { successMessage && <FormSuccess message={successMessage}/>}
       <div className=" flex  gap-12 items-center justify-center px-8 py-6 bg-whitesmoke ">
 
            <div className="flex gap-2 items-center">
@@ -226,21 +229,43 @@ export default function FindDoctor() {
             <Button
             variant={"default"}
             onClick={fetchDoctors}
-            className="w-36 bg-sky-400 text-white rounded-xl hover:bg-sky-500"
+            className="w-36 bg-sky-400 text-white rounded-3xl hover:bg-sky-500"
             >
             Search Doctors
             </Button>
+
       </div>
      
+      <div className="flex items-center gap-3 justify-end w-full bg-blue-100 py-4 px-4">
+              <p>Could'nt find?</p>
+             <Link href="/consult-ai">
+              <Button 
+              variant={"default"}
+              className="w-36 bg-sky-400 text-white rounded-3xl hover:bg-sky-500"
+              >
+                Consult AI
+              </Button>
+              </Link>
+          </div>
        
 
         <div  className="mt-10">
 
           {
             doctorData.length === 0 ? (
-              <h1 className="text-2xl  font-bold text-blue-600">
+              <div className="flex flex-col gap-2 items-center justify-center">
+                <h1 className="text-2xl  font-bold text-blue-600">
                   Use Filters to Find Doctors 
-              </h1>
+                </h1>
+
+                <Image
+                  src="/images/doctor-search.jpeg"
+                  alt="Doctor Placeholder"
+                  width={400}
+                  height={400}
+                  className="rounded-xl mb-6"
+                />
+              </div>
             ) : (
               <h1 className="text-2xl  font-bold text-blue-600">
                   Doctor's List

@@ -16,6 +16,7 @@ import { Disease } from "@/models/Disease"
 import { Doctor } from "@/models/Doctor"
 import { Input } from "./ui/input"
 import DoctorCard from "./DoctorCard"
+import DoctorSkeleton from "./DocorSkeleton"
 
 export default function FindDoctor() {
   
@@ -143,114 +144,138 @@ export default function FindDoctor() {
       {errorMessage && <p className="w-full bg-red-200 text-red-600 p-4 ">{errorMessage}</p>}
       {successMessage && <p className="bg-teal-200 text-teal-600 p-3 w-full">{successMessage}</p>}
 
-      <div className=" flex  gap-8 items-center justify-center bg-white px-8 py-6 ">
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="rounded-xl w-32">{selectedDepartment}</Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>Departments</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup
-                    value={selectedDepartment}
-                    onValueChange={setSelectedDepartment}
-                >
-                    {departmentData.map((department) => (
-                    <DropdownMenuRadioItem
-                        key={department?.name}
-                        value={department.name}
-                    >
-                        {department.name || "Select"}
-                    </DropdownMenuRadioItem>
-                    ))}
-                </DropdownMenuRadioGroup>
-                </DropdownMenuContent>
-            </DropdownMenu>
+      <div className=" flex  gap-12 items-center justify-center px-8 py-6 bg-whitesmoke ">
 
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                <Button variant="outline">{selectedDisease}</Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>Disesase</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup
-                    value={selectedDepartment}
-                    onValueChange={setSelectedDisease}
-                >
-                    {diseaseData.map((disease) => (
-                    <DropdownMenuRadioItem
-                        key={disease?.name}
-                        value={disease.name}
-                    >
-                        {disease.name || "Select"}
-                    </DropdownMenuRadioItem>
-                    ))}
-                </DropdownMenuRadioGroup>
-                </DropdownMenuContent>
-            </DropdownMenu>
+           <div className="flex gap-2 items-center">
+              <h1>Department</h1>
+              <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="rounded-xl w-32">{selectedDepartment}</Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                  <DropdownMenuLabel>Departments</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuRadioGroup
+                      value={selectedDepartment}
+                      onValueChange={setSelectedDepartment}
+                  >
+                      {departmentData.map((department) => (
+                      <DropdownMenuRadioItem
+                          key={department?.name}
+                          value={department.name}
+                      >
+                          {department.name || "Select"}
+                      </DropdownMenuRadioItem>
+                      ))}
+                  </DropdownMenuRadioGroup>
+                  </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
 
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                <Button variant="outline">{selectedLocation}</Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>Location</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup
-                    value={selectedLocation}
-                    onValueChange={setSelectedLocation}
-                >
-                    {locationData.map((location) => (
-                    <DropdownMenuRadioItem
-                        key={location}
-                        value={location}
-                    >
-                        {location || "Select"}
-                    </DropdownMenuRadioItem>
-                    ))}
-                </DropdownMenuRadioGroup>
-                </DropdownMenuContent>
-            </DropdownMenu>
+            <div className="flex gap-2 items-center">
+              <h1>Disease</h1>
+              <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                  <Button variant="outline">{selectedDisease}</Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                  <DropdownMenuLabel>Disesase</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuRadioGroup
+                      value={selectedDepartment}
+                      onValueChange={setSelectedDisease}
+                  >
+                      {diseaseData.map((disease) => (
+                      <DropdownMenuRadioItem
+                          key={disease?.name}
+                          value={disease.name}
+                      >
+                          {disease.name || "Select"}
+                      </DropdownMenuRadioItem>
+                      ))}
+                  </DropdownMenuRadioGroup>
+                  </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            <div className="flex gap-2 items-center">
+              <h1>Location</h1>
+              <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                  <Button variant="outline">{selectedLocation}</Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                  <DropdownMenuLabel>Location</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuRadioGroup
+                      value={selectedLocation}
+                      onValueChange={setSelectedLocation}
+                  >
+                      {locationData.map((location) => (
+                      <DropdownMenuRadioItem
+                          key={location}
+                          value={location}
+                      >
+                          {location || "Select"}
+                      </DropdownMenuRadioItem>
+                      ))}
+                  </DropdownMenuRadioGroup>
+                  </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <Button
+            variant={"default"}
+            onClick={fetchDoctors}
+            className="w-36 bg-sky-400 text-white rounded-xl hover:bg-sky-500"
+            >
+            Search Doctors
+            </Button>
       </div>
      
-        {selectedDisease && <p>Selected Department: {selectedDisease}</p>}
-        {selectedDepartment && <p>Selected Disease: {selectedDepartment}</p>}
-        { selectedLocation && <p>Selected Location: {selectedLocation}</p>}
-
-
-        <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search Doctors"
-            className="w-56"
-        />
-        <Button 
-        onClick={fetchDoctors}
-        >
-            Search Doctors
-        </Button>
-
+       
 
         <div  className="mt-10">
-        <h1>Doctors</h1>
 
-        {doctorData &&  doctorData.map((doctor) => (
-            <div key={doctor.name} className="flex flex-col gap-4 items-center justify-center w-full">
-                <DoctorCard
-                    name={doctor.name}
-                    location={doctor.location}
-                    specialty={doctor.specialty || []}
-                    experience={doctor.experience || "0"}
-                    availability={doctor.availability || "Not Available"}
-                    consultationFee={doctor.consultationFee || 0}
-                    hospital={doctor.hospital || "Data not available"}
-                    bio={doctor.bio || "Data not available"}
-                    image={doctor.image || "/icons/doctor-placeholder.png"}
-                    _id={doctor?._id?.toString() || ""}
-                />
-            </div>
-        ))}
+          {
+            doctorData.length === 0 ? (
+              <h1 className="text-2xl  font-bold text-blue-600">
+                  Use Filters to Find Doctors 
+              </h1>
+            ) : (
+              <h1 className="text-2xl  font-bold text-blue-600">
+                  Doctor's List
+              </h1>
+            )
+          }
+    
+        {loading ? (
+          <div className="flex flex-col items-center justify-center gap-2">
+            {/* Content to show when loading is true */}
+            <p>Loading...</p>
+            <DoctorSkeleton />
+            <DoctorSkeleton />
+          </div>
+        ) : (
+          <div>
+              {doctorData &&  doctorData.map((doctor) => (
+                  <div key={doctor.name} className="flex flex-col gap-4 items-center justify-center w-full">
+                      <DoctorCard
+                          name={doctor.name}
+                          location={doctor.location}
+                          specialty={doctor.specialty || []}
+                          experience={doctor.experience || "0"}
+                          availability={doctor.availability || "Not Available"}
+                          consultationFee={doctor.consultationFee || 0}
+                          hospital={doctor.hospital || "Data not available"}
+                          bio={doctor.bio || "Data not available"}
+                          image={doctor.image || "/icons/doctor-placeholder.png"}
+                          _id={doctor?._id?.toString() || ""}
+                      />
+                  </div>
+              ))}
+          </div>
+      )}
+       
         </div>
     </div>
   )

@@ -1,9 +1,7 @@
-
 import Image from 'next/image'
 import React from 'react'
 import { Button } from './ui/button';
-import { useRouter } from 'next/router';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 
 
 interface DoctorCardProps {
@@ -23,12 +21,14 @@ function DoctorCard(
     {  _id, name, location, specialty, experience, availability, consultationFee, hospital, bio, image } : DoctorCardProps
 ) {
 
+  const router = useRouter();
+
   
   return (
     <div className='p-1 w-1/2'>
         
         <div key={name} className="cardbox ">
-            <div className="relative">
+            <div className="relative w-[200px] ">
               <Image 
               src={image || '/icons/doctor_placeholder.png'} 
               alt="background" 
@@ -51,9 +51,9 @@ function DoctorCard(
                 <div className="bookingbox">
                   <b className="text-green-500 pb-4">{availability}</b>
                   <Button 
-                  className="btn hover:z-10 hover:bg-sky-500"
+                  className="btn hover:z-10 hover:bg-sky-400 bg-sky-300"
                   onClick={() => {
-                    redirect(`/appointment?doctorId=${_id}`)
+                    router.push(`/book-appointment?doctorId=${_id}`)
                   }} 
                   >
                     Book Appointment
@@ -62,9 +62,6 @@ function DoctorCard(
               </div>
               <br />
               <hr />
-              {/* {isDropDown ?
-              <Dropdown />  : " "
-              } */}
             </span>
           </div>
     </div>

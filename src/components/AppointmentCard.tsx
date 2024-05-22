@@ -1,3 +1,4 @@
+import { formatDate } from '@/lib/utils';
 import { Appointment } from '@/models/utils/Appointment'
 import React from 'react'
 
@@ -26,8 +27,10 @@ function AppointmentCard(
             </h1>
               <div className="flex justify-between items-center mb-2">
                 <h3 className="text-xl font-semibold text-gray-700">
-                  {/* {startTimestamp.getTime() } to  {endTimestamp.getTime()} */}
-                    {startTimestamp.toString()} to {endTimestamp.toString()}
+                  {formatDate(new Date(startTimestamp))} 
+                </h3> -
+                <h3>
+                  {formatDate(new Date(endTimestamp))}
                 </h3>
                 <p className="text-lg text-gray-600"><span className="font-bold text-blue-700">
                     

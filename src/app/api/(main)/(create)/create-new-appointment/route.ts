@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import PatientModel from "@/models/Patient";
 import AppointmentModel from "@/models/utils/Appointment";
 import DoctorModel from "@/models/Doctor";
@@ -12,9 +11,9 @@ export async function POST( request: NextRequest){
         const { searchParams } = new URL(request.url, "http://localhost:3000");
         const { patientId, doctorId } = Object.fromEntries(searchParams);
 
-        const { startTimestamp, endTimestamp, location, details, disease } = await request.json();
+        const { startTimestamp, endTimestamp, location, details, disease, patientPhoneNumber, patientAddress, patientBloodGroup, patientDisease,  } = await request.json();
 
-        console.log("patientId, doctorId, location , startTimeStamp, endTimeStamp ", patientId, doctorId, location, startTimestamp, endTimestamp, disease, details)
+        console.log("patientId, doctorId, location , startTimeStamp, endTimeStamp,  ", patientId, doctorId, location, startTimestamp, endTimestamp, disease, details)
         
     
         if(!patientId || !doctorId || !startTimestamp || !endTimestamp){

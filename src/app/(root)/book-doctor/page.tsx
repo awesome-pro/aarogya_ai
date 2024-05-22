@@ -115,15 +115,6 @@ function BookAppointment() {
     })
 
 
-    const handleVoiceInput = () => {
-        const recognition = new (window as any).webkitSpeechRecognition()
-        recognition.lang = 'en-US'
-        recognition.onresult = (event: any) => {
-            setVoiceInput(event)
-        }
-        recognition.start()
-    }
-
     const handleSubmit = async (data: z.infer<typeof formSchema>) => {
         console.log(data)
         try {
@@ -150,9 +141,9 @@ function BookAppointment() {
 
 
   return (
-    <div>
-        <div className='flex flex-col items-center justify-center'>
-            <h1 className='text-2xl font-semibold mt-8'>Book an appointment</h1>
+    <div className='flex'>
+        <div className='flex flex-col items-center justify-center w-1/2 bg-gray-100'>
+            <h1 className='text-3xl font-semibold mt-8'>Book an <span className='text-blue-400'>Appointment</span></h1>
             <div className='w-3/4 mt-8'>
                 {
                     error && (
@@ -212,14 +203,14 @@ function BookAppointment() {
                                 type='number'
                             />
 
-                            <CustomAppointmentInput
+                            {/* <CustomAppointmentInput
                                 control={form.control}
                                 name='patientImage'
                                 label='Image'
                                 placeholder='Enter your image'
                                 description='Please enter your image'
                                 type='text'
-                            />
+                            /> */}
 
                             <CustomAppointmentInput
                                 control={form.control}
@@ -259,34 +250,38 @@ function BookAppointment() {
                                 type='text'
                             />
 
-                            <CustomAppointmentInput
+                            {/* <CustomAppointmentInput
                                 control={form.control}
                                 name='patientBodyImage'
                                 label='Body Image'
                                 placeholder='Enter your body image'
                                 description='Please enter your body image'
                                 type='text'
-                            />
+                            /> */}
 
-                            <CustomAppointmentInput
+                            {/* <CustomAppointmentInput
                                 control={form.control}
                                 name='patientPrescriptionImage'
                                 label='Prescription Image'
                                 placeholder='Enter your prescription image'
                                 description='Please enter your prescription image'
                                 type='text'
-                            />
-
+                            /> */}
+                            <div className='flex items-center justify-center'>
                             <Button
                                 type='submit'
-                                className='w-32 '
+                                className='px-4 py-2 bg-blue-500 rounded-xl hover:bg-blue-600 text-white mb-10'
                                 disabled={loading}
                             >
-                                Submit
+                                Book Appointment
                             </Button>
+                            </div>
                     </form>
                 </Form>
             </div>
+        </div>
+        <div className='flex flex-col items-center justify-center w-1/2'>
+            <img src='https://images.unsplash.com/photo-1597764690472-ec054f1c8637?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZG9jb3IlMjBhbmQlMjBwYXRpZW50fGVufDB8fDB8fHww' alt='/' className='w-full h-full object-cover' />
         </div>
     </div>
   )

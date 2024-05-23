@@ -1,5 +1,23 @@
 # Aarogya AI
 
+<img src="public/icons/logo.png">
+
+## Here are Some Screenshots of the Application:
+
+### Home Page
+<img src="public/screenshots/sc1.png" alt="Home Page" width="500" height="200">
+### Sign In
+<img src="public/screenshots/sc6.png" alt="Sign In" width="500" height="200">
+### Sign Up
+<img src="public/screenshots/sc5.png" alt="Sign Up" width="500" height="200">
+### Consultation
+<img src="public/screenshots/sc2.png" alt="Consultation" width="500" height="200">
+### Appointment
+<img src="public/screenshots/sc3.png" alt="Appointment" width="500" height="200">
+### Chatbot
+<img src="public/screenshots/sc4.png" alt="Chatbot" width="500" height="200">
+
+
 Welcome to **Aarogya AI** – your trusted partner in healthcare. Aarogya AI leverages the power of advanced artificial intelligence to provide seamless online consultations and appointment booking. Our application integrates cutting-edge AI chatbots to ensure you receive timely and accurate health advice, right at your fingertips.
 
 ## Features
@@ -57,15 +75,11 @@ Ensure you have the following installed:
 Your application should now be running on [http://localhost:3000](http://localhost:3000).
 
 
-## Here are some screenshots of the application:
-
-### Home Page 
-![Home Page]('./public/screenshots/sc1.png')
-![Sign In]('./public/screenshots/sc6.png')
-![Sign Up]('./public/screenshots/sc5.png')
-![Consultation]('./public/screenshots/sc2.png')
-![Appointment]('./public/screenshots/sc3.png')
-![Chatbot]('./public/screenshots/sc4.png')
+## List of Contributors
+* [Abhinandan](@abhinandan-verma)
+* [Sahil Gupta](@sahilgupta)
+* [Dakskika Chaudhary](@dakshika)
+* Next Contributor  -> [Your Name](@yourusername) ;)
 
 
 ## Contributing

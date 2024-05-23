@@ -1,21 +1,6 @@
 # Aarogya AI
 
-<img src="public/icons/logo.png">
-
-## Here are Some Screenshots of the Application:
-
-### Home Page
-<img src="public/screenshots/sc1.png" alt="Home Page" width="500" height="200">
-### Sign In
-<img src="public/screenshots/sc6.png" alt="Sign In" width="500" height="200">
-### Sign Up
-<img src="public/screenshots/sc5.png" alt="Sign Up" width="500" height="200">
-### Consultation
-<img src="public/screenshots/sc2.png" alt="Consultation" width="500" height="200">
-### Appointment
-<img src="public/screenshots/sc3.png" alt="Appointment" width="500" height="200">
-### Chatbot
-<img src="public/screenshots/sc4.png" alt="Chatbot" width="500" height="200">
+<img src="public/icons/logo.png" width="150">
 
 
 Welcome to **Aarogya AI** – your trusted partner in healthcare. Aarogya AI leverages the power of advanced artificial intelligence to provide seamless online consultations and appointment booking. Our application integrates cutting-edge AI chatbots to ensure you receive timely and accurate health advice, right at your fingertips.
@@ -49,7 +34,7 @@ Ensure you have the following installed:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/aarogya-ai.git
+   git clone https://github.com/abhinandan-verma/aarogya-ai.git
    cd aarogya-ai
    ```
 
@@ -65,6 +50,7 @@ Ensure you have the following installed:
    NEXTAUTH_URL=http://localhost:3000
    NEXTAUTH_SECRET=your_nextauth_secret
    GEMINI_API_KEY=your_gemini_api_key
+   RESEND_API_KEY=your_resend_api_key
    ```
 
 4. **Run the application:**
@@ -79,12 +65,33 @@ Your application should now be running on [http://localhost:3000](http://localho
 * [Abhinandan](@abhinandan-verma)
 * [Sahil Gupta](@sahilgupta)
 * [Dakskika Chaudhary](@dakshika)
-* Next Contributor  -> [Your Name](@yourusername) ;)
+* Next Contributor [You] ☺️
 
 
 ## Contributing
 
 We welcome contributions from the community! If you'd like to contribute, please fork the repository and create a pull request. Ensure your code follows our [contribution guidelines](CONTRIBUTING.md).
+
+
+## Here are Some Screenshots of the Application:
+
+### Home Page
+<img src="public/screenshots/sc1.png" alt="Home Page" width="500">
+
+### Sign In
+<img src="public/screenshots/sc6.png" alt="Sign In" width="500" >
+
+### Sign Up
+<img src="public/screenshots/sc5.png" alt="Sign Up" width="500" >
+
+### Consultation
+<img src="public/screenshots/sc2.png" alt="Consultation" width="500" >
+
+### Appointment
+<img src="public/screenshots/sc3.png" alt="Appointment" width="500" >
+
+### Chatbot
+<img src="public/screenshots/sc4.png" alt="Chatbot" width="500" >
 
 ## License
 
@@ -97,3 +104,5 @@ For any queries or support, please reach out to us at support@aarogya.ai.
 ---
 
 Thank you for choosing Aarogya AI. We are committed to providing you with the best online healthcare experience.
+
+

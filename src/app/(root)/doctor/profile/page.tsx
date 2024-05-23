@@ -114,12 +114,8 @@ const DoctorProfile: React.FC = () => {
                 <div className="md:w-2/3 md:pl-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div>
-                      <h4 className="font-bold text-xl">Specialty</h4>
-                      <ul className="list-disc list-inside ml-4 text-gray-800 text-lg font-medium">
-                        {doctorData?.speciality?.map((spec: string, index: number) => (
-                          <li key={index}>{spec}</li>
-                        ))}
-                      </ul>
+                      <h4 className="font-bold text-xl">Department</h4>
+                      <p className="text-gray-800 text-lg font-medium">{doctorData?.department || ""}</p>
                     </div>
                     <div>
                       <h4 className="font-bold text-xl">Experience</h4>
@@ -127,7 +123,7 @@ const DoctorProfile: React.FC = () => {
                     </div>
                     <div>
                       <h4 className="font-bold text-xl">Clinic Address</h4>
-                      <p className="text-gray-800 text-lg font-medium">{doctorData?.location || ""}</p>
+                      <p className="text-gray-800 text-lg font-medium">{doctorData?.clinicAddress || ""}</p>
                     </div>
                     <div>
                       <h4 className="font-bold text-xl">Consultation Fee</h4>

@@ -7,7 +7,7 @@ import DepartmentModel from "@/models/utils/Department";
 
 export async function POST(request: Request){
 
-    console.log("request: ", request);
+    console.log("request: ", request.body);
 
     const {
         email,
@@ -105,7 +105,8 @@ export async function POST(request: Request){
                     status: 400,
                     message: "Department could not be created"
                 }, {
-                    status: 400
+                    status: 400,
+                    statusText: "Department could not be created"
                 });
             }
 
@@ -132,6 +133,7 @@ export async function POST(request: Request){
         
     } catch (error) {
         console.log("error in signing up doctor: ", error);
+        
         return NextResponse.json({
             status: 500,
             message: "Internal server error"

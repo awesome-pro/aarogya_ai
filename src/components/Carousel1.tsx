@@ -89,7 +89,7 @@ export default function CustomCarousel({ category }: { category: string }) {
                   <CardContent className="flex flex-col aspect-square items-center justify-center p-6">
                     <span className="text-xl font-semibold">{card.title}</span>
                     <Image
-                      src={card?.image || '/images/card-placeholder.svg'}
+                      src={card?.image || '/images/signup.png'}
                       alt={card.title}
                       width={200}
                       height={200}

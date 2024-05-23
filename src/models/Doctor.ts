@@ -1,4 +1,4 @@
-import monggose, { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { Appointment, AppointmentSchema } from './utils/Appointment';
 
 export interface Doctor extends Document {
@@ -7,10 +7,9 @@ export interface Doctor extends Document {
     password: string;
     phoneNumber?: number;
     department: string;
-    specialty?: string[];
     hospital?: string;
-    location: string;
-    appointmentIds?: String[];
+    clinicAddress: string;
+    appointmentIds?: string[];
     image?: string;
     experience?: string;
     consultationFee?: number;
@@ -19,15 +18,14 @@ export interface Doctor extends Document {
     rating?: number;
 }
 
-const DoctorSchema = new monggose.Schema<Doctor>({
+const DoctorSchema = new mongoose.Schema<Doctor>({
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     phoneNumber: { type: Number, required: false },
-    department: { type: String, required: true },
-    specialty: [{ type: String, required: false }],
+    department: { type: String, required: true }, // updated to required
     hospital: { type: String, required: false },
-    location: { type: String, required: true },
+    clinicAddress: { type: String, required: false },
     appointmentIds: [
         {
             type: String,
@@ -41,5 +39,5 @@ const DoctorSchema = new monggose.Schema<Doctor>({
     rating: { type: Number, required: false }
 });
 
-const DoctorModel = monggose.models && monggose.models.Doctor || monggose.model<Doctor>('Doctor', DoctorSchema);
+const DoctorModel = mongoose.models.Doctor || mongoose.model<Doctor>('Doctor', DoctorSchema);
 export default DoctorModel;

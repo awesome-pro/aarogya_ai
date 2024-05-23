@@ -10,7 +10,7 @@ interface DoctorSignupFormData {
   name: string;
   email: string;
   phone: string;
-  speciality: string[];
+  department: string;
   experience: string;
   clinicAddress: string;
   consultationFee: string;
@@ -26,7 +26,7 @@ const DoctorSignup: React.FC = () => {
     name: '',
     email: '',
     phone: '',
-    speciality: [],
+    department: '',
     experience: '',
     clinicAddress: '',
     consultationFee: '',
@@ -36,7 +36,7 @@ const DoctorSignup: React.FC = () => {
     password: ''
   });
 
-  const specializations = [
+  const departments = [
     { value: 'Cardiology', label: 'Cardiology' },
     { value: 'Dermatology', label: 'Dermatology' },
     { value: 'Neurology', label: 'Neurology' },
@@ -66,25 +66,9 @@ const DoctorSignup: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSpecialtyChange = (selectedOptions: any) => {
-    setFormData({ ...formData, speciality: selectedOptions.map((option: any) => option.value) });
+  const handleDepartmentChange = (selectedOption: any) => {
+    setFormData({ ...formData, department: selectedOption.value });
   };
-
-  // const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-  //   const { files } = e.target;
-  //   if (files && files.length > 0) {
-  //     const file = files[0];
-  //     const imageData = new FormData();
-  //     imageData.append('file', file);
-  //     imageData.append('upload_preset', 'your_upload_preset'); // Use your own upload preset
-  //     const response = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/image/upload', {
-  //       method: 'POST',
-  //       body: imageData
-  //     });
-  //     const data = await response.json();
-  //     setFormData({ ...formData, profileImage: data.secure_url });
-  //   }
-  // };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -172,17 +156,16 @@ const DoctorSignup: React.FC = () => {
                 />
               </div>
               <div className='w-full'>
-                <label htmlFor="specialty" className="block text-sm font-medium text-gray-700">
-                  Specialization
+                <label htmlFor="department" className="block text-sm font-medium text-gray-700">
+                  Department
                 </label>
                 <Select
-                  id="speciality"
-                  name="speciality"
-                  isMulti
-                  options={specializations}
-                  placeholder="Specialization"
-                  value={specializations.filter(specialty => formData.speciality.includes(specialty.value))}
-                  onChange={handleSpecialtyChange}
+                  id="department"
+                  name="department"
+                  options={departments}
+                  placeholder="Department"
+                  value={departments.find(department => department.value === formData.department) || null}
+                  onChange={handleDepartmentChange}
                   className="mt-1"
                 />
               </div>

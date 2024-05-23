@@ -21,7 +21,11 @@ interface DoctorSignupFormData {
 }
 
 const DoctorSignup: React.FC = () => {
+
+
   const router = useRouter();
+
+
   const [formData, setFormData] = useState<DoctorSignupFormData>({
     name: '',
     email: '',
@@ -103,6 +107,7 @@ const DoctorSignup: React.FC = () => {
     <>
       {error && <FormError message={error} />}
       {success && <FormSuccess message={success} />}
+
       {loading && (
         <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-4 rounded shadow-lg">
@@ -111,8 +116,8 @@ const DoctorSignup: React.FC = () => {
         </div>
       )}
 
-      <div className="min-h-screen bg-blue-100 flex">
-        <div className="hidden md:block md:w-1/2 bg-cover" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")' }}></div>
+      <div className=" max-h-screen bg-blue-100 flex">
+        <div className="hidden md:block md:w-1/2 bg-cover rounded-l-2xl" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")' }}></div>
         <div className="flex flex-col justify-center md:w-1/2 p-8 bg-white">
           <h2 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">Doctor Signup</h2>
           <form onSubmit={handleSubmit} className="space-y-6">

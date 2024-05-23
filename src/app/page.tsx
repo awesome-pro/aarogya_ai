@@ -31,9 +31,6 @@ export default function Home() {
   const [diseaseData, setDiseaseData] = useState<Disease[]>([]);
   const [doctorData, setDoctorData] = useState<Doctor[]>([]);
   const [locationData, setLocationData] = useState<String[]>([]);
-
-
-
   
   const fetchDepartments = useCallback(async () => {
     setLoading(true);
@@ -303,7 +300,7 @@ export default function Home() {
               <div key={index} className="flex flex-col items-center justify-center w-1/5">
                 <div className="bg-white rounded-xl p-4">
                   <Image
-                    src={department.image || "/hospitals.jpg"}
+                    src={department.image || "/images/department-placeholder.png"}
                     alt="Department"
                     width={100}
                     height={100}

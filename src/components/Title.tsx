@@ -22,7 +22,7 @@ export const Title = ({
             )}>
                Aarogya AI
             </h1>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-xl bg-blue-200 p-2 font-semibold text-blue-700 w-full items-center justify-center flex" >
                 {label}
             </p>
         </div>

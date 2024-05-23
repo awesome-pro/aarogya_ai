@@ -25,7 +25,7 @@ function CustomAuthInput({ control, name, label, placeholder, description, disab
       disabled={disabled}
       render={({ field }) => (
         <div className='form-item'>
-          <FormLabel className='form-label font-semibold'>
+          <FormLabel className='form-label font-semibold text-blue-600 text-md'>
             {label}
           </FormLabel>
           <div className='w-full flex flex-col'>

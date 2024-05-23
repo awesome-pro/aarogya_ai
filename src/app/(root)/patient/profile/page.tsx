@@ -15,7 +15,10 @@ import { FormError } from '@/components/FormError';
 import { FormSuccess } from '@/components/FormSuccess';
 import { Button } from '@/components/ui/button';
 import ProfileSkeleton from '@/components/ProfileSkeleton';
-
+import { patientFormSchema } from '@/lib/utils';
+import { useForm } from 'react-hook-form';
+import *  as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const PatientProfilePage: React.FC = () => {
 
@@ -74,15 +77,19 @@ const PatientProfilePage: React.FC = () => {
   }, [fetchPatientData, user?._id, session]);
 
 
+  
+
+
   if (loading) {
     return (
     <div className='flex items-center  gap-4 mb-11'>
-
+      <h1>
+        Loading...
+      </h1>
       <ProfileSkeleton />
     </div>)
   }
 
-  
 
   return (
     <div>
@@ -105,7 +112,6 @@ const PatientProfilePage: React.FC = () => {
               <p className="text-black text-xl"><span className="font-bold text-blue-700">Contact Number: </span>{patientData?.phoneNumber}</p>
               <p className="text-black text-xl"><span className="font-bold text-blue-700">Age: </span>{patientData?.age}</p>
               <p className="text-black text-xl"><span className="font-bold text-blue-700">Address: </span>{patientData?.address}</p>
-              <p className="text-black text-xl"><span className="font-bold text-blue-700">Gender: </span>{patientData?.gender}</p>
             </div>
           </section>
 

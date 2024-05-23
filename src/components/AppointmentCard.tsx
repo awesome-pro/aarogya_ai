@@ -27,7 +27,7 @@ function AppointmentCard(
             </h1>
               <div className="flex justify-between items-center mb-2">
                 <h3 className="text-xl font-semibold text-gray-700">
-                  {formatDate(new Date(startTimestamp))} 
+                  
                 </h3> -
                 <h3>
                   {formatDate(new Date(endTimestamp))}

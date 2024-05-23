@@ -32,6 +32,7 @@ import { authFormSchema } from '@/lib/utils';
 import { set } from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 import CustomAuthInput from '@/components/CustomAuthInput';
+import Image from 'next/image';
 
 
 
@@ -124,92 +125,68 @@ function SignUp() {
 
   return (
     // bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-700 
-    <div className='size-full min-h-screen flex items-center justify-center bg-white'>
-
-      <div className='max-w-screen-xl'>
-        <img src='https://media.istockphoto.com/id/1302674103/photo/doctor-and-patient-are-discussing-at-clinic-and-writting-prescription-medicine-stock-photo.webp?b=1&s=170667a&w=0&k=20&c=NU-ZpijsWJd4dY416GASkeQbRkNcsWr8jCraA6XxSCc=' alt='/' className='w-screen' />
-      </div>
-      
-    <div className='object-cover'>
-    <CardWrapper 
-        headerLabel="Sign Up"
-        backButtonLabel="Already Registered?"
-        backButtonHref="/sign-in"
-        showSocial={true}
-       >
-            <Form {...form}>
-                <form 
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-6"
-                >
-                    <div className="space-y-4">
-
-                        <CustomAuthInput
-                          name='name'
-                          control={form.control}
-                          label='Name'
-                          placeholder='Enter your name'
-                          description='Enter your name'
-                          type='text'
-                          disabled={isSubmitting}
-                        />
+    <div className="size-full min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-700 ">
 
 
-                       <CustomAuthInput
-                          name='email'
-                          control={form.control}
-                          label='Email'
-                          placeholder='Enter your email'
-                          description='Enter your email'
-                          type='email'
-                          disabled={isSubmitting}
-                       />
+    <div className='flex rounded-xl size-fit'>
 
-                        <CustomAuthInput
-                            name='phoneNumber'
-                            control={form.control}
-                            label='Phone Number'
-                            placeholder='Enter your Phone Number'
-                            description='Enter your Phone Number'
-                            type='tel'
-                            disabled={isSubmitting}
-                        />
+   
+    <Image
+    src='/images/signin.jpg'
+    alt='signin'
+    width={600}
+    height={500}
+    className='rounded-l-2xl'
+    />
+    <CardWrapper
+      headerLabel="Sign Up"
+      backButtonLabel="Already Registerd?"
+      backButtonHref="/sign-in"
+      showSocial={true}
+    >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="space-y-4">
+           <CustomAuthInput
+              control={form.control}
+              name="email"
+              placeholder="Email"
+              disabled={isSubmitting}
+              type='email'
+              label='Email'
+              description='Enter your email address to sign in.'
+            />
+            <CustomAuthInput
+              control={form.control}
+              name="password"
+              placeholder="Password"
+              disabled={isSubmitting}
+              type='password'
+              label='Password'
+              description='Enter your password to sign in.'
+            />
 
-                        <CustomAuthInput
-                            name='password'
-                            control={form.control}
-                            label='Password'
-                            placeholder='Enter your password'
-                            description='Enter your password'
-                            type='password'
-                            disabled={isSubmitting}
-                        />
-
-
-                    </div>
-                    <FormError  message={error}/>
-                    <FormSuccess message={success}/>
-                    <Button
-                      className="w-full bg-sky-500 hover:bg-sky-600 text-white rounded-lg"
-                      type="submit"
-                      disabled={isSubmitting}
-                    >
-                        {
-                          isSubmitting ? (
-                            <>
-                              <Loader2 className='mr-3 h-4 w-4 animate-spin'/> Authenticating User...
-                            </>
-                          ) : ('Log In')
-                        }
-                    </Button>
-                </form>
-            </Form>
-            
-       </CardWrapper>
-
-       </div>
-    
+          </div>
+          <FormError message={error} />
+          <FormSuccess message="" />
+          <Button
+            className="w-full bg-sky-500 hover:bg-sky-600 text-white rounded-3xl"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-3 h-4 w-4 animate-spin" /> Authenticating User...
+              </>
+            ) : (
+              'Log In'
+            )}
+          </Button>
+        </form>
+      </Form>
+    </CardWrapper>
     </div>
+  </div>
   )
 }
 

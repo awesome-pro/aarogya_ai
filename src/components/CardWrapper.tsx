@@ -30,15 +30,16 @@ export const CardWrapper = ({
 
 } : CardWrapperProps) => {
     return (
-        <Card className="w-[400px] shadow-md  bg-white">
-            <CardFooter>
+        <Card className="w-[400px] shadow-md  bg-white rounded-r-2xl">
+            <CardFooter className="w-full">
                 <Title label={headerLabel}/>
             </CardFooter>
             <CardContent>
                 {children}
             </CardContent>
                {showSocial && (
-                <CardFooter>
+                <CardFooter className="flex flex-col text-sm gap-4">
+                    <p>Or Continue with</p>
                     <Social>
                         
                     </Social>

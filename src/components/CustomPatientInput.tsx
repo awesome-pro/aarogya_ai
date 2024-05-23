@@ -3,7 +3,7 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { Input } from "@/components/ui/input";
 import { Control, FieldPath } from 'react-hook-form';
 import * as z from "zod";
-import { customFormSchema, patientFormSchema } from '@/lib/utils';
+import {  patientFormSchema } from '@/lib/utils';
 
 const formSchema = patientFormSchema // Use the appropriate type
 
@@ -15,6 +15,7 @@ const formSchema = patientFormSchema // Use the appropriate type
   description: string,
   disabled?: boolean,
   type: "email" | "password" | "text" | "number" | "tel" | "file" | "date",
+  value: string | number | undefined | null | boolean
 }
 
 function CustomPatientInput({ control, name, label, placeholder, description, disabled, type }: CustomInput) {

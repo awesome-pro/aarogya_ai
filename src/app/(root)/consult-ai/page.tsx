@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 
 const RAPIDAPI_KEY = 'a74f98ca07msh13a3e05599ca2aep1dbfd2jsnd0b1eab05732';
@@ -15,9 +15,11 @@ interface DepartmentSuggestion {
 }
 
 interface Doctor {
-  experience: ReactNode;
+  experience: number;
   name: string;
   specialty: string;
+  location: string;
+  contact: string;
 }
 
 export default function Home() {
@@ -26,6 +28,27 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [suggestedDepartment, setSuggestedDepartment] = useState<DepartmentSuggestion | null>(null);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [bookingConfirmation, setBookingConfirmation] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Get user's location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error getting location", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
 
   const handleUserInput = async () => {
     if (!userInput.trim()) return; // Prevent sending empty messages
@@ -65,6 +88,12 @@ export default function Home() {
       // Fetch doctors for the suggested department
       const doctorData = await fetchDoctorData(department);
       setDoctors(doctorData);
+
+      // Automatically book the first available doctor
+      if (doctorData.length > 0) {
+        const confirmationMessage = await bookDoctor(doctorData[0]);
+        setBookingConfirmation(confirmationMessage);
+      }
     } catch (error) {
       console.error("Error fetching chat completion:", error);
       setChatHistory((prevChat) => [
@@ -75,10 +104,10 @@ export default function Home() {
       setIsLoading(false);
     }
   };
-  
+
   const mapToDepartment = (response: string): string => {
     const lowerCaseResponse = response.toLowerCase();
-  
+
     if (lowerCaseResponse.includes('heart') || lowerCaseResponse.includes('chest pain') || lowerCaseResponse.includes('palpitations')) {
       return 'Cardiology';
     } else if (lowerCaseResponse.includes('headache') || lowerCaseResponse.includes('migraine') || lowerCaseResponse.includes('dizziness') || lowerCaseResponse.includes('seizure')) {
@@ -119,11 +148,25 @@ export default function Home() {
   };
 
   const fetchDoctorData = async (department: string): Promise<Doctor[]> => {
-    const response = await fetch(`/api/get-doctor?department=${department}`);
+    if (!location) {
+      console.error("Location not available");
+      return [];
+    }
+
+    const response = await fetch(`/api/get-doctor?department=${department}&lat=${location.lat}&lng=${location.lng}`);
     const data = await response.json();
-    console.log(data);
-    console.log(data.data);
     return data.data || [];
+  };
+
+  const bookDoctor = async (doctor: Doctor): Promise<string> => {
+    // Implement the booking API call here
+    try {
+      const response = await axios.post('/api/book-doctor', { doctor });
+      return `Appointment booked with Dr. ${doctor.name} at ${doctor.location}. Contact: ${doctor.contact}`;
+    } catch (error) {
+      console.error("Error booking doctor:", error);
+      return "Sorry, something went wrong while booking the appointment.";
+    }
   };
 
   return (
@@ -179,6 +222,10 @@ export default function Home() {
                   {doctors.map((doctor, index) => (
                     <li key={index} className="mb-2">
                       <b>{doctor.name}</b> - {doctor.experience} years
+                      <br />
+                      Location: {doctor.location}
+                      <br />
+                      Contact: {doctor.contact}
                     </li>
                   ))}
                 </ul>
@@ -186,10 +233,16 @@ export default function Home() {
                 <p>No doctors available for this department.</p>
               )}
             </div>
+            {bookingConfirmation && (
+              <div className="mt-4 text-green-500">
+                {bookingConfirmation}
+              </div>
+            )}
           </div>
         )}
       </div>
     </div>
   );
 }
+
 

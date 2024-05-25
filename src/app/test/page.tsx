@@ -3,6 +3,7 @@
 
 import CustomCarousel from '@/components/Carousel1'
 import { Chatbot } from '@/components/ChatBot'
+import { ComboboxForm } from '@/components/DepartmentCombo'
 import DoctorCard from '@/components/DoctorCard'
 import FAQ from '@/components/Faq'
 import FindDoctor from '@/components/FindDoctor'
@@ -17,7 +18,7 @@ function Test() {
       {/* <FAQ /> */}
 
       {/* <Chatbot/> */}
-    <ProfileSkeleton/>
+   <ComboboxForm />
      
      
       

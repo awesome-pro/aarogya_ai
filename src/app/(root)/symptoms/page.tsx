@@ -26,21 +26,21 @@ const Home: React.FC = () => {
         { name: 'Dr. Jane Smith', specialty: 'Cardiologist', location: 'Hospital B', contact: '456-789-0123' },
       ],
     },
-    // Add more departments and doctors here
-  ];
+    ];
 
-  const handleSymptomSelection = (symptom: string) => {
-    if (!selectedSymptoms.includes(symptom)) {
-      setSelectedSymptoms([...selectedSymptoms, symptom]);
-    }
+  const handleSymptomSelection = (symptom: string, selected: boolean) => {
+    const newSelectedSymptoms = selected
+      ? [...selectedSymptoms, symptom]
+      : selectedSymptoms.filter(s => s !== symptom);
+
+    setSelectedSymptoms(newSelectedSymptoms);
   };
 
   useEffect(() => {
     findDepartment();
-  }, [selectedSymptoms]); // This effect runs whenever selectedSymptoms changes
+  }, [selectedSymptoms]);
 
   const findDepartment = () => {
-    // Logic to find the relevant department based on selected symptoms
     const symptomKeywords = selectedSymptoms.map(symptom => symptom.toLowerCase());
     const department = departments.find(dept => {
       const departmentKeywords = dept.name.toLowerCase().split(' ');
@@ -56,8 +56,7 @@ const Home: React.FC = () => {
           <div className="text-4xl font-bold text-blue-500 mb-2">Symptom Checker</div>
           <p className="text-gray-600 text-lg">Select your symptoms:</p>
         </div>
-        <Symptoms handleSymptomSelection={handleSymptomSelection} />
-        <div className="mt-4">
+        <div className="m-4">
           <p className="font-semibold">Selected Symptoms:</p>
           <ul>
             {selectedSymptoms.map(symptom => (
@@ -65,6 +64,9 @@ const Home: React.FC = () => {
             ))}
           </ul>
         </div>
+
+        <Symptoms handleSymptomSelection={handleSymptomSelection} />
+        
         {selectedDepartment && (
           <div className="mt-4">
             <h2 className="text-2xl font-bold text-blue-500 mb-2">Department: {selectedDepartment.name}</h2>

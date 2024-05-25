@@ -140,17 +140,18 @@ const symptoms: Symptom[] = [
   { id: 132, name: 'Prognosis' }
 ];
 
-const Symptoms: React.FC<{ handleSymptomSelection: (symptom: string) => void }> = ({ handleSymptomSelection }) => {
+const Symptoms: React.FC<{ handleSymptomSelection: (symptom: string, selected: boolean) => void }> = ({ handleSymptomSelection }) => {
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   const toggleSymptomSelection = (symptom: string) => {
-    const newSelectedSymptoms = selectedSymptoms.includes(symptom)
+    const isSelected = selectedSymptoms.includes(symptom);
+    const newSelectedSymptoms = isSelected
       ? selectedSymptoms.filter(s => s !== symptom)
       : [...selectedSymptoms, symptom];
 
     setSelectedSymptoms(newSelectedSymptoms);
-    handleSymptomSelection(symptom);
+    handleSymptomSelection(symptom, !isSelected);
   };
 
   const filteredSymptoms = symptoms.filter(symptom =>
@@ -161,24 +162,32 @@ const Symptoms: React.FC<{ handleSymptomSelection: (symptom: string) => void }> 
     <div>
       <input
         type="text"
-        placeholder="Search symptoms..."
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full p-2 mb-4 border border-gray-300 rounded-md"
+        onChange={e => setSearchQuery(e.target.value)}
+        placeholder="Search symptoms..."
+        className="border p-2 mb-4 w-full"
       />
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {filteredSymptoms.map((symptom) => (
-          <div
+      <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
+        {filteredSymptoms.map(symptom => (
+          <li
             key={symptom.id}
-            className={`flex flex-col items-center cursor-pointer p-2 rounded-2xl border border-black ${
-              selectedSymptoms.includes(symptom.name) ? 'bg-blue-500 text-white' : 'bg-white'
-            }`}
             onClick={() => toggleSymptomSelection(symptom.name)}
+            style={{
+              color: selectedSymptoms.includes(symptom.name) ? 'white' : 'black',
+              cursor: 'pointer',
+              padding: '8px',
+              backgroundColor: selectedSymptoms.includes(symptom.name) ? 'blue' : 'white',
+              borderRadius: '4px',
+              border: selectedSymptoms.includes(symptom.name) ? '2px solid red' : '2px solid black'
+            }}
+            className='flex justify-center items-center'
           >
-            <span className="text-center">{symptom.name}</span>
-          </div>
+            <div>
+            {symptom.name}
+            </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

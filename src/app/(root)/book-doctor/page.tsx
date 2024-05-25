@@ -19,6 +19,8 @@ import { FormSuccess } from '@/components/FormSuccess';
 import { set } from 'mongoose';
 import { Doctor } from '@/models/Doctor';
 import { Separator } from '@/components/ui/separator';
+import Image from 'next/image';
+import { PageNotFoundError } from 'next/dist/shared/lib/utils';
 
 function BookAppointment() {
 
@@ -160,21 +162,26 @@ function BookAppointment() {
             patientPrescriptionImage: "",
             doctorId: doctorId || "",
             doctorName: doctorData?.name || "",
-            location: doctorData?.location || ""
+            clinicAddress: doctorData?.clinicAddress || ""
         }
     })
 
 
     const handleSubmit = async (data: z.infer<typeof formSchema>) => {
         console.log(data)
+
         try {
             setLoading(true)
             const response = await axios.post(`/api/create-new-appointment?id=${patient?.id}`, data)
             console.log(response.data)
+            console.log(response.status)
+            console.log(response.data.message)
+
 
             if(response.status !== 200) {
                 setError('An error occurred while booking the appointment: ' + response.data.error)
                 return
+
             }
             setSuccess('Appointment booked successfully')
 
@@ -198,6 +205,7 @@ function BookAppointment() {
                 <div className=''>
                     <div className='flex flex-col items-center justify-center  bg-gray-100'>
                         <h1 className='text-3xl font-semibold mt-8'>Book an <span className='text-blue-400'>Appointment</span></h1>
+                        
                         <div className='w-3/4 mt-8'>
                             {
                                 error && (
@@ -209,8 +217,20 @@ function BookAppointment() {
                                     <FormSuccess message={success} />
                                 )
                             }
+
+                            
                             <Form {...form} >
                                 <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
+                                <div className='flex items-center justify-center'>
+                                    <Button
+                                    type='submit'
+                                    className='px-4 py-2 bg-blue-500 rounded-3xl hover:bg-blue-600 text-white mb-10 my-8 w-48'
+                                    disabled={loading}
+                                    onClick={() => handleSubmit}
+                                    >
+                                    Book Appointment
+                                    </Button>
+                                </div>
                                     
                                     <div className=' grid grid-cols-2 gap-7'>
 
@@ -364,37 +384,43 @@ function BookAppointment() {
 
                                         <CustomAppointmentInput
                                             control={form.control}
-                                            name='location'
-                                            label='Location'
+                                            name='clinicAddress'
+                                            label='clinicAddress'
                                             placeholder=''
                                             disabled={true}
-                                            description='This is the Location of Appointment'
+                                            description='This is the clinicAddress of Appointment'
                                             type='text'  
-                                            value={doctorData?.location || ""}                      
+                                            value={doctorData?.clinicAddress || ""}                      
                                         />                                         
                                     </div>
                                         
-                                            <Button
-                                            type='submit'
-                                            className='px-4 py-2 bg-blue-500 rounded-3xl hover:bg-blue-600 text-white mb-10 my-8 w-48'
-                                            disabled={loading}
-                                            >
-                                            Book Appointment
-                                            </Button>
+                                            
                                 </form>
                             </Form>
                         </div>
                     </div>
-                    {/* <div className='flex flex-col items-center justify-center w-1/2'>
-                        <img src='https://images.unsplash.com/photo-1597764690472-ec054f1c8637?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZG9jb3IlMjBhbmQlMjBwYXRpZW50fGVufDB8fDB8fHww' alt='/' className='w-full h-full object-cover' />
-                    </div> */}
                 </div>
             ) : (
                 <div>   
                     <h1 className='text-3xl font-semibold mt-8'>Book an <span className='text-blue-400'>Appointment</span></h1>
-                    <div className='w-3/4 mt-8'>
-                        <h1>You need to select a doctor first to book appointment</h1>
+                    <h1>You need to select a doctor first to book appointment</h1>
                         <FormError message='An error occurred while fetching doctor data' />
+                    <div className='mt-8 flex items-center justify-center flex-col w-full'>
+                       
+                        <Image
+                            src="/images/page-not-looking.png"
+                            alt="Page not found"
+                            width={500}
+                            height={500}
+                            className='rounded-xl animate-pulse'
+                        />
+
+                        <Button
+                            className='px-4 py-2 bg-blue-500 rounded-3xl hover:bg-blue-600 text-white mb-10 my-8 w-48'
+                            onClick={() => router.push('/patient/dashboard')}
+                        >
+                            Go to Dashboard
+                        </Button>
                     </div>
                 </div>
             )

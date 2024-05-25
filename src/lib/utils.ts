@@ -84,10 +84,15 @@ export const appointmentFormSchema = z.object({
 })
 
 
-export const formatDate = (date: Date) => {
-  return `${date.getDate}-${date.getMonth}-${date.getFullYear}`
-}
+export const formatDate = (date: Date): string => {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
 
-export const formatTime = (date: Date) => {
-  return `${date.getHours()}:${date.getMinutes()}`
-}
+export const formatTime = (date: Date): string => {
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${hours}:${minutes}`;
+};

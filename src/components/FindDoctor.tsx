@@ -21,6 +21,9 @@ import { FormError } from "./FormError"
 import { FormSuccess } from "./FormSuccess"
 import Link from "next/link"
 import Image from "next/image"
+import { div } from "@tensorflow/tfjs"
+import { CircleArrowUp } from "lucide-react"
+import Swiper from "./Swiper"
 
 export default function FindDoctor() {
   
@@ -144,9 +147,16 @@ export default function FindDoctor() {
 
   return (
     <div className="">
-      {loading && <p>Loading...</p>}
+      {
+      loading && <div className="flex flex-col items-center justify-center gap-4">
+        <DoctorSkeleton />
+        <DoctorSkeleton />
+        <CircleArrowUp size={48} className="animate-spin" />
+      </div>
+      }
       {errorMessage && <FormError message={errorMessage}/>}
       { successMessage && <FormSuccess message={successMessage}/>}
+
       <div className=" flex  gap-12 items-center justify-center px-8 py-6 bg-whitesmoke ">
 
            <div className="flex gap-2 items-center">
@@ -229,7 +239,7 @@ export default function FindDoctor() {
             <Button
             variant={"default"}
             onClick={fetchDoctors}
-            className="w-36 bg-sky-400 text-white rounded-3xl hover:bg-sky-500"
+            className="w-36 bg-sky-500 text-white rounded-3xl hover:bg-sky-700"
             >
             Search Doctors
             </Button>
@@ -241,7 +251,7 @@ export default function FindDoctor() {
              <Link href="/consult-ai">
               <Button 
               variant={"default"}
-              className="w-36 bg-sky-400 text-white rounded-3xl hover:bg-sky-500"
+              className="w-36  text-white rounded-3xl bg-gradient-to-r from-sky-500 to-blue-700 animate-pulse"
               >
                 Consult AI
               </Button>
@@ -251,9 +261,12 @@ export default function FindDoctor() {
 
         <div  className="mt-10">
 
+          <Swiper/>
+
           {
             doctorData.length === 0 ? (
               <div className="flex flex-col gap-2 items-center justify-center">
+                 <CircleArrowUp size={44} className="animate-bounce" color="blue"/>
                 <h1 className="text-2xl  font-bold text-blue-600">
                   Use Filters to Find Doctors 
                 </h1>
@@ -286,8 +299,8 @@ export default function FindDoctor() {
                   <div key={doctor.name} className="flex flex-col gap-4 items-center justify-center w-full">
                       <DoctorCard
                           name={doctor.name}
-                          location={doctor.location}
-                          specialty={doctor.specialty || []}
+                          location={doctor.clinicAddress || "Data not available"}
+                          specialty={['data not available']}
                           experience={doctor.experience || "0"}
                           availability={doctor.availability || "Not Available"}
                           consultationFee={doctor.consultationFee || 0}

@@ -14,6 +14,15 @@ const nextConfig = {
             },
             {
                 hostname: 'www.google.com'
+            },
+            {
+                hostname: 's3-alpha-sig.figma.com'
+            },{
+                hostname: 'www.pexels.com'
+            },{
+                hostname: 'img.pikbest.com'
+            },{
+                hostname: 'plus.unsplash.com'
             }
         ]
     }

@@ -20,14 +20,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <SessionProvider>
+     <SessionProvider>
         <body className={inter.className}>
-         <Header/>
+         {/* <Header/> */}
           {children}
-          <Footer />
-          <Toaster />
+          {/* <Footer />
+          <Toaster /> */}
         </body>
-      </SessionProvider>
+     </SessionProvider>
     </html>
   );
 }

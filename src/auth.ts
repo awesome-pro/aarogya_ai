@@ -66,10 +66,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   pages: {
     signIn: "/sign-in",
-    signOut: "sign-out",
     error: "/auth-error",
     verifyRequest: "/auth/verify-request",
-    newUser: "/sign-up"
+    newUser: "/sign-up",
+    signOut: "/sign-out",
   },
   secret: process.env.AUTH_SECRET,
   session: {

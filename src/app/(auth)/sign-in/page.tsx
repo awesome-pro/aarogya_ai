@@ -19,12 +19,16 @@ import axios from 'axios';
 import { z } from 'zod';
 import CustomAuthInput from '@/components/CustomAuthInput';
 import Image from 'next/image';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import { div } from '@tensorflow/tfjs';
 
 function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
   const [error, setError] = useState<string | undefined>('');
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const form = useForm<z.infer<typeof authFormSchema>>({
     resolver: zodResolver(signInSchema),
@@ -39,31 +43,62 @@ function SignIn() {
     setIsSubmitting(true);
 
       try {
-        const response = await fetch('/api/sign-in', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email : data.email, password: data.password}),
-        });
-  
-        console.log(response);
-  
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data.data);
-          router.push(`/patient/profile?id=${data.data._id}`);
-        } else {
-          const result = await response.json();
-          setError(result.message || 'Failed to sign in');
+        
+        const result = await signIn('credentials',
+          {
+            redirect: false,
+            email: data.email,
+            password: data.password,
+          }
+        );
+
+        if(result?.error === 'CredentialsSignin') {
+          setError('Invalid credentials. Please try again.');
+          setIsSubmitting(false);
+          return;
+        }else if(result?.error){
+          setError('An error occurred: ' + result.error);
+          setIsSubmitting(false);
+          return;
         }
+
+        if(result?.url){
+          router.push('/');
+        }
+        
+        
       } catch (error: any) {
         setError('An error occurred: ' + error.toString());
       }
   };
 
   return (
-    <div className="size-full min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-700 ">
+    session || user ? (
+      <div>
+        <h1>You are already signed in as</h1>
+        <p>{user?.email}</p>
+
+        <Button
+        className='bg-sky-500 hover:bg-sky-600 text-white rounded-3xl px-4 py-2 mt-4 w-52 mb-10'
+        onClick={() => router.push('/')}
+        >
+          Continue to Dashboard
+        </Button>
+
+        
+
+        <h1 className='text-red-400 text-2xl'>Are you sure you want to sign out?</h1>
+        <Button
+          className='bg-red-600 text-white rounded-3xl px-4 py-2 mt-4 w-32 hover:bg-red-700'
+          onClick={() => signOut()}
+        >
+          Sign Out
+        </Button>
+
+
+      </div>
+    ) : (
+      <div className="size-full min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-700 ">
 
 
       <div className='flex rounded-xl size-fit'>
@@ -125,6 +160,8 @@ function SignIn() {
       </CardWrapper>
       </div>
     </div>
+    )
+   
   );
 }
 

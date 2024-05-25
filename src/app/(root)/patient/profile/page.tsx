@@ -141,11 +141,7 @@ const PatientProfilePage: React.FC = () => {
               <p className="text-lg">{patientData?.allergies}</p>
             </div>
 
-            {/* <div className="mb-4 border border-black p-5">
-
-              <h3 className="text-2xl font-bold mb-2 text-blue-700">Chronic Conditions</h3>
-              <p className="text-xl">{patientData?.diseases}</p>
-            </div> */}
+           
 
             <div className="mb-4 border border-black p-5">
               <h3 className="text-xl font-bold mb-2 text-blue-700">Medications Currently Taking</h3>
@@ -154,25 +150,52 @@ const PatientProfilePage: React.FC = () => {
           </section>
         </div>
 
-        <div className="flex justify-center items-center gap-7">
+        <div className="flex justify-around items-center gap-0">
           <Link href="/patient/profile/edit">
             <Button 
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-3 rounded-3xl"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded-3xl"
             >
               Edit your profile
             </Button>
           </Link>
           <Link href="/my-appointments">
-            <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-3 rounded-3xl"
+            <Button className="bg-sky-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded-3xl"
             >
               View Patient history
             </Button>
           </Link>
+          <Button
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded-3xl w-56'
+          onClick={() => router.push('/book-doctor')}
+          >
+            Book an appointment
+          </Button>
         </div>
+
+        <div className="flex justify-center items-center my-5">
+          <h1 className="text-4xl text-blue-500 font-bold font-serif">Settings</h1>
+        </div>
+        <div className='flex justify-start items-start mt-4 flex-col gap-8'>
+          <Link href="/patient/profile/change-password">
+            <Button
+            className='bg-green-500 hover:bg-green-700 text-white font-bold px-4 py-3 rounded-3xl w-56'
+            >
+              Change Password
+            </Button>
+          </Link>
+
+          <Button
+          className='bg-red-500 hover:bg-red-700 text-white font-bold px-4 py-3 rounded-3xl w-56'
+          onClick={() => router.push('/sign-out')}
+          >
+            Sign Out
+          </Button>
+          </div>
+
+        
       </div>
       
       <FAQ />
-      <Footer />
     </div>
   );
 };

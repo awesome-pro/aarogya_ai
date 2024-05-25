@@ -8,12 +8,14 @@ import { FormError } from "@/components/FormError";
 import { FormSuccess } from "@/components/FormSuccess";
 import Header from "@/components/Header";
 import SearchBar from "@/components/SearchBar";
+import { Button } from "@/components/ui/button";
 import { Disease } from "@/models/Disease";
 import { Doctor } from "@/models/Doctor";
 import { Department } from "@/models/utils/Department";
 import { faArrowLeft, faArrowRight, faCheckCircle, faHandHolding, faHandHoldingHeart, faHospital, faUserDoctor, faVialVirus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { set } from "mongoose";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -179,20 +181,14 @@ export default function Home() {
     }
   };
 
-  const entities = [
-    { name: 'Dentistry', photoUrl: '/doctors.jpg' },
-    { name: 'Primary Care', photoUrl: '/labs.jpg' },
-    { name: 'Cardiology', photoUrl: '/hospitals.jpg' },
-    { name: 'MRI Resonance', photoUrl: '/medical_store.jpg' },
-    { name: 'Blood Test', photoUrl: '/hospitals.jpg' },
-    { name: 'Piscologist', photoUrl: '/labs.jpg' },
-    { name: 'Laboratory', photoUrl: '/hospitals.jpg' },
-    { name: 'X Ray', photoUrl: '/medical_store.jpg' },
-  ];
+ 
+
   return (
     <>
 
-   {/* <FormError message={departmentData.length === 0 ? "No departments found" : ""} /> */}
+              
+
+   <FormError message={departmentData.length === 0 ? "No departments found" : ""} />
 
    {
     errorMessage &&
@@ -204,7 +200,6 @@ export default function Home() {
     <FormSuccess message={successMessage} />
    }
 
-   
     <div className="bg-blue-100">
     <div className='pt-20 max-w-screen-xl flex relative flex-col justify-center items-center bg-blue-100 ml-40'>
 
@@ -230,9 +225,9 @@ export default function Home() {
                 <br />
                 <div className='flex flex-col md:flex-row gap-5'>
                   <Link href='/consult'>
-                    <button className='border-2 rounded-xl px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white min-w-44'>
-                      Consult Now With AI
-                    </button>
+                    <Button className='border-2 rounded-3xl px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white w-52'>
+                      Consult Aarogya AI
+                    </Button>
                     </Link>
                 </div>
 
@@ -243,7 +238,8 @@ export default function Home() {
                 <img
                 src="https://s3-alpha-sig.figma.com/img/7804/e5f2/776e41d6b125a1ff07effac37d6ff11b?Expires=1716768000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=azrpMEf-WLIMwNMGxho~iwuoNMDCWcSrE2YB-v08OpaefmYH6cG2hG67oPurv7rBoyj3s0RkQiI6UJaB6SbdpQJFpZwnokJNter~Yu7uMYcDWkyTqpd5Xf2xdcb0RR6hNDD3Dahe6CeVUz9Madtj3KowUZoXiTPwiXsemMgXQMnf8zvjsjcqlvmniKf4879kxU-p2TC5kvkc6ypltra89THgS3hVJcCL2WSCkXuY3k5Psba~H1Dr1Qbf7U40vwyBFQ-2ZTRK4z4R4LnqNBfRciewnRgfPPROGujPggpVpj5oYAo3GF-7yQ5B9ARTudx0iJiI3XuugyCXZef6TmyD2w__"
                 alt='Loading image'
-                className='rounded-3xl bg-clip-border w-10/12'
+                className='rounded-3xl bg-clip-border w-10/12 mb-10'
+               
                 />
             </div>
 
@@ -260,7 +256,7 @@ export default function Home() {
                     <SearchBar value="Set Your location" />
                     </div>
                     <div className='flex justify-center items-center'>
-                    <button className='text-white bg-blue-500 bg-opacity-90 px-4 py-3 rounded-xl'>Search</button>
+                    <Button className='text-white bg-blue-500 bg-opacity-90 px-4 py-3 w-32 rounded-3xl hover:bg-blue-700'>Search</Button>
                     </div>
                 </div> 
                 {/* <div className="flex flex-col items-center justify-center z-50 top-full left-1/2 absolute">
@@ -427,8 +423,6 @@ export default function Home() {
     </div>
 
     <FAQ />
-
-    <Footer />
     </>
   );
 }

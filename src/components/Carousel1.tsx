@@ -14,6 +14,7 @@ import {
 import { CarouselCard } from "@/models/utils/CarouselCard"
 import axios from "axios"
 import Image from "next/image"
+import { FormSuccess } from "./FormSuccess"
 
 
 export default function CustomCarousel({ category }: { category: string }) {
@@ -78,7 +79,7 @@ export default function CustomCarousel({ category }: { category: string }) {
       }
 
       {
-        success && <p className="text-teal-600 bg-teal-200 p-5 w-full">{success}</p>
+        success && <FormSuccess message={success} />
       }
       <CarouselContent className="">
         { carouselCardItem &&
@@ -89,7 +90,7 @@ export default function CustomCarousel({ category }: { category: string }) {
                   <CardContent className="flex flex-col aspect-square items-center justify-center p-6">
                     <span className="text-xl font-semibold">{card.title}</span>
                     <Image
-                      src={card?.image || '/images/signup.png'}
+                      src={card?.image || '/images/department-placeholder.png'}
                       alt={card.title}
                       width={200}
                       height={200}

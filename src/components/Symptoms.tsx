@@ -170,7 +170,7 @@ const Symptoms: React.FC<{ handleSymptomSelection: (symptom: string) => void }> 
         {filteredSymptoms.map((symptom) => (
           <div
             key={symptom.id}
-            className={`flex flex-col items-center cursor-pointer p-2 rounded-2xl ${
+            className={`flex flex-col items-center cursor-pointer p-2 rounded-2xl border border-black ${
               selectedSymptoms.includes(symptom.name) ? 'bg-blue-500 text-white' : 'bg-white'
             }`}
             onClick={() => toggleSymptomSelection(symptom.name)}

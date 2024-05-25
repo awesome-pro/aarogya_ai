@@ -80,7 +80,7 @@ export const appointmentFormSchema = z.object({
   patientDiseases: z.array(z.string()).optional(),
   doctorName: z.string().min(3),
   doctorId: z.string().min(3),
-  location: z.string().min(2).optional()
+  clinicAddress: z.string().min(2).optional()
 })
 
 

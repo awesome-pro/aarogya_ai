@@ -50,7 +50,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
+    <div className="bg-gray-100 flex flex-col justify-center items-center">
       <div className="w-full bg-white p-4 rounded-lg shadow-md">
         <div className="mb-4">
           <div className="text-4xl font-bold text-blue-500 mb-2">Symptom Checker</div>

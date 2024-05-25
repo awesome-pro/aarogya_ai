@@ -63,7 +63,7 @@ Your application should now be running on [http://localhost:3000](http://localho
 
 ## List of Contributors
 * [Abhinandan](@abhinandan-verma)
-* [Sahil Gupta](@sahilgupta028)
+* [Sahil Gupta](@sahilgupta)
 * [Dakskika Chaudhary](@dakshika)
 * Next Contributor [You] ☺️
 

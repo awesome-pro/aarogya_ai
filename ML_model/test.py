@@ -7,7 +7,7 @@ import json
 URL = 'http://127.0.0.1:5000/predict'
 
 sample_data = {
-    'symptoms':['Acne','skin rash','blackheads']
+    'symptoms':['itching','anxiety','diarrhoea','cramps','red spots over body','blister','loss of balance']
 }
 
 our_response = requests.post(URL, headers={'Content-Type': 'application/json'}, data=json.dumps(sample_data))

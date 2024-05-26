@@ -21,10 +21,34 @@ export async function POST(request:NextRequest) {
             symptoms
         })
 
-        if(mlResponse.status === 200 && !mlResponse.data && mlResponse.data.prediction !== null && mlResponse.data.prediction !== undefined){
+        if(mlResponse.status === 200 && mlResponse.data && mlResponse.data.prediction !== null && mlResponse.data.prediction !== undefined){
 
-            console.log("Pre")
+            console.log("Prediction found: ", mlResponse.data.prediction)
+
+            return NextResponse.json(
+                {
+                    prediction: mlResponse.data.prediction,
+                    message: 'Prediction fetched successfully'
+                },
+                {
+                    status: 200,
+                    statusText: 'Prediction fetched successfully'
+                }
+            )
         }
+
+        console.log("Error fetching response from ml: ", mlResponse.data.prediction)
+
+        return NextResponse.json(
+            {
+                error: 'An error occurred while fetching response from ml: ' + mlResponse.data.error,
+                message: 'An error occurred while fetching response from ml: ' + mlResponse.data.error
+            }, 
+            {
+                status: 500,
+                statusText: 'An error occurred while fetching response from ml: ' + mlResponse.data.error
+            }
+        )
        
 
         

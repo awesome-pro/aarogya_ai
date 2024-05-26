@@ -25,18 +25,20 @@ export async function POST(request: NextRequest) {
       model: "gemini-pro"
     });
 
-    const prompt = `A patient presents with the following symptoms: ${symptoms.join(", ")}. Analyze critically and return a response with an array of diseases that the patient may have, as well as an array of relevant departments. 
+    const prompt = `A patient presents with the following symptoms: ${symptoms.join(", ")}. 
+    Analyze critically and return a response with an array of diseases 
+    that the patient may have, as well as an array of relevant rel departments. 
     Response should be in the following format: 
     {
       "diseases": ["disease1", "disease2", ...], 
       "departments": ["department1", "department2", ...]
-    }`;
+    }. DO NOT return any any other information or symbol. If no disease or department is founded return them as empty array []`;
 
     const result = await model.generateContent(prompt);
     console.log(result);
     const response = result.response;
     console.log("Response response: ", response);
-    const text = await response.text();
+    const text =  response.text();
     console.log("Response text: ", text);
 
     let parsedResult;

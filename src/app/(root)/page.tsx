@@ -247,26 +247,32 @@ export default function Home() {
             <div className='flex flex-col items-center justify-center mt-48 min-h-full'>
             <div className='flex flex-row md:absolute md:left-0 justify-between bottom-0 bg-gray-50 p-4 rounded-t-lg w-full max-w-screen-xl px-10 py-10 z-50 shadow-lg'>
                     <div className='flex justify-center items-center'>
-                    <SearchBar value="Ex Doctor, Hospital" />
+                    {/* <SearchBar value="Ex Doctor, Hospital" /> */}
+                    <Link href={"/symptoms"}>
+                    <Button className="bg-blue-500 hover:bg-blue-600 text-white rounded-3xl px-4 py-2">Book Doctor by Symptoms</Button>
+                    </Link>
                     </div>
                     <div className='flex justify-center items-center'>
-                    <SearchBar value="Ex Surgeon, Cardiologist" />
+                    {/* <SearchBar value="Ex Surgeon, Cardiologist" /> */}
+                    <Link href={"/consult-ai"}>
+                    <Button className="bg-blue-500 hover:bg-blue-600 text-white rounded-3xl px-4 py-3">Book Doctor by AI</Button>
+                    </Link>
                     </div>
                     <div className='flex justify-center items-center'>
-                    <SearchBar value="Set Your location" />
+                    {/* <SearchBar value="Set Your location" /> */}
+                    <Link href={"/find-doctor"}>
+                    <Button className="bg-blue-500 hover:bg-blue-600 text-white rounded-3xl px-4 py-3">Book Doctor by Search</Button>
+                    </Link>
                     </div>
-                    <div className='flex justify-center items-center'>
+                    {/* <div className='flex justify-center items-center'>
+                    <Link href={"/consult-ai"}>
+                    <Button className="bg-blue-500 hover:bg-blue-600 text-white rounded-3xl">Get Department by AI</Button>
+                    </Link>
+                    </div> */}
+                    {/* <div className='flex justify-center items-center'>
                     <Button className='text-white bg-blue-500 bg-opacity-90 px-4 py-3 w-32 rounded-3xl hover:bg-blue-700'>Search</Button>
-                    </div>
+                    </div> */}
                 </div> 
-                {/* <div className="flex flex-col items-center justify-center z-50 top-full left-1/2 absolute">
-                  <div className="mt-10">You may be looking for</div>
-                  <div className="grid grid-cols-5 gap-5 flex-row flex-wrap items-center justify-center z-50 absolute">
-                  {entities.map((entity, index) => (
-                 <EntityBox key={index} name={entity.name} photoUrl={entity.photoUrl} />
-                  ))}
-                 </div>
-                </div> */}
                 </div>
                 </div>
         </div>

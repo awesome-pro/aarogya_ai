@@ -1,121 +1,9 @@
-// "use client";
-// import React, { useState } from 'react';
-// import Symptoms from '@/components/Symptoms';
-
-// interface Doctor {
-//   name: string;
-//   specialty: string;
-//   location: string;
-//   contact: string;
-// }
-
-// interface Department {
-//   name: string;
-//   doctors: Doctor[];
-// }
-
-// const Home: React.FC = () => {
-//   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
-//   const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
-
-//   const departments: Department[] = [
-//     {
-//       name: 'Cardiology',
-//       doctors: [
-//         { name: 'Dr. John Doe', specialty: 'Cardiologist', location: 'Hospital A', contact: '123-456-7890' },
-//         { name: 'Dr. Jane Smith', specialty: 'Cardiologist', location: 'Hospital B', contact: '456-789-0123' },
-//       ],
-//     },
-//     // Add more departments and doctors here
-//   ];
-
-//   const handleSymptomSelection = (symptom: string, selected: boolean) => {
-//     const newSelectedSymptoms = selected
-//       ? [...selectedSymptoms, symptom]
-//       : selectedSymptoms.filter(s => s !== symptom);
-
-//     setSelectedSymptoms(newSelectedSymptoms);
-//   };
-
-//   const findDepartment = async () => {
-//     try {
-//       const response = await fetch('/api/get-prediction', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ symptoms: selectedSymptoms })
-//       });
-
-//       console.log(response);
-
-//       if (response.ok) {
-//         const data = await response.json();
-//         setSelectedDepartment(data.result || null);
-//         console.log(data);
-//       } else {
-//         console.error('Failed to fetch department data');
-//       }
-//     } catch (error) {
-//       console.error('An error occurred while fetching department data:', error);
-//     }
-//   };
-
-//   const handleSubmit = () => {
-//     findDepartment();
-//   };
-
-//   return (
-//     <div className="bg-gray-100 flex flex-col justify-center items-center">
-//       <div className="w-full bg-white p-4 rounded-lg shadow-md">
-//         <div className="mb-4">
-//           <div className="text-4xl font-bold text-blue-500 mb-2">Symptom Checker</div>
-//           <p className="text-gray-600 text-lg">Select your symptoms:</p>
-//         </div>
-//         <div className="m-4">
-//           <p className="font-semibold">Selected Symptoms:</p>
-//           <ul>
-//             {selectedSymptoms.map(symptom => (
-//               <li key={symptom}>{symptom}</li>
-//             ))}
-//           </ul>
-//         </div>
-
-//         <button
-//           onClick={handleSubmit}
-//           className="m-4 bg-blue-500 text-white p-2 rounded-lg"
-//         >
-//           Submit
-//         </button>
-
-//         <Symptoms handleSymptomSelection={handleSymptomSelection} />
-
-//         {selectedDepartment && (
-//           <div className="mt-4">
-//             <h2 className="text-2xl font-bold text-blue-500 mb-2">Department: {selectedDepartment.name}</h2>
-//             <h3 className="text-xl font-semibold mb-2">Doctors:</h3>
-//             {/* <ul>
-//               {selectedDepartment.doctors.map(doctor => (
-//                 <li key={doctor.name}>
-//                   <div>
-//                     <b>{doctor.name}</b> - {doctor.specialty}
-//                   </div>
-//                   <div>Location: {doctor.location}</div>
-//                   <div>Contact: {doctor.contact}</div>
-//                 </li>
-//               ))}
-//             </ul> */}
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Home;
 "use client";
+
 import React, { useState } from 'react';
 import Symptoms from '@/components/Symptoms';
+import { Button } from '@/components/ui/button';
+import { CirclePowerIcon } from 'lucide-react';
 
 const Home: React.FC = () => {
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
@@ -218,13 +106,16 @@ const Home: React.FC = () => {
             </ul>
           </div>
 
-          <button
+          <Button
             onClick={handleSubmit}
-            className="m-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-2xl border-2 border-red-600"
+            className="m-4 bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-3xl border-2 w-48"
             disabled={isLoading}
           >
-            {isLoading ? 'Loading...' : 'Submit'}
-          </button>
+            {isLoading ? <div>
+              Loading..
+              <CirclePowerIcon size={16} className="animate-spin ml-2" />
+            </div> : 'Submit'}
+          </Button>
 
           <Symptoms handleSymptomSelection={handleSymptomSelection} />
         </div>

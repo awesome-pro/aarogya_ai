@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Input } from './ui/input';
 
 interface Symptom {
   id: number;
@@ -160,12 +161,12 @@ const Symptoms: React.FC<{ handleSymptomSelection: (symptom: string, selected: b
 
   return (
     <div>
-      <input
+      <Input 
         type="text"
         value={searchQuery}
         onChange={e => setSearchQuery(e.target.value)}
         placeholder="Search symptoms..."
-        className="border p-2 mb-4 w-full"
+        className="border p-2 mb-4 w-1/2 rounded-xl"
       />
       <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
         {filteredSymptoms.map(symptom => (

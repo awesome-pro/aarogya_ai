@@ -5,6 +5,7 @@ import numpy as np
 from data_pre_process import get_sample_data
 from flask_cors import CORS
 app = Flask(__name__)
+
 CORS(app)
 # Load the Model 
 

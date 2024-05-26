@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Symptoms from '@/components/Symptoms';
 import { Button } from '@/components/ui/button';
 import { CirclePowerIcon } from 'lucide-react';
+import axios from 'axios';
 
 const Home: React.FC = () => {
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
@@ -16,7 +17,7 @@ const Home: React.FC = () => {
 
   const handleSymptomSelection = (symptom: string, selected: boolean) => {
     const newSelectedSymptoms = selected
-      ? [...selectedSymptoms, symptom]
+      ? [...selectedSymptoms, symptom.toLowerCase()]
       : selectedSymptoms.filter(s => s !== symptom);
 
     setSelectedSymptoms(newSelectedSymptoms);
@@ -24,22 +25,20 @@ const Home: React.FC = () => {
 
   const findDepartment = async () => {
     setIsLoading(true);
+    console.log("hello");
+    console.log(selectedSymptoms);
     try {
-      const response = await fetch('http://localhost:5000/predict', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ symptoms: selectedSymptoms })
+      const response = await axios.post('http://localhost:3000/api/get-ml-prediction', {
+        symptoms: selectedSymptoms 
       });
 
-      console.log(response.body);
+      console.log(response);
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setSelectedDisease(data.prediction || []);
+      if (response.status) {
+        console.log(response);
+        setSelectedDisease(response.data.prediction || []);
         // setSelectedDepartment(data.result.departments || []);
+        console.log(response.data.prediction)
         setShowResults(true);
       } else {
         console.error('Failed to fetch department data');
@@ -64,17 +63,13 @@ const Home: React.FC = () => {
   return (
     <div>
       {showResults && (
-        <div className="bg-gray-100 p-6 rounded-xl fixed top-1/3 left-1/3 w-1/3 h-auto flex flex-col items-center justify-center z-50 shadow-xl border-2 border-black">
+        <div className="bg-gray-100 p-6 rounded-xl fixed top-1/2 md:top-1/3 md:left-1/3 w-full md:w-1/3 h-auto flex flex-col items-center justify-center z-50 shadow-xl border-2 border-black">
   <h2 className="text-lg font-semibold mb-4">Result:</h2>
   <div className="text-md">
     {selectedDisease.length > 0 && (
       <div className="mb-4">
-        <h3 className="font-semibold mb-2">Diseases you may have:</h3>
-        <ul className="list-disc pl-4">
-          {selectedDisease.map((disease, index) => (
-            <li key={index}>{disease}</li>
-          ))}
-        </ul>
+        <h3 className="font-semibold mb-2">Prediction:</h3>
+        <p>{selectedDisease}</p>
       </div>
     )}
     {selectedDepartment.length > 0 && (

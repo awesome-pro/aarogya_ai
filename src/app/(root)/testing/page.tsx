@@ -101,14 +101,14 @@ const Home: React.FC = () => {
             <div className="text-4xl font-bold text-blue-500 mb-2">Symptom Checker</div>
             <p className="text-gray-600 text-lg">Select your symptoms:</p>
           </div>
-          <div className="m-4">
+          {/* <div className="m-4">
             <p className="font-semibold">Selected Symptoms:</p>
             <ul>
               {selectedSymptoms.map(symptom => (
                 <li key={symptom}>{symptom}</li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           <Button
             onClick={handleSubmit}

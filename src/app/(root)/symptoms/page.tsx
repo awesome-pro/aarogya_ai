@@ -35,8 +35,9 @@ const Home: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setSelectedDisease(data.disease || []);
-        setSelectedDepartment(data.departments || []);
+        console.log(data);
+        setSelectedDisease(data.result.diseases || []);
+        setSelectedDepartment(data.result.departments || []);
         setShowResults(true);
       } else {
         console.error('Failed to fetch department data');

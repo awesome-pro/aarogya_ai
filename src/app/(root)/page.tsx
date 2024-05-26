@@ -249,19 +249,19 @@ export default function Home() {
                     <div className='flex justify-center items-center'>
                     {/* <SearchBar value="Ex Doctor, Hospital" /> */}
                     <Link href={"/symptoms"}>
-                    <Button className="bg-blue-500 hover:bg-blue-600 text-white rounded-3xl px-4 py-2">Book Doctor by Symptoms</Button>
+                    <Button className="bg-blue-500 hover:bg-blue-600 text-white rounded-3xl px-4 py-3 font-semibold">Book Doctor by Symptoms</Button>
                     </Link>
                     </div>
                     <div className='flex justify-center items-center'>
                     {/* <SearchBar value="Ex Surgeon, Cardiologist" /> */}
                     <Link href={"/consult-ai"}>
-                    <Button className="bg-blue-500 hover:bg-blue-600 text-white rounded-3xl px-4 py-3">Book Doctor by AI</Button>
+                    <Button className="bg-blue-500 hover:bg-blue-600 text-white rounded-3xl px-4 py-3 font-semibold">Book Doctor by AI</Button>
                     </Link>
                     </div>
                     <div className='flex justify-center items-center'>
                     {/* <SearchBar value="Set Your location" /> */}
                     <Link href={"/find-doctor"}>
-                    <Button className="bg-blue-500 hover:bg-blue-600 text-white rounded-3xl px-4 py-3">Book Doctor by Search</Button>
+                    <Button className="bg-blue-500 hover:bg-blue-600 text-white rounded-3xl px-4 py-3 font-semibold">Book Doctor by Search</Button>
                     </Link>
                     </div>
                     {/* <div className='flex justify-center items-center'>

@@ -177,11 +177,11 @@ const Symptoms: React.FC<{ handleSymptomSelection: (symptom: string, selected: b
               color: selectedSymptoms.includes(symptom.name) ? 'white' : 'black',
               cursor: 'pointer',
               padding: '8px',
-              backgroundColor: selectedSymptoms.includes(symptom.name) ? 'blue' : 'white',
+              // backgroundColor: selectedSymptoms.includes(symptom.name) ? 'green' : 'white',
               borderRadius: '4px',
-              border: selectedSymptoms.includes(symptom.name) ? '2px solid red' : '2px solid black'
+              border: selectedSymptoms.includes(symptom.name) ? '2px solid white' : '2px solid black'
             }}
-            className='flex justify-center items-center'
+            className={`flex justify-center ${selectedSymptoms.includes(symptom.name) ? 'bg-green-500' : 'bg-white'} items-center`}
           >
             <div>
             {symptom.name}

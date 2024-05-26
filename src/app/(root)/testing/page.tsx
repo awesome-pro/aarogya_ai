@@ -25,14 +25,14 @@ const Home: React.FC = () => {
   };
 
   const findDepartment = async () => {
+    if(selectedSymptoms.length < 10){
+      alert("Mark atleast 10 symptoms");
+      return;
+    }
+
     setIsLoading(true);
     console.log("hello");
     console.log(selectedSymptoms);
-
-    if(selectedSymptoms.length < 10){
-      alert("Mark atleast 10 symptoms");
-      throw new Error("Atleast 10 symptoms");
-    }
     try {
       const response = await axios.post('http://localhost:3000/api/get-ml-prediction', {
         symptoms: selectedSymptoms 
@@ -78,7 +78,7 @@ const Home: React.FC = () => {
         <p>{selectedDisease}</p>
       </div>
     )}
-    {selectedDepartment.length > 0 && (
+    {/* {selectedDepartment.length > 0 && (
       <div>
         <h3 className="font-semibold mb-2">Departments you must visit:</h3>
         <ul className="list-disc pl-4">
@@ -87,7 +87,7 @@ const Home: React.FC = () => {
           ))}
         </ul>
       </div>
-    )}
+    )} */}
   </div>
   <button onClick={handleDismiss} className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-2xl focus:outline-none focus:ring focus:ring-blue-400">
     OK

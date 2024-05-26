@@ -5,6 +5,7 @@ import Symptoms from '@/components/Symptoms';
 import { Button } from '@/components/ui/button';
 import { CirclePowerIcon } from 'lucide-react';
 import axios from 'axios';
+import { error } from 'console';
 
 const Home: React.FC = () => {
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
@@ -27,6 +28,11 @@ const Home: React.FC = () => {
     setIsLoading(true);
     console.log("hello");
     console.log(selectedSymptoms);
+
+    if(selectedSymptoms.length < 10){
+      alert("Mark atleast 10 symptoms");
+      throw new Error("Atleast 10 symptoms");
+    }
     try {
       const response = await axios.post('http://localhost:3000/api/get-ml-prediction', {
         symptoms: selectedSymptoms 

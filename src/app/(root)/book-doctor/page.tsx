@@ -218,11 +218,13 @@ function BookAppointment() {
                            <Form {...form}>
                             <form onSubmit={form.handleSubmit(onsubmit)}>
                                 <CustomAppointmentInput
-                                    form={form}
+                                    control={form.control}
                                     name='patientName'
                                     label='Patient Name'
                                     placeholder='Enter patient name'
                                     disabled={true}
+                                    description='Enter the name of the patient'
+                                    type='text'
                                     />
 
 

@@ -42,6 +42,7 @@ export async function POST( request: NextRequest){
     
             const doctor = await DoctorModel.findById(doctorId);
             if(!doctor){
+                console.log("Doctors not found")
                 return NextResponse.json({
                     status: 404,
                     message: "Doctor not found"
@@ -50,6 +51,7 @@ export async function POST( request: NextRequest){
                     status: 404
                 })
             }
+            console.log("Doctor found: ", doctor)
 
             const patientOverlapppingAppointments = await AppointmentModel.findOne({
                 patientId: patientId,

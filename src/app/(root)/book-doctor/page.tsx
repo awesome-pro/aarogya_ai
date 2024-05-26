@@ -144,58 +144,50 @@ function BookAppointment() {
     , [fetchPatientDetails, fetchDoctorDetails, session, patient?._id, doctorId])
 
 
-    const formSchema = appointmentFormSchema
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            patientName: patient?.name || "",
-            patientEmail: patient?.email || "",
-            patientPhoneNumber: patientData?.phoneNumber,
-            patientAge: patientData?.age,
-            patientMedications: patientData?.medications,
-            patientAllergies: patientData?.allergies,
-            patientBloodGroup: patientData?.bloodGroup,
-            patientDiseases: patientData?.diseases,
-            patientAddress: patientData?.address,
-            patientImage: patientData?.image,
-            patientBodyImage: "",
-            patientPrescriptionImage: "",
-            doctorId: doctorId || "",
-            doctorName: doctorData?.name || "",
-            clinicAddress: doctorData?.clinicAddress || ""
+    
+    const form = useForm<z.infer<typeof appointmentFormSchema>>(
+        {
+            resolver: zodResolver(appointmentFormSchema),
+            defaultValues: {
+                "patientName": patientData?.name,
+                "doctorId": doctorId!,
+                "startTimestamp": new Date(),
+                "endTimestamp": new Date(),
+                "clinicAddress": doctorData?.clinicAddress || '',
+            }
         }
-    })
+    )
 
-
-    const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    const onsubmit = async (data: z.infer<typeof appointmentFormSchema>) => {
         console.log(data)
 
+        setLoading(true)
         try {
-            setLoading(true)
-            const response = await axios.post(`/api/create-new-appointment?id=${patient?.id}`, data)
-            console.log(response.data)
-            console.log(response.status)
-            console.log(response.data.message)
 
+            const result = await axios.post(`/api/test?doctorId=${doctorId}`, data)
 
-            if(response.status !== 200) {
-                setError('An error occurred while booking the appointment: ' + response.data.error)
+            if(result.status !== 200) {
+                setError('An error occurred while booking appointment: ' + result.data.message)
                 return
-
             }
-            setSuccess('Appointment booked successfully')
 
-            router.push('/patient/dashboard')
+            const responseJson = result.data
 
+            setSuccess('Appointment booked successfully: ' + responseJson.message)
+            
         } catch (error) {
-            console.error(error)
-            setError(error as string)
+            setError('An error occurred while booking appointment: ' + error)
+            toast({
+                title: 'Error',
+                description: 'An error ' + error,
+                variant: 'destructive'
+            })
+            return
         } finally {
             setLoading(false)
         }
     }
-
-
+   
 
   return (
     <div className=''>
@@ -219,184 +211,12 @@ function BookAppointment() {
                             }
 
                             
-                            <Form {...form} >
-                                <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
-                                <div className='flex items-center justify-center'>
-                                    <Button
-                                    type='submit'
-                                    className='px-4 py-2 bg-blue-500 rounded-3xl hover:bg-blue-600 text-white mb-10 my-8 w-48'
-                                    disabled={loading}
-                                    onClick={() => handleSubmit}
-                                    >
-                                    Book Appointment
-                                    </Button>
-                                </div>
-                                    
-                                    <div className=' grid grid-cols-2 gap-7'>
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientName'
-                                            label='Name'
-                                            placeholder='Enter your name'
-                                            description='Please enter your name'
-                                            type='text'
-                                            value={patient?.name || ""}
-                                        />
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientEmail'
-                                            label='Email'
-                                            placeholder='Enter your email'
-                                            description='Please enter your email'
-                                            type='email'
-                                            value={patient?.email || ""}
-                                            disabled={true}
-                                        />
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientPhoneNumber'
-                                            label='Phone Number'
-                                            placeholder='Enter your phone number'
-                                            description='Please enter your phone number'
-                                            type='tel'
-                                            value={patientData?.phoneNumber || ""}
-                                        />
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientAddress'
-                                            label='Address'
-                                            placeholder='Enter your address'
-                                            description='Please enter your address'
-                                            type='text'
-                                            value={patientData?.address || ""}
-                                        />
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientAge'
-                                            label='Age'
-                                            placeholder='Enter your age'
-                                            description='Please enter your age'
-                                            type='number'
-                                            value={patientData?.age || 0}
-                                        />
-
-                                        {/* <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientImage'
-                                            label='Image'
-                                            placeholder='Enter your image'
-                                            description='Please enter your image'
-                                            type='text'
-                                        /> */}
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientMedications'
-                                            label='Medications'
-                                            placeholder='Enter your medications'
-                                            description='Please enter your medications'
-                                            type='text'
-                                            value={patientData?.medications || ""}
-                                        />
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientAllergies'
-                                            label='Allergies'
-                                            placeholder='Enter your allergies'
-                                            description='Please enter your allergies'
-                                            type='text'
-                                            value={patientData?.allergies || ""}
-                                        />
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientBloodGroup'
-                                            label='Blood Group'
-                                            placeholder='Enter your blood group'
-                                            description='Please enter your blood group'
-                                            type='text'
-                                            value={patientData?.bloodGroup || ""}
-                                        />
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientDiseases'
-                                            label='Diseases'
-                                            placeholder='Enter your diseases'
-                                            description='Please enter your diseases'
-                                            type='text'
-                                            value={patientData?.diseases || ""}
-                                        />
-
-                                        {/* <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientBodyImage'
-                                            label='Body Image'
-                                            placeholder='Enter your body image'
-                                            description='Please enter your body image'
-                                            type='text'
-                                        /> */}
-
-                                        {/* <CustomAppointmentInput
-                                            control={form.control}
-                                            name='patientPrescriptionImage'
-                                            label='Prescription Image'
-                                            placeholder='Enter your prescription image'
-                                            description='Please enter your prescription image'
-                                            type='text'
-                                        /> */}
-
-                                    </div>
-
-                                        <Separator className='my-4'/>
+                           <h1>
+                                Appointment Booking Details
+                           </h1>
 
 
-                                    <div>
-
-                                        <h1>Doctors Details</h1>
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='doctorId'
-                                            label='Doctor ID'
-                                            placeholder=''
-                                            disabled={true}
-                                            description='This is the Doctor ID'
-                                            type='text'                        
-                                        />
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='doctorName'
-                                            label='Doctor Name'
-                                            placeholder=''
-                                            disabled={true}
-                                            description='This is the Doctor Name'
-                                            type='text'
-                                            value={doctorData?.name || ""}                        
-                                        />
-
-                                        <CustomAppointmentInput
-                                            control={form.control}
-                                            name='clinicAddress'
-                                            label='clinicAddress'
-                                            placeholder=''
-                                            disabled={true}
-                                            description='This is the clinicAddress of Appointment'
-                                            type='text'  
-                                            value={doctorData?.clinicAddress || ""}                      
-                                        />                                         
-                                    </div>
-                                        
-                                            
-                                </form>
-                            </Form>
+                           
                         </div>
                     </div>
                 </div>

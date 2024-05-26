@@ -25,18 +25,20 @@ export async function POST(request: NextRequest) {
             model: "gemini-pro"
         });
 
-        const prompt = `A patient presents with the following symptoms: ${symptoms.join(", ")}. Analyze critically and  Return a response having ONLY array of (most & best possible) diseases that patient may have,  as Array of Strings like ["", "", ""] If no disease is found, return an empty array. DO NOT return any other information.`;
+        const prompt = `A patient presents with the following symptoms: ${symptoms.join(", ")}. 
+        Analyze critically and return a response having ONLY diseases that patient may have, the related medical department,  
+        as an array of objects like [{disease: "Disease Name", department: "Department Name"}, {}, {}].
+        If no disease is found, return an empty array. DO NOT return any other information.`;
 
         const result = await model.generateContent(prompt);
-        const response = result.response;
-        //console.log("Response response: ", response);
-        const text =  response.text();
-        console.log("Response text: ", text);
+        const responseText = result.response;
+        //const reaponse = responseText.candidates[0].content
+        console.log("Response text: ", responseText);
 
         let parsedResult;
         try {
-            // Parse the response text to extract the array of strings
-            parsedResult = JSON.parse(text);
+            // Parse the response text to extract the array of objects
+            parsedResult = JSON.parse(responseText.text.toString())  ;
         } catch (e) {
             console.log("Error parsing JSON: ", e);
             parsedResult = [];
@@ -61,7 +63,7 @@ export async function POST(request: NextRequest) {
                 message: "No disease found"
             },
             {
-                status: 500,
+                status: 200,
                 statusText: "No disease found"
             }
         );

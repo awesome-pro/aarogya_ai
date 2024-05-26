@@ -261,7 +261,7 @@ export default function FindDoctor() {
 
         <div  className="mt-10">
 
-          <Swiper/>
+         
 
           {
             doctorData.length === 0 ? (

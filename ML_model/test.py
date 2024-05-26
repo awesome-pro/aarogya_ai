@@ -1,5 +1,5 @@
 import requests
-
+import json
 
 # URL for flask end point 
 URL = 'http://127.0.0.1:5000/predict'

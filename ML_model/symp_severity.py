@@ -1,4 +1,5 @@
 import pandas as pd 
+#use of pandas 
 
 df = pd.read_csv('Symptom-severity.csv')
 

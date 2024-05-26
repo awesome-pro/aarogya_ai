@@ -5,6 +5,7 @@ import json
 URL = 'http://127.0.0.1:5000/predict'
 
 sample_data = {
+    # sample data 
     'symptoms':['itching','anxiety','diarrhoea','cramps','red spots over body','blister','loss of balance']
 }
 

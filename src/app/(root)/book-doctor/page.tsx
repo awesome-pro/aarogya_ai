@@ -215,6 +215,20 @@ function BookAppointment() {
                                 Appointment Booking Details
                            </h1>
 
+                           <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onsubmit)}>
+                                <CustomAppointmentInput
+                                    form={form}
+                                    name='patientName'
+                                    label='Patient Name'
+                                    placeholder='Enter patient name'
+                                    disabled={true}
+                                    />
+
+
+                            </form>
+                           </Form>
+
 
                            
                         </div>

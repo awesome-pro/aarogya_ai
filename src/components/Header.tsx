@@ -37,6 +37,9 @@ const Header = () => {
                 </h1>
             </Link>
         <nav className="space-x-10">
+          <Link href="/">
+            <Button className=" hover:underline">Home</Button>
+          </Link>
           <Link href="/find-doctor">
             <Button className=" hover:underline">Find Doctor</Button>
           </Link>

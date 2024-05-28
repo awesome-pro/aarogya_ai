@@ -222,10 +222,19 @@ function BookAppointment() {
                                     name='patientName'
                                     label='Patient Name'
                                     placeholder='Enter patient name'
-                                    disabled={true}
+                                   
                                     description='Enter the name of the patient'
                                     type='text'
                                     />
+
+                                    <Button
+                                        type='submit'
+                                        className='px-4 py-2 bg-blue-500 rounded-3xl hover:bg-blue-600 text-white mb-10 my-8 w-48'
+                                        disabled={loading}
+                                        onClick={form.handleSubmit(onsubmit)}
+                                    >
+                                        Book Appointment
+                                    </Button>
 
 
                             </form>

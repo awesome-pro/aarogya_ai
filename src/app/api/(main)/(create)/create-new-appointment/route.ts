@@ -15,6 +15,8 @@ export async function POST( request: NextRequest){
 
         console.log("patientId, doctorId, location , startTimeStamp, endTimeStamp,  ", patientId, doctorId, location, startTimestamp, endTimestamp, disease, details)
         
+        console.log("patientId: ", patientId)
+        console.log("doctorId: ", doctorId)
     
         if(!patientId || !doctorId || !startTimestamp || !endTimestamp){
             return NextResponse.json({

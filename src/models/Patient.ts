@@ -11,11 +11,11 @@ export interface Patient extends Document{
     age?: number;
     diseases?: string[];
     appointments?: Appointment[];
-    height?: number;
-    weight?: number;
-    bloodGroup?: string;
-    allergies?: string[];
-    medications?: string[];
+    height: number;
+    weight: number;
+    bloodGroup: string;
+    allergies?: string;
+    currentMedications?: string;
     address?: string;
     image? : string;
     
@@ -29,13 +29,13 @@ const PatientSchema = new Schema<Patient>(
         password: { type: String, required: true },
         phoneNumber: { type: String, required: false },
         age: { type: Number, required: false },
-        diseases: { type: [String], required: false },
+        diseases: { type: String, required: false },
         appointments: { type: [String], required: false },
         height: { type: Number, required: false },
         weight: { type: Number, required: false },
         bloodGroup: { type: String, required: false },
-        allergies: { type: [String], required: false },
-        medications: { type: [String], required: false },
+        allergies: { type: String, required: false },
+        currentMedications: { type: String, required: false },
         address: { type: String, required: false },
         image: { type: String, required: false }
     },

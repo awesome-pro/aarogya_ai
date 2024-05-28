@@ -145,7 +145,7 @@ const PatientProfilePage: React.FC = () => {
 
             <div className="mb-4 border border-black p-5">
               <h3 className="text-xl font-bold mb-2 text-blue-700">Medications Currently Taking</h3>
-              <p className="text-lg">{patientData?.medications}</p>
+              {/* <p className="text-lg">{patientData?.}</p> */}
             </div>
           </section>
         </div>

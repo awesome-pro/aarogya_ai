@@ -151,7 +151,7 @@ const PatientProfilePage: React.FC = () => {
         </div>
 
         <div className="flex justify-around items-center gap-0">
-          <Link href="/patient/profile/edit">
+          <Link  href={`/patient/profile/edit?id=${user?._id}`}>
             <Button 
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded-3xl"
             >

@@ -3,11 +3,11 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { Input } from "@/components/ui/input";
 import { Control, FieldPath } from 'react-hook-form';
 import * as z from "zod";
-import { appointmentFormSchema } from '@/lib/utils';
+import {  appointmentFormSchema } from '@/lib/utils';
 
-const formSchema = appointmentFormSchema // Use the appropriate type
+const formSchema =  appointmentFormSchema// Use the appropriate type
 
-interface CustomAppointmentInput {
+export interface CustomDoctorInput {
   control: Control<z.infer<typeof formSchema>>,
   name: FieldPath<z.infer<typeof formSchema>>,
   label: string,
@@ -17,7 +17,7 @@ interface CustomAppointmentInput {
   type: "email" | "password" | "text" | "number" | "tel" | "file" | "date",
 }
 
-function CustomAppointmentInput({ control, name, label, placeholder, description, disabled, type }: CustomAppointmentInput) {
+function CustomDoctorInput({ control, name, label, placeholder, description, disabled, type }: CustomDoctorInput) {
   return (
     <FormField
       control={control}
@@ -25,7 +25,7 @@ function CustomAppointmentInput({ control, name, label, placeholder, description
       disabled={disabled}
       render={({ field }) => (
         <div className='form-item'>
-          <FormLabel className='form-label font-semibold text-blue-600 text-md'>
+          <FormLabel className='form-label font-semibold'>
             {label}
           </FormLabel>
           <div className='w-full flex flex-col'>
@@ -33,8 +33,8 @@ function CustomAppointmentInput({ control, name, label, placeholder, description
               <Input
                 placeholder={placeholder}
                 className='input-class'
-                {...field}
                 type={type}
+                {...field}
               />
             </FormControl>
             <FormDescription className='mt-2'>
@@ -48,4 +48,4 @@ function CustomAppointmentInput({ control, name, label, placeholder, description
   );
 }
 
-export default CustomAppointmentInput;
+export default CustomDoctorInput;

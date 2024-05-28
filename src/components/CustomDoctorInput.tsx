@@ -3,7 +3,7 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { Input } from "@/components/ui/input";
 import { Control, FieldPath } from 'react-hook-form';
 import * as z from "zod";
-import { customFormSchema, doctorFormSchema } from '@/lib/utils';
+import {  doctorFormSchema } from '@/lib/utils';
 
 const formSchema = doctorFormSchema// Use the appropriate type
 

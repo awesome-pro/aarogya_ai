@@ -19,7 +19,7 @@ const Home: React.FC = () => {
   const handleSymptomSelection = (symptom: string, selected: boolean) => {
     const newSelectedSymptoms = selected
       ? [...selectedSymptoms, symptom.toLowerCase()]
-      : selectedSymptoms.filter(s => s !== symptom);
+      : selectedSymptoms.filter(s => s.toLowerCase() !== symptom.toLowerCase());
 
     setSelectedSymptoms(newSelectedSymptoms);
   };
@@ -100,6 +100,7 @@ const Home: React.FC = () => {
           <div className="mb-4">
             <div className="text-4xl font-bold text-blue-500 mb-2">Symptom Checker</div>
             <p className="text-gray-600 text-lg">Select your symptoms:</p>
+            <p className="text-red-500 text-base">Please select atleast 10 symptoms to predict the disease</p>
           </div>
           {/* <div className="m-4">
             <p className="font-semibold">Selected Symptoms:</p>
@@ -109,6 +110,11 @@ const Home: React.FC = () => {
               ))}
             </ul>
           </div> */}
+
+           <div>
+           <h1 className="text-black text-base">Total symptoms Selected : {selectedSymptoms.length}</h1>
+         </div>
+          
 
           <Button
             onClick={handleSubmit}
@@ -129,3 +135,4 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+

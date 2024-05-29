@@ -10,7 +10,7 @@ export interface Doctor extends Document {
     hospital?: string;
     clinicAddress: string;
     appointmentIds?: string[];
-    image?: string;
+    qualifications?: string;
     experience?: string;
     consultationFee?: number;
     availability?: string;
@@ -31,7 +31,7 @@ const DoctorSchema = new mongoose.Schema<Doctor>({
             type: String,
         }
     ],
-    image: { type: String, required: false },
+    qualifications: { type: String, required: false },
     experience: { type: String, required: false },
     consultationFee: { type: Number, required: false },
     availability: { type: String, required: false },

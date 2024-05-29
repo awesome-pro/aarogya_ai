@@ -20,6 +20,7 @@ import { signIn } from 'next-auth/react';
 const signUpSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
+  phoneNumber: z.string().min(10, 'Phone number must be at least 10 characters'),
 });
 
 type SignUpSchema = z.infer<typeof signUpSchema>;
@@ -37,6 +38,7 @@ const SignUp: NextPage = () => {
     defaultValues: {
       email: '',
       password: '',
+      phoneNumber: '',
     },
   });
 
@@ -123,6 +125,18 @@ const SignUp: NextPage = () => {
               )}
             </div>
             <div>
+              <label className="block text-gray-700">Phone Number</label>
+              <input
+                type="tel"
+                className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                {...form.register('phoneNumber')}
+              />
+              {form.formState.errors.password && (
+                <span className="text-red-600 text-sm">{form.formState.errors.password.message}</span>
+              )}
+            </div>
+
+            <div>
               <label className="block text-gray-700">Password</label>
               <input
                 type="password"
@@ -142,6 +156,8 @@ const SignUp: NextPage = () => {
             >
               {isSubmitting ? <Loader2 className="animate-spin" /> : 'Submit'}
             </Button>
+
+            
           </form>
         </div>
       </div>

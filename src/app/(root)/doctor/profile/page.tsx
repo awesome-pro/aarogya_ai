@@ -145,7 +145,7 @@ const DoctorProfile: React.FC = () => {
                 </div>
               </div>
               <div className='flex justify-center items-center gap-10 pt-10 pb-6'>
-                <Link href="/doctor/profile/edit">
+                <Link href={`/doctor/profile/edit?id=${doctorId}`}>
                   <Button className='bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-3 rounded-xl'>Edit your profile</Button>
                 </Link>
                 <Link href='/doctor/patient-history'>

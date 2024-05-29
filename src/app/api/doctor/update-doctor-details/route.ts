@@ -2,15 +2,15 @@ import mongoose from "mongoose";
 import DoctorModel from "@/models/Doctor";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse, NextMiddleware } from "next/server";
+import { NextApiRequest } from "next";
 
 
 
-export async function PUT(req: NextRequest) {
+export async function POST(req: NextApiRequest) {
 
-    const { searchParams } = new URL(req.url)
+    console.log(req.body);
 
-    const id = searchParams.get('id');
-    
+    const { id } = req.query
 
     await dbConnect();
 

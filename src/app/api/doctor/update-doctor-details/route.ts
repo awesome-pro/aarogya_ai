@@ -6,15 +6,16 @@ import { NextApiRequest } from "next";
 
 
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: NextRequest) {
 
-    console.log(req.body);
+    console.log(req);
 
-    const { id } = req.query
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
 
     await dbConnect();
 
-    const { name, email, phoneNumber, specialty, experience, consultationFee, availability, qualifications, bio, } = await req.json();
+    const { name, email, phoneNumber, department, experience, consultationFee, clinicAddress, availability, qualifications, bio, } = await req.json();
     try {
 
         const updatedDoctor = await DoctorModel.findByIdAndUpdate(
@@ -23,9 +24,9 @@ export async function POST(req: NextApiRequest) {
                 name: name,
                 email: email,
                 phoneNumber: phoneNumber,
-                specialty: specialty,
+                department: department,
                 experience: experience,
-                location: location,
+                clinicAddress: clinicAddress,
                 consultationFee: consultationFee,
                 availability: availability,
                 qualifications: qualifications,

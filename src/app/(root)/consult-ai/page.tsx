@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
+import { useRouter } from 'next/navigation';
 
 const RAPIDAPI_KEY = 'a74f98ca07msh13a3e05599ca2aep1dbfd2jsnd0b1eab05732';
 
@@ -15,11 +16,15 @@ interface DepartmentSuggestion {
 }
 
 interface Doctor {
+  _id: any;
+  id: string;
   experience: number;
   name: string;
-  dpartment: string;
+  department: string;
   clinicAddress: string;
   phoneNumber: string;
+  lat: number;
+  lng: number;
 }
 
 export default function Home() {
@@ -30,6 +35,8 @@ export default function Home() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [bookingConfirmation, setBookingConfirmation] = useState<string | null>(null);
+  
+  const router = useRouter();
 
   useEffect(() => {
     // Get user's location
@@ -89,10 +96,14 @@ export default function Home() {
       const doctorData = await fetchDoctorData(department);
       setDoctors(doctorData);
 
-      // Automatically book the first available doctor
+      // Automatically book the nearest available doctor
       if (doctorData.length > 0) {
         const confirmationMessage = await bookDoctor(doctorData[0]);
         setBookingConfirmation(confirmationMessage);
+
+        // Redirect to /book-doctor page with doctor id
+        console.log(doctorData);
+        router.push(`/book-doctor?doctorId=${doctorData[0]._id}`);
       }
     } catch (error) {
       console.error("Error fetching chat completion:", error);
@@ -152,12 +163,12 @@ export default function Home() {
       console.error("Location not available");
       return [];
     }
-  
+
     try {
       const response = await fetch(`/api/get-doctor?department=${department}&lat=${location.lat}&lng=${location.lng}`);
       const data = await response.json();
       let doctors: Doctor[] = data.data || [];
-  
+
       // Sort doctors by distance from user's location
       if (doctors.length > 0) {
         doctors = doctors.sort((a, b) => {
@@ -166,14 +177,14 @@ export default function Home() {
           return distanceA - distanceB;
         });
       }
-  
+
       return doctors;
     } catch (error) {
       console.error("Error fetching doctor data:", error);
       return [];
     }
   };
-  
+
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
     const R = 6371; // Radius of the earth in km
     const dLat = deg2rad(lat2 - lat1);
@@ -186,17 +197,16 @@ export default function Home() {
     const d = R * c; // Distance in km
     return d;
   };
-  
+
   const deg2rad = (deg: number): number => {
     return deg * (Math.PI / 180);
   };
-  
 
   const bookDoctor = async (doctor: Doctor): Promise<string> => {
     // Implement the booking API call here
     try {
-      const response = await axios.post('/api/book-doctor', { doctor });
-      return `Appointment booked with Dr. ${doctor.name} at ${doctor.clinicAddress}. PhoneNumber: ${doctor.phoneNumber}`;
+      // const response = await axios.post('/api/book-doctor', { doctor });
+      return `Appointment will get booked with Dr. ${doctor.name} at ${doctor.clinicAddress}. PhoneNumber: ${doctor.phoneNumber}`;
     } catch (error) {
       console.error("Error booking doctor:", error);
       return "Sorry, something went wrong while booking the appointment.";
@@ -208,10 +218,10 @@ export default function Home() {
       <div className="w-full max-w-screen-md bg-white p-4 rounded-lg shadow-md">
         <div className="mb-4">
           <div className="text-4xl font-bold text-blue-500 mb-2">
-            Medical Assistant
+            Book Doctor Automatically
           </div>
           <p className="text-gray-600 text-lg">
-            Describe your medical problem, and I will suggest the department you should visit.
+            Describe your medical problem, and I will book the doctor for you.
           </p>
         </div>
         <div className="mb-4" style={{ height: '400px', overflowY: 'auto' }}>
@@ -278,5 +288,3 @@ export default function Home() {
     </div>
   );
 }
-
-

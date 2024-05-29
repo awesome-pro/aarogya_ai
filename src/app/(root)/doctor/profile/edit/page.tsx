@@ -73,7 +73,7 @@ const EditDoctorProfile: React.FC = () => {
     setDisabled(true);
 
     try {
-      const response = await axios.put(`/api/doctor/update-doctor-details?id=${doctor._id}`, data);
+      const response = await axios.post(`/api/doctor/update-doctor-details?id=${doctor._id}`, data);
 
       if (response.status === 200) {
         setSuccess(true);
@@ -245,15 +245,6 @@ useEffect(() => {
                     width={150}
                     height={150}
                   />
-                  <CustomDoctorInput
-                    control={form.control}
-                    name='image'
-                    label='Image'
-                    placeholder='Update your image'
-                    description='Update your image'
-                    type='file'
-                    disabled={disabled}
-                  />
                 </div>
               </div>
 
@@ -321,16 +312,6 @@ useEffect(() => {
 
                     <CustomDoctorInput
                       control={form.control}
-                      name='image'
-                      label='Image'
-                      placeholder='Enter your image'
-                      description='Enter your image'
-                      type='file'
-                      disabled={disabled}
-                    />
-
-                    <CustomDoctorInput
-                      control={form.control}
                       name='experience'
                       label='Experience'
                       placeholder='Enter your experience'
@@ -370,16 +351,6 @@ useEffect(() => {
                       disabled={disabled}
 
                     />
-
-                    <CustomDoctorInput
-                      control={form.control}
-                      name='specialty'
-                      label='Specialty'
-                      placeholder='Enter your specialty'
-                      description='Enter your specialty'
-                      type='text'
-                      disabled={disabled}
-                    />
               
                  </div>
               </div>
@@ -412,3 +383,5 @@ useEffect(() => {
 };
 
 export default EditDoctorProfile;
+
+

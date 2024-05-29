@@ -1,193 +1,152 @@
 "use client";
+// /pages/sign-up.tsx
 
-import React from 'react'
-import * as z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { useState, useEffect, useTransition,  } from 'react'
-import { useDebounceValue} from "usehooks-ts"
-import { useRouter } from 'next/navigation'
-import { useToast } from '@/components/ui/use-toast'
-import axios, { AxiosError } from 'axios'
-import { CardWrapper } from '@/components/CardWrapper'
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-
-} from "@/components/ui/form"
-import { Button } from "@/components/ui/button"
-import { FormError } from '@/components/FormError';
-import { FormSuccess } from '@/components/FormSuccess'
-import { Input } from '@/components/ui/input'
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { NextPage } from 'next';
 import { Loader2 } from 'lucide-react';
-import { signInSchema } from '@/schemas/signInSchema';
-import { signIn } from 'next-auth/react';
-import { clear } from 'console';
-import { authFormSchema } from '@/lib/utils';
-import { set } from 'mongoose';
-import { NextRequest, NextResponse } from 'next/server';
-import CustomAuthInput from '@/components/CustomAuthInput';
 import Image from 'next/image';
+import { useToast } from '@/components/ui/use-toast';
+import { set } from 'mongoose';
+import { Button } from '@/components/ui/button';
+import { sign } from 'crypto';
+import { signIn } from 'next-auth/react';
 
+// Schema using zod
+const signUpSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+});
 
+type SignUpSchema = z.infer<typeof signUpSchema>;
 
-function SignUp() {
+const SignUp: NextPage = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const router = useRouter();
 
-  const [email, setEmail] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
-  const router = useRouter()
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess ] = useState<string | undefined>("")
-  const [disabled, setDisabled] = useState(false)
+  const { toast } = useToast();
 
-  // zod implementation
-  const formSchema = authFormSchema
-  const form = useForm<z.infer<typeof authFormSchema>>({
-    resolver: zodResolver(authFormSchema),
-      defaultValues: {
-        email: '',
-        password: '',
-        phoneNumber: '',
-        age: 0,
-        address: '',
-        name: '',
-        image: '',
-        bloodGroup: '',
-        height: 0,
-        weight: 0,
-        allergies: [],
-        medications: [],
-        diseases: [],
-      }
+  const form = useForm<SignUpSchema>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = async (data: SignUpSchema) => {
+    setIsSubmitting(true);
+    setError(null);
+    setSuccess(null);
+
+    toast({
+      title: 'Signing up...',
+      description: 'okay',
+      variant: 'default'
     })
 
+    try {
+      const response = await axios.post('/api/sign-up', data);
 
-    const onSubmit = async (data: z.infer<typeof authFormSchema>) => {
+      const responseData = response.data;
 
-      setIsSubmitting(true)
-      console.log("Submitting data: ",data)
-  
-      try {
-        console.log("Data: ",data)
-  
-        const response = await  fetch('/api/sign-up',{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        })
-  
-        if(!response.ok){
-          console.log("Error finding Response: " + response)
-          setError(response.text.toString() || 'Error registering user')
-          setIsSubmitting(false)
-          return null
-        }
-  
-        console.log("Response Data: ",response)
-       
-        console.log("Response Data Message: ",response)
-  
-        toast({
-          title: 'Success',
-          description: response.json.toString(),
-        })
-  
-        setSuccess(response.json.toString())
-  
-        router.replace(`/`)
-        setIsSubmitting(false)
-  
-      } catch (error) {
-  
-        console.log("Error is registering user: ",error)
-  
-        const axiosError = error as AxiosError<NextResponse>
-  
-        setError(axiosError.response?.data.text.toString() || 'Error registering user')
-  
+      if(responseData.error || response.status !== 200 || !response.data.message) {
+        setError(responseData.error);
         toast({
           title: 'Error',
-          description: axiosError.response?.data.text.toString() || 'Error registering user',
-          variant: "destructive"
+          description: responseData.error,
+          variant: 'destructive'
+        
         })
-  
-        setIsSubmitting(false)
+        setIsSubmitting(false);
+        return;
       }
+
+      toast({
+        title: 'Success',
+        description: responseData.message,
+        variant: 'success'
+      })
+
+      setSuccess(response.data.message);
+      form.reset();
+
+      signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        callbackUrl: '/'
+      });
+
+      router.replace('/');
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.response?.data.error || 'An error occurred',
+        variant: 'destructive'    
+      })
+
+      setError(error.response?.data.error || 'An error occurred');
+
+    } finally {
+      setIsSubmitting(false);
     }
+  };
 
   return (
-    // bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-700 
-    <div className="size-full min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-700 ">
-
-
-    <div className='flex rounded-xl size-fit'>
-
-   
-    <Image
-    src='/images/signin.jpg'
-    alt='signin'
-    width={600}
-    height={500}
-    className='rounded-l-2xl'
-    />
-    <CardWrapper
-      headerLabel="Sign Up"
-      backButtonLabel="Already Registerd?"
-      backButtonHref="/sign-in"
-      showSocial={true}
-    >
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
-           <CustomAuthInput
-              control={form.control}
-              name="email"
-              placeholder="Email"
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-sky-400 to-blue-700">
+      <div className="flex rounded-xl bg-white shadow-lg overflow-hidden">
+        <Image
+          src="/images/signin.jpg"
+          alt="Sign in"
+          width={600}
+          height={500}
+          className="rounded-l-2xl"
+        />
+        <div className="p-8 w-96">
+          <h1 className="text-2xl font-bold mb-6">Sign Up</h1>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div>
+              <label className="block text-gray-700">Email</label>
+              <input
+                type="email"
+                className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                {...form.register('email')}
+              />
+              {form.formState.errors.email && (
+                <span className="text-red-600 text-sm">{form.formState.errors.email.message}</span>
+              )}
+            </div>
+            <div>
+              <label className="block text-gray-700">Password</label>
+              <input
+                type="password"
+                className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                {...form.register('password')}
+              />
+              {form.formState.errors.password && (
+                <span className="text-red-600 text-sm">{form.formState.errors.password.message}</span>
+              )}
+            </div>
+            {error && <div className="text-red-600">{error}</div>}
+            {success && <div className="text-green-600">{success}</div>}
+            <Button
+              type="submit"
+              className="w-full px-4 py-2 mt-4 font-bold text-white bg-blue-600 rounded-md hover:bg-blue-800"
               disabled={isSubmitting}
-              type='email'
-              label='Email'
-              description='Enter your email address to sign in.'
-            />
-            <CustomAuthInput
-              control={form.control}
-              name="password"
-              placeholder="Password"
-              disabled={isSubmitting}
-              type='password'
-              label='Password'
-              description='Enter your password to sign in.'
-            />
-
-          </div>
-          <FormError message={error} />
-          <FormSuccess message="" />
-          <Button
-            className="w-full bg-sky-500 hover:bg-sky-600 text-white rounded-3xl"
-            type="submit"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-3 h-4 w-4 animate-spin" /> Authenticating User...
-              </>
-            ) : (
-              'Log In'
-            )}
-          </Button>
-        </form>
-      </Form>
-    </CardWrapper>
+            >
+              {isSubmitting ? <Loader2 className="animate-spin" /> : 'Submit'}
+            </Button>
+          </form>
+        </div>
+      </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;

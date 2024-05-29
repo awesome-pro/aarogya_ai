@@ -4,7 +4,7 @@ import { Appointment } from "./utils/Appointment";
 
 
 export interface Patient extends Document{
-    name: string;
+    name?: string;
     email: string;
     password: string;
     phoneNumber?: number;
@@ -24,7 +24,7 @@ export interface Patient extends Document{
 
 const PatientSchema = new Schema<Patient>(
     {
-        name: { type: String, required: true },
+        name: { type: String, required: false },
         email: { type: String, required: true },
         password: { type: String, required: true },
         phoneNumber: { type: String, required: false },

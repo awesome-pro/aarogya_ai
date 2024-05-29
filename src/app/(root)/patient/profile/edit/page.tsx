@@ -6,6 +6,9 @@ import FAQ from '@/components/Faq';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { FormError } from '@/components/FormError';
+import { FormSuccess } from '@/components/FormSuccess';
+import { useToast } from '@/components/ui/use-toast';
 
 interface PatientData {
   name: string;
@@ -43,6 +46,8 @@ const EditProfile: React.FC<EditProfileProps> = () => {
 
   const searchParams = new URLSearchParams(window.location.search);
   const idFromParams = searchParams.get('id');
+
+  const { toast } = useToast();
 
   const router = useRouter();
 
@@ -146,6 +151,11 @@ const EditProfile: React.FC<EditProfileProps> = () => {
     try {
       await axios.post(`/api/update-patient?id=${id}`, updatedPatientData);
       console.log('Patient data updated successfully');
+      toast({
+        title: 'Patient data updated successfully',
+        variant: 'success',
+        description: 'Patient data has been updated successfully',
+      })
       // Optionally, you can redirect the user or show a success message
     } catch (error) {
       console.error('Error updating patient data:', error);
@@ -157,11 +167,12 @@ const EditProfile: React.FC<EditProfileProps> = () => {
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div><FormError  message={error}/></div>;
   }
 
   return (
     <div>
+      <FormSuccess message="Patient data fetched successfully" />
       <div className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <h1 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">Edit Patient Profile</h1>

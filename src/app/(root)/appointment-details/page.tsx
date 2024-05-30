@@ -5,7 +5,10 @@ import { FormSuccess } from '@/components/FormSuccess';
 import MyButton from '@/components/MyButton';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { formatDate } from '@/lib/utils';
 import { Appointment } from '@/models/utils/Appointment';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { div } from '@tensorflow/tfjs';
 import axios from 'axios';
 import Image from 'next/image';
@@ -119,25 +122,67 @@ function AppointmentDetails() {
         <FormError message={error} />
         <FormSuccess message={success} />
 
-        <h1>
-            Appointment Details
-        </h1>
-
-        <h1>
-                Appointment ID: {appointmentId}
-            </h1>
+        <div>
+            <div className=" bg-blue-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md w-full space-y-8">
+                <div className="p-6 rounded-lg text-center">
+                <FontAwesomeIcon icon={faCircleCheck} className='text-9xl text-blue-500 pb-7' />
+                <h1 className="text-3xl font-extrabold text-blue-950 mb-4">Appointment Confirmed</h1>
+                <p className="text-gray-700 mb-4">Thank you for booking your appointment. We have received your request and will get back to you soon.</p>
+                <button
+                    onClick={() => router.push('/')}
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                    Go to Homepage
+                </button>
+                <br />
+                <Button
+                    className='bg-sky-500 text-white font-bold px-3 py-5 rounded-xl mt-4 w-full hover:bg-sky-400 hover:text-white'
+                    onClick={() => router.back() }
+                >
+                    Book More Appointment
+                </Button>
+                </div>
+            </div>
+            </div>
 
             <h1>
-                {appointmentData?.doctorName}
+                Appointment Details
             </h1>
 
-            <p>
-                {appointmentData?.details}
-            </p>
-            <p>
-                {appointmentData?.doctorId}
-            </p>
-                
+
+            <div>
+                <div>
+                    <div>
+                        <div>
+                            <label>Appointment Date</label>
+                            {/* <div>{formatDate(appointmentData?.startTimestamp}</div> */}
+                        </div>
+                        <div>
+                            <label>Appointment Time</label>
+                            <div>{appointmentData?.doctorId}</div>
+                        </div>
+                        <div>
+                            <label>Appointment Type</label>
+                            <div>{appointmentData?.patientId}</div>
+                        </div>
+                        <div>
+                            <label>Doctor Name</label>
+                            <div>{appointmentData?.doctorName}</div>
+                        </div>
+                        <div>
+                            <label>Patient Name</label>
+                            <div>{appointmentData?.patientName}</div>
+                        </div>
+                        <div>
+                            <label>Patient Age</label>
+                            <div>{appointmentData?.patientMedications}</div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
   )

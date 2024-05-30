@@ -149,7 +149,7 @@ const EditProfile: React.FC<EditProfileProps> = () => {
     console.log(updatedPatientData);
 
     try {
-      await axios.post(`/api/update-patient?id=${id}`, updatedPatientData);
+      await axios.post(`/api/update-patient-details?id=${id}`, updatedPatientData);
       console.log('Patient data updated successfully');
       toast({
         title: 'Patient data updated successfully',

@@ -132,7 +132,7 @@ function FacilitiesPage() {
 
 
 
-<li className="text-[18px]"><u><b className="text-[20px]">2.</b></u><span className="f=text-[26px] text-blue-600">Quick Access: </span> Find available doctors and time slots instantly without waiting on hold or visiting the clinic.</li>
+<li className="text-[20px]"><u><b className="text-[20px]">2.</b></u><span className="f=text-[26px] text-blue-600">Quick Access: </span> Find available doctors and time slots instantly without waiting on hold or visiting the clinic.</li>
 <li className="text-[18px]"><u><b className="text-[20px]">3.</b></u><span className="f=text-[26px] text-blue-600">Detailed Information:</span>  Access comprehensive profiles of our doctors to make an informed choice.</li>
 <li className="text-[18px]"><u><b className="text-[20px]">4.</b></u><span className="f=text-[26px] text-blue-600">Reminders and Notifications:</span>  Receive automated reminders and updates about your appointment to ensure you never miss a visit.</li>
 </ol></p>

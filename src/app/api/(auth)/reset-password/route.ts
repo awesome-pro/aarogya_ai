@@ -5,10 +5,14 @@ import dbConnect from "@/lib/dbConnect";
 
 
 export async function POST(request: Request){
-    
+
+        const { searchParams } = new URL(request.url);
+
+        const _id = searchParams.get("id");
+
         await dbConnect();
     
-       const { newPassword, _id } = await request.json();
+       const { newPassword } = await request.json();
        console.log("newPassword", newPassword)
         console.log("_id", _id)
 

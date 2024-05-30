@@ -1,8 +1,6 @@
 "use client";
+
 import React from 'react';
-import Head from 'next/head';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';

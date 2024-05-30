@@ -22,10 +22,10 @@ export default function RootLayout({
     <html lang="en">
      <SessionProvider>
         <body className={inter.className}>
-         {/* <Header/> */}
+        <Header/>
           {children}
-          {/* <Footer />
-          <Toaster /> */}
+          {/*  <Footer /> */}
+          <Toaster />
         </body>
      </SessionProvider>
     </html>

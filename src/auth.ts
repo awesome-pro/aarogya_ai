@@ -29,6 +29,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials: any) => {
 
+        console.log("Credentials: ", credentials)
+        console.log("email: ", credentials.email)
+        console.log("phoneNumber: ", credentials.phoneNumber)
+        console.log("password: ", credentials)
+        console.log("password: ", credentials.password)
+
         await dbConnect()
 
         try {
@@ -36,7 +42,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const patient = await PatientModel.findOne({
             $or: [
               { email: credentials.email },
-              { phone: credentials.phoneNumber}
+        
             ]
           })
 
@@ -70,6 +76,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     verifyRequest: "/auth/verify-request",
     newUser: "/sign-up",
     signOut: "/sign-out",
+    
   },
   secret: process.env.AUTH_SECRET,
   session: {

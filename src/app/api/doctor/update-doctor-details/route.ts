@@ -2,19 +2,20 @@ import mongoose from "mongoose";
 import DoctorModel from "@/models/Doctor";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse, NextMiddleware } from "next/server";
+import { NextApiRequest } from "next";
 
 
 
-export async function PUT(req: NextRequest) {
+export async function POST(req: NextRequest) {
 
-    const { searchParams } = new URL(req.url)
+    console.log(req);
 
+    const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
-    
 
     await dbConnect();
 
-    const { name, email, phoneNumber, specialty, experience, consultationFee, availability, qualifications, bio, } = await req.json();
+    const { name, email, phoneNumber, department, experience, consultationFee, clinicAddress, availability, qualifications, bio, } = await req.json();
     try {
 
         const updatedDoctor = await DoctorModel.findByIdAndUpdate(
@@ -23,9 +24,9 @@ export async function PUT(req: NextRequest) {
                 name: name,
                 email: email,
                 phoneNumber: phoneNumber,
-                specialty: specialty,
+                department: department,
                 experience: experience,
-                location: location,
+                clinicAddress: clinicAddress,
                 consultationFee: consultationFee,
                 availability: availability,
                 qualifications: qualifications,

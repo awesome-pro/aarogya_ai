@@ -1,40 +1,3 @@
-// "use client";
-
-// import * as z from "zod"
-// import { zodResolver } from "@hookform/resolvers/zod"
-// import { useForm } from "react-hook-form"
-
-// import {
-//   Form,
-//   FormControl,
-//   FormDescription,
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormMessage,
-// } from "@/components/ui/form"
-// import { Input } from "@/components/ui/input"
-// import { Divide, Loader2 } from 'lucide-react'
-// import { sign } from 'crypto'
-// import { useRouter } from 'next/navigation'
-// import { doctorFormSchema } from '@/lib/utils'
-// import CustomDoctorInput from '@/components/CustomDoctorInput'
-// import { FormError } from '@/components/FormError'
-// import { FormSuccess } from '@/components/FormSuccess'
-// import React, { useCallback, useEffect, useState } from 'react';
-// import Header from '@/components/Header';
-// import FAQ from '@/components/Faq';
-// import Footer from '@/components/Footer';
-// import Link from 'next/link';
-// import { Button } from '@/components/ui/button';
-// import Image from 'next/image';
-// import { signOut } from '@/auth';
-// import { useSession } from 'next-auth/react';
-// import { Doctor } from '@/models/Doctor';
-// import axios from 'axios';
-// import { set } from 'mongoose';
-// import { FaExclamationTriangle } from 'react-icons/fa';
-// import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
 
 "use client";
 
@@ -135,7 +98,7 @@ const DoctorProfile: React.FC = () => {
                     </div>
                     <div>
                       <h4 className="font-bold text-xl">Qualifications</h4>
-                      <p className="text-gray-800 text-lg font-medium">{doctorData?.experience}</p>
+                      <p className="text-gray-800 text-lg font-medium">{doctorData?.qualifications}</p>
                     </div>
                     <div className="md:col-span-2">
                       <h4 className="font-bold text-xl">Bio</h4>
@@ -145,7 +108,7 @@ const DoctorProfile: React.FC = () => {
                 </div>
               </div>
               <div className='flex justify-center items-center gap-10 pt-10 pb-6'>
-                <Link href="/doctor/profile/edit">
+                <Link href={`/doctor/profile/edit?id=${doctorId}`}>
                   <Button className='bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-3 rounded-xl'>Edit your profile</Button>
                 </Link>
                 <Link href='/doctor/patient-history'>

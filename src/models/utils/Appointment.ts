@@ -12,6 +12,10 @@ export interface Appointment {
     details?: string;
     status?: string;
     prescriptions?: string[];
+    patientAllergies?: string[];
+    patientMedications?: string[];
+    patientDiseases?: string[];
+    patientSymptoms?: string[];
 }
 
 export const AppointmentSchema = new mongoose.Schema<Appointment>({
@@ -26,6 +30,30 @@ export const AppointmentSchema = new mongoose.Schema<Appointment>({
     details: { type: String, required: false },
     status: { type: String, required: false },
     prescriptions: [
+        {
+            type: String,
+            required: false
+        }
+    ],
+    patientAllergies: [
+        {
+            type: String,
+            required: false
+        }
+    ],
+    patientMedications: [
+        {
+            type: String,
+            required: false
+        }
+    ],
+    patientDiseases: [
+        {
+            type: String,
+            required: false
+        }
+    ],
+    patientSymptoms: [
         {
             type: String,
             required: false

@@ -145,13 +145,13 @@ const PatientProfilePage: React.FC = () => {
 
             <div className="mb-4 border border-black p-5">
               <h3 className="text-xl font-bold mb-2 text-blue-700">Medications Currently Taking</h3>
-              <p className="text-lg">{patientData?.medications}</p>
+              {/* <p className="text-lg">{patientData?.}</p> */}
             </div>
           </section>
         </div>
 
         <div className="flex justify-around items-center gap-0">
-          <Link href="/patient/profile/edit">
+          <Link  href={`/patient/profile/edit?id=${user?._id}`}>
             <Button 
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded-3xl"
             >

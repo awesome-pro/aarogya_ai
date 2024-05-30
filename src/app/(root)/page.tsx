@@ -188,7 +188,7 @@ export default function Home() {
 
               
 
-   {/* <FormError message={departmentData.length === 0 ? "No departments found" : ""} />
+   <FormError message={departmentData.length === 0 ? "No departments found" : ""} />
 
    {
     errorMessage &&
@@ -198,7 +198,7 @@ export default function Home() {
    {
     successMessage &&
     <FormSuccess message={successMessage} />
-   } */}
+   }
 
     <div className="bg-blue-100">
     <div className='pt-20 max-w-screen-xl flex relative flex-col justify-center items-center bg-blue-100 ml-40'>

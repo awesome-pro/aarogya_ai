@@ -11,7 +11,7 @@ function FacilitiesPage() {
 <div className="h-[650px] rounded-3xl w-[700px] m-12 border-2 bg-blue-50 hover:bg-white">
 <h1 className="font-bold text-4xl text-blue-500 text-center p-4 ">Ask the Ai</h1>
 <p className="text-xl ml-10 ">We have a <b className="text-blue-400"> Medical-Assistant  </b>,to answer all your doubts.Check-out the video to learn how to use it.</p>
-<div className=" w-[600px] h-[430px] ml-12 mt-4 mr-6"><video src='/videos/bandicam 2024-05-29 23-49-25-624.mp4' autoPlay muted controls={true}></video></div>
+<div className=" w-[600px] h-[430px] ml-12 mt-4 mr-6"><video src='/videos/Aarogya AI - Google Chrome 2024-05-31 14-36-04.mp4' autoPlay muted controls={true}></video></div>
 <p className="text-xl ml-10 -mt-14 mb-3">click below to ask the Ai</p>
 <button className="h-[50px] w-[150px] ml-12 mr-auto rounded-3xl text-center font-bold text-2xl text-white hover:text-gray-800 bg-blue-400">Ai</button>
 
@@ -22,7 +22,7 @@ function FacilitiesPage() {
 <div className="h-[600px] rounded-3xl w-[800px] m-12 border-2 bg-blue-50 hover:bg-white">
 <h1 className="font-bold text-4xl text-blue-500 text-center p-4 ">Sign-Up for Doctor</h1>
 <p className="text-xl ml-10 ">Check-out the video to learn how to Sign-Up</p>
-<div className=" w-[600px] h-[430px] ml-9 mt-4 mr-6"><video src='/videos/bandicam 2024-05-29 23-49-25-624.mp4' autoPlay muted controls={true}></video></div>
+<div className=" w-[600px] h-[430px] ml-9 mt-4 mr-6"><video src='/videos/Aarogya AI - Google Chrome 2024-05-31 14-53-40.mp4' autoPlay muted controls={true}></video></div>
 <p className="text-xl ml-10 -mt-14 mb-3">click below to Sign-Up</p>
 <button className="h-[50px] w-[150px] ml-12 mr-auto rounded-3xl text-center font-bold text-2xl text-white hover:text-gray-800 bg-blue-400">Sign-Up</button>
 
@@ -32,8 +32,8 @@ function FacilitiesPage() {
 
 <div className="h-[600px] rounded-3xl w-[800px]  m-12 border-2 bg-blue-50 hover:bg-white">
 <h1 className="font-bold text-4xl  text-blue-500 text-center p-4 ">Sign-In for Doctor</h1>
-<p className="text-xl ml-10 ">Check-out the video to learn how to Sign-In</p>
-<div className=" w-[600px] h-[430px] ml-9 mt-4 mr-6"><video src='/videos/bandicam 2024-05-29 23-49-25-624.mp4' autoPlay muted controls={true}></video></div>
+<p className="text-xl ml-9 ">Check-out the video to learn how to Sign-In</p>
+<div className=" w-[600px] h-[430px] ml-9 mt-4 mr-6"><video src='/videos/Aarogya AI - Google Chrome 2024-05-31 15-03-02.mp4' autoPlay muted controls={true}></video></div>
 <p className="text-xl ml-10 -mt-14 mb-3">click below to Sign-In</p>
 <button className="h-[50px] w-[150px] ml-12 mr-auto rounded-3xl text-center font-bold text-2xl  text-white bg-blue-400 hover:text-gray-800">Sign-In</button>
 
@@ -55,7 +55,7 @@ function FacilitiesPage() {
 <div className="h-[600px] rounded-3xl w-[800px]  m-12 border-2 bg-blue-50 hover:bg-white">
 <h1 className="font-bold text-4xl  text-blue-500 text-center p-4 ">Sign-In for Patient</h1>
 <p className="text-xl ml-10 ">Check-out the video to learn how to Sign-In</p>
-<div className=" w-[600px] h-[430px] ml-9 mt-4 mr-6"><video src='/videos/bandicam 2024-05-29 23-49-25-624.mp4' autoPlay muted controls={true}></video></div>
+<div className=" w-[600px] h-[430px] ml-9 mt-4 mr-6"><video src='/videos/Aarogya AI - Google Chrome 2024-05-31 14-00-14.mp4' autoPlay muted controls={true}></video></div>
 <p className="text-xl ml-10 -mt-14 mb-3">click below to Sign-In</p>
 <button className="h-[50px] w-[150px] ml-12 mr-auto rounded-3xl text-center font-bold text-2xl  text-white hover:text-gray-800 bg-blue-400">Sign-In</button>
 
@@ -69,7 +69,7 @@ function FacilitiesPage() {
 <div className="h-[600px] rounded-3xl w-[800px] m-12 border-2 bg-blue-50 hover:bg-white">
 <h1 className="font-bold text-4xl text-blue-500 text-center p-4 ">Book your Doctor</h1>
 <p className="text-xl ml-10 ">Check-out the video to learn how to Book</p>
-<div className=" w-[600px] h-[430px] ml-9 mt-4 mr-6"><video src='/videos/bandicam 2024-05-29 23-49-25-624.mp4' autoPlay muted controls={true}></video></div>
+<div className=" w-[600px] h-[430px] ml-9 mt-4 mr-6"><video src='/videos/Aarogya AI - Google Chrome 2024-05-31 14-28-47.mp4' autoPlay muted controls={true}></video></div>
 <p className="text-xl ml-10 -mt-14 mb-3">click below to Book</p>
 <button className="h-[50px] w-[150px] ml-12 mr-auto rounded-3xl text-center font-bold text-2xl text-white hover:text-gray-800 bg-blue-400">Book-Now</button>
 
@@ -89,9 +89,9 @@ function FacilitiesPage() {
 </div>
 <div className="flex">
 <div className="h-[600px] rounded-3xl w-[700px] m-12 border-2 bg-blue-50 hover:bg-white">
-<h1 className="font-bold text-4xl text-blue-500 text-center p-4 ">Book your AI Doctor </h1>
-<p className="text-xl ml-10 ">Check-out the video to learn how to Book </p>
-<div className=" w-[600px] h-[430px] ml-9 mt-4 mr-6"><video src='/videos/bandicam 2024-05-29 23-49-25-624.mp4' autoPlay muted controls={true}></video></div>
+<h1 className="font-bold text-4xl text-blue-500 text-center p-4 ">Consult your AI Doctor </h1>
+<p className="text-xl ml-10 ">Check-out the video to learn how to Consult </p>
+<div className=" w-[600px] h-[430px] ml-9 mt-4 mr-6"><video src='/videos/Aarogya AI - Google Chrome 2024-05-31 14-20-48.mp4' autoPlay muted controls={true}></video></div>
 <p className="text-xl ml-10 -mt-14 mb-3">click below to Book</p>
 <button className="h-[50px] w-[150px] ml-12 mr-auto rounded-3xl text-center font-bold text-2xl text-white hover:text-gray-800 bg-blue-400">Book-Now</button>
 

@@ -25,6 +25,7 @@ dib_model = joblib.load('diabetes_pred.pkl')
 @app.route('/dibpredict',methods=['POST'])
 
 def dibpredict():
+    # prediction for diabetes
     data = request.get_json(force=True)
     sample_data = list(data['data'])
     sample_data = np.array([sample_data])

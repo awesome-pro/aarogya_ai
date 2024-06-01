@@ -44,6 +44,8 @@
     "mongoose": "^8.3.5",
     "next": "14.2.3",
     "next-auth": "^5.0.0-beta.18",
+    "next-video": "^1.0.6",
+    "next-videos": "^1.4.1",
     "openai": "^4.47.1",
     "prompt-sync": "^4.2.0",
     "react": "^18",

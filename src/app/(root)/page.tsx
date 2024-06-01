@@ -236,7 +236,7 @@ export default function Home() {
             </div>
             <div className='flex justify-center items-center'>
                 <img
-                src="https://s3-alpha-sig.figma.com/img/7804/e5f2/776e41d6b125a1ff07effac37d6ff11b?Expires=1716768000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=azrpMEf-WLIMwNMGxho~iwuoNMDCWcSrE2YB-v08OpaefmYH6cG2hG67oPurv7rBoyj3s0RkQiI6UJaB6SbdpQJFpZwnokJNter~Yu7uMYcDWkyTqpd5Xf2xdcb0RR6hNDD3Dahe6CeVUz9Madtj3KowUZoXiTPwiXsemMgXQMnf8zvjsjcqlvmniKf4879kxU-p2TC5kvkc6ypltra89THgS3hVJcCL2WSCkXuY3k5Psba~H1Dr1Qbf7U40vwyBFQ-2ZTRK4z4R4LnqNBfRciewnRgfPPROGujPggpVpj5oYAo3GF-7yQ5B9ARTudx0iJiI3XuugyCXZef6TmyD2w__"
+                src="https://s3-alpha-sig.figma.com/img/7804/e5f2/776e41d6b125a1ff07effac37d6ff11b?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=nc6rSkW-PdoebUtbpX86I91B1c34PD~iT-UPl4GW2aJD4T2zi8X5HA2u8ElI91AHn2fF9H2Fb97rT4107Y4oopXUpa~M3Woh~v5uRpM18J-450hYD9tua8MiaoOXdqSsvplvoZNiJJmMJA1P3UYrQxn9A3UrucH6mO9xv8jXlAoRV8NKDV5-~86GVJZeCLi3kBKcLHwtA2cbiZGxs5wh-usbek9tECVMSQqXZb5ceu9v0TalTu4NIEeu0ufzUCvD~dohFw7af4OyYpypxFuTaT5uv3JEYa4hqUjRy5bjPqaq5mpCb97T2Nc-L-H8wFTnnuDEhvLVbcRZ1xg0lLtIUQ__"
                 alt='Loading image'
                 className='rounded-3xl bg-clip-border w-10/12 mb-10'
                
@@ -355,7 +355,7 @@ export default function Home() {
       <div className="text-container ml-4 w-1/3">
       <p className="text-blue-400 font-bold mb-2">HELPING PATIENTS FROM AROUND THE GLOBE!!</p>
         <h2 className="text-4xl font-extrabold mb-2 tracking-wide">Patient <span className="text-blue-400">Caring</span></h2>
-        <p className="text-gray-500 mb-2 text-base">Our goal is to deliver quality of care in a courteous, respectful, and compassionate manner. We hope you will allow us to care for you and strive to be the first and best choice for healthcare.</p>
+        <p className="text-gray-500 mb-2 text-base">Our goal is to deliver quality of care in a courteous, respectful, and compassionate manner.We hope you will allow us to care for you and strive to be the first and best choice for healthcare.</p>
         <ul className="list-disc flex flex-col gap-y-4 text-blue-950 font-semibold text-lg">
           <div><FontAwesomeIcon icon={faCheckCircle} className="text-blue-400 text-lg" /> Stay Updated About Your Health</div>
           <div><FontAwesomeIcon icon={faCheckCircle} className="text-blue-400 text-lg"  /> Check Your Results Online</div>

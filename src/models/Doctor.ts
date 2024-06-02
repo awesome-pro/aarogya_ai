@@ -16,6 +16,8 @@ export interface Doctor extends Document {
     availability?: string;
     bio?: string;
     rating?: number;
+    latitude: string;
+    longitude:string;
 }
 
 const DoctorSchema = new mongoose.Schema<Doctor>({
@@ -36,7 +38,9 @@ const DoctorSchema = new mongoose.Schema<Doctor>({
     consultationFee: { type: Number, required: false },
     availability: { type: String, required: false },
     bio: { type: String, required: false },
-    rating: { type: Number, required: false }
+    rating: { type: Number, required: false },
+    latitude: { type: String, required: false },
+    longitude: { type: String, required: false },
 });
 
 const DoctorModel = mongoose.models.Doctor || mongoose.model<Doctor>('Doctor', DoctorSchema);

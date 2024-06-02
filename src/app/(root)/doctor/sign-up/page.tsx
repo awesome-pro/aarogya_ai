@@ -5,6 +5,7 @@ import Select from 'react-select';
 import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/FormError';
 import { FormSuccess } from '@/components/FormSuccess';
+import axios from 'axios';
 
 interface DoctorSignupFormData {
   name: string;
@@ -18,13 +19,13 @@ interface DoctorSignupFormData {
   qualifications: string;
   bio: string;
   password: string;
+  place: string;
+  latitude: string;
+  longitude: string;
 }
 
 const DoctorSignup: React.FC = () => {
-
-
   const router = useRouter();
-
 
   const [formData, setFormData] = useState<DoctorSignupFormData>({
     name: '',
@@ -37,7 +38,10 @@ const DoctorSignup: React.FC = () => {
     availability: '',
     qualifications: '',
     bio: '',
-    password: ''
+    password: '',
+    place: '',
+    latitude: '',
+    longitude: ''
   });
 
   const departments = [
@@ -74,6 +78,48 @@ const DoctorSignup: React.FC = () => {
     setFormData({ ...formData, department: selectedOption.value });
   };
 
+  const getCoordinates = async (address: string, place: string) => {
+    const options = {
+      method: 'POST',
+      url: 'https://google-api31.p.rapidapi.com/map',
+      headers: {
+        'content-type': 'application/json',
+        'X-RapidAPI-Key': 'a74f98ca07msh13a3e05599ca2aep1dbfd2jsnd0b1eab05732',
+        'X-RapidAPI-Host': 'google-api31.p.rapidapi.com'
+      },
+      data: {
+        text: address,
+        place: place,
+        street: '',
+        city: '',
+        country: '',
+        state: '',
+        postalcode: '',
+        latitude: '',
+        longitude: '',
+        radius: ''
+      }
+    };
+
+    try {
+      const response = await axios.request(options);
+      console.log(response);
+      if (response.status === 200) {
+        const location = response.data.result[0];
+        console.log(location);
+        return {
+          latitude: location.latitude.toString(),
+          longitude: location.longitude.toString()
+        };
+      } else {
+        throw new Error('Failed to get coordinates');
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error('Failed to get coordinates');
+    }
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -81,15 +127,24 @@ const DoctorSignup: React.FC = () => {
     setSuccess('');
 
     try {
+      const { latitude, longitude } = await getCoordinates(formData.clinicAddress, formData.place);
+      console.log(latitude);
+      console.log(longitude);
+      const updatedFormData = {
+        ...formData,
+        latitude,
+        longitude
+      };
+
       const response = await fetch('/api/doctor/sign-up', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(updatedFormData)
       });
 
-      console.log(formData);
+      console.log(updatedFormData);
 
       if (response.ok) {
         setSuccess('Doctor signed up successfully');
@@ -116,7 +171,7 @@ const DoctorSignup: React.FC = () => {
         </div>
       )}
 
-      <div className=" max-h-screen bg-blue-100 flex">
+      <div className="min-h-screen bg-blue-100 flex">
         <div className="hidden md:block md:w-1/2 bg-cover rounded-l-2xl" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")' }}></div>
         <div className="flex flex-col justify-center md:w-1/2 p-8 bg-white">
           <h2 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">Doctor Signup</h2>
@@ -189,15 +244,15 @@ const DoctorSignup: React.FC = () => {
                 />
               </div>
               <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">Consultation Fee</label>
+                <label className="block text-sm font-medium text-gray-700">Place</label>
                 <input
                   type="text"
-                  name="consultationFee"
-                  value={formData.consultationFee}
+                  name="place"
+                  value={formData.place}
                   onChange={handleChange}
                   required
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
-                  placeholder="Consultation Fee"
+                  placeholder="Place"
                 />
               </div>
             </div>
@@ -215,53 +270,53 @@ const DoctorSignup: React.FC = () => {
                 />
               </div>
               <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">Availability</label>
+                <label className="block text-sm font-medium text-gray-700">Consultation Fee</label>
                 <input
                   type="text"
-                  name="availability"
-                  value={formData.availability}
+                  name="consultationFee"
+                  value={formData.consultationFee}
                   onChange={handleChange}
                   required
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
-                  placeholder="Availability (e.g., Mon-Fri, 10am-5pm)"
+                  placeholder="Consultation Fee"
                 />
               </div>
             </div>
-            <div className="flex flex-col md:flex-row md:space-x-4">
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">Qualifications</label>
-                <input
-                  type="text"
-                  name="qualifications"
-                  value={formData.qualifications}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
-                  placeholder="Qualifications"
-                />
-              </div>
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">Bio</label>
-                <textarea
-                  name="bio"
-                  value={formData.bio}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900 h-24"
-                  placeholder="Brief Bio"
-                />
-              </div>
-            </div>
-            {/* <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700">Profile Image</label>
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-700">Availability</label>
               <input
-                type="file"
-                name="profileImage"
-                accept="image/*"
-                onChange={handleFileChange}
+                type="text"
+                name="availability"
+                value={formData.availability}
+                onChange={handleChange}
+                required
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
+                placeholder="Availability (e.g., Mon-Fri, 9am-5pm)"
               />
-            </div> */}
+            </div>
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-700">Qualifications</label>
+              <input
+                type="text"
+                name="qualifications"
+                value={formData.qualifications}
+                onChange={handleChange}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
+                placeholder="Qualifications"
+              />
+            </div>
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-700">Bio</label>
+              <textarea
+                name="bio"
+                value={formData.bio}
+                onChange={handleChange}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900"
+                placeholder="Short Bio"
+              />
+            </div>
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700">Password</label>
               <input
@@ -274,13 +329,16 @@ const DoctorSignup: React.FC = () => {
                 placeholder="Password"
               />
             </div>
-            <div className="text-center">
-              <Button
-                type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Signup
-              </Button>
+            <div className="pt-5">
+              <div className="flex justify-center">
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full md:w-auto px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700"
+                >
+                  Sign Up
+                </Button>
+              </div>
             </div>
           </form>
         </div>
@@ -290,4 +348,3 @@ const DoctorSignup: React.FC = () => {
 };
 
 export default DoctorSignup;
-

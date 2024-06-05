@@ -20,6 +20,8 @@ export async function POST(request: Request){
         consultationFee,
         availability,
         experience,
+        latitude,
+        longitude,
         bio,
         profileImage
     } = await request.json();
@@ -66,6 +68,8 @@ export async function POST(request: Request){
             department: department || "General",
             name: name || "",
             phoneNumber: phone || "",
+            latitude: latitude || "",
+            longitude: longitude || "",
             clinicAddress: clinicAddress || "",
             hospital: hospital || "",
             appointments: [],
